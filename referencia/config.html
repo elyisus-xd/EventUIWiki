@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Referencia completa de config.yml de EventUI — todas las opciones con sus valores y estado de implementación." />
+  <title>config.yml — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a" href="../guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a active" href="config.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">config.yml</span>
+          <span class="pill pill-n">5 secciones</span>
+          <span class="pill pill-n">YAML</span>
+        </div>
+
+        <h1 style="font-size:36px;">config.yml</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Referencia completa del archivo de configuración principal de EventUI. Controla el modo de UI, comportamiento de eventos, mensajes al chat y opciones de debug.
+        </p>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>Ubicación:</strong> <code>plugins/EventUI/config.yml</code> — Usa <code>/ev reload</code> para aplicar cambios sin reiniciar el servidor.
+          </div>
+        </div>
+
+        <!-- CONFIG COMPLETO -->
+        <h2>Archivo completo de referencia</h2>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>config.yml — todas las opciones</div>
+          <pre><code>ui:
+  mode: "custom"           # "hardcoded" | "custom"
+  custom:
+    screenId: "main-menu"  # ID del archivo en /uis/ (sin .yml)
+    fallback: true         # true = usa hardcoded si custom falla
+
+events:
+  always_active: true      # true = inicio automático de eventos
+
+messages:
+  enabled: true            # false = silencia todos los mensajes
+
+  progress:
+    enabled: true
+    format: "&lt;dark_gray&gt;[&lt;green&gt;EventUI&lt;/green&gt;]&lt;/dark_gray&gt; &lt;white&gt;&lt;description&gt;&lt;/white&gt; &lt;gray&gt;(&lt;current&gt;/&lt;target&gt;)&lt;/gray&gt;"
+
+  objective_completed:
+    enabled: true
+    format: "&lt;gold&gt;[EventUI]&lt;/gold&gt; &lt;green&gt;¡Objetivo completado! ✔&lt;/green&gt;"
+
+  event_started:
+    enabled: true
+    format: "&lt;yellow&gt;[EventUI]&lt;/yellow&gt; &lt;green&gt;Misión iniciada: &lt;/green&gt;&lt;white&gt;&lt;event_name&gt;&lt;/white&gt;"
+
+  event_completed:
+    enabled: true
+    format: "&lt;gold&gt;&lt;bold&gt;[EventUI] ¡Evento completado: &lt;event_name&gt;!&lt;/bold&gt;&lt;/gold&gt;"
+
+  event_failed:
+    enabled: true
+    format: "&lt;red&gt;[EventUI]&lt;/red&gt; &lt;dark_red&gt;Evento fallado: &lt;event_name&gt;&lt;/dark_red&gt;"
+
+  event_locked:
+    enabled: true
+    format: "&lt;red&gt;[EventUI]&lt;/red&gt; &lt;gray&gt;Este evento está bloqueado. Completa los anteriores primero.&lt;/gray&gt;"
+
+# ⚠️ Las secciones tracking y debug no están implementadas aún
+tracking:
+  updateInterval: 40
+  locationCheckInterval: 40
+
+debug:
+  logMessages: false
+  logTracking: false
+  logUIConfig: false</code></pre>
+        </div>
+
+        <!-- UI -->
+        <h2>ui — Configuración de interfaz</h2>
+
+        <h3>ui.mode</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">ui.mode <span class="badge badge-green">Obligatorio</span></div>
+          <p>Define qué tipo de interfaz usa el plugin cuando un jugador abre la pantalla de EventUI.</p>
+          <table>
+            <thead><tr><th>Valor</th><th>Descripción</th><th>Cuándo usarlo</th></tr></thead>
+            <tbody>
+              <tr><td><code>"hardcoded"</code></td><td>UI por defecto integrada en el plugin. No requiere ningún archivo en <code>uis/</code>.</td><td>Testing inicial</td></tr>
+              <tr><td><code>"custom"</code></td><td>Carga el archivo indicado en <code>screenId</code> desde la carpeta <code>uis/</code>.</td><td>Producción</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>ui.custom.screenId</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">ui.custom.screenId <span class="badge badge-yellow">Requerido si mode=custom</span></div>
+          <p>Nombre del archivo de UI a cargar, sin la extensión <code>.yml</code>. El archivo debe existir en <code>plugins/EventUI/uis/</code>.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo — carga uis/main-menu.yml</div>
+            <pre><code>ui:
+  mode: "custom"
+  custom:
+    screenId: "main-menu"</code></pre>
+          </div>
+        </div>
+
+        <h3>ui.custom.fallback</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">ui.custom.fallback <span class="badge badge-green">Obligatorio</span></div>
+          <p>Si <code>true</code>, el plugin usa la UI hardcoded cuando la custom tiene un error de sintaxis o no se encuentra. Si <code>false</code>, lanza un error y bloquea el inicio.</p>
+          <table>
+            <thead><tr><th>Valor</th><th>Comportamiento</th></tr></thead>
+            <tbody>
+              <tr><td><code>true</code></td><td>Falla silenciosamente y usa la UI por defecto. Recomendado en producción.</td></tr>
+              <tr><td><code>false</code></td><td>Lanza error en consola. Útil para detectar errores en desarrollo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- EVENTS -->
+        <h2>events — Comportamiento de eventos</h2>
+
+        <h3>events.always_active</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">events.always_active <span class="badge badge-yellow">Opcional</span></div>
+          <p>Valor global por defecto para el inicio automático de eventos. Puede ser sobreescrito por cada evento individual con <code>always_active: true/false</code> en su YAML.</p>
+          <table>
+            <thead><tr><th>Valor</th><th>Comportamiento</th></tr></thead>
+            <tbody>
+              <tr><td><code>true</code></td><td>Los eventos se inician automáticamente cuando el jugador realiza una acción relevante.</td></tr>
+              <tr><td><code>false</code></td><td>Los eventos requieren inicio manual con <code>/ev start &lt;id&gt;</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MESSAGES -->
+        <h2>messages — Mensajes al chat</h2>
+
+        <h3>messages.enabled</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">messages.enabled <span class="badge badge-green">Obligatorio</span></div>
+          <p>Interruptor global. Si es <code>false</code>, silencia absolutamente todos los mensajes de EventUI al chat, independientemente de la configuración individual de cada tipo.</p>
+        </div>
+
+        <h3>Tipos de mensaje</h3>
+
+        <p>Cada tipo de mensaje tiene dos campos: <code>enabled</code> (boolean) y <code>format</code> (string con MiniMessage). Los formatos soportan placeholders específicos:</p>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Cuándo se envía</th><th>Placeholders disponibles</th></tr></thead>
+          <tbody>
+            <tr><td><code>progress</code></td><td>Cada vez que el jugador avanza en un objetivo</td><td><code>&lt;description&gt;</code>, <code>&lt;current&gt;</code>, <code>&lt;target&gt;</code></td></tr>
+            <tr><td><code>objective_completed</code></td><td>Al completar un objetivo individual</td><td>—</td></tr>
+            <tr><td><code>event_started</code></td><td>Al iniciar un evento</td><td><code>&lt;event_name&gt;</code></td></tr>
+            <tr><td><code>event_completed</code></td><td>Al completar todos los objetivos de un evento</td><td><code>&lt;event_name&gt;</code></td></tr>
+            <tr><td><code>event_failed</code></td><td>Al fallar un evento</td><td><code>&lt;event_name&gt;</code></td></tr>
+            <tr><td><code>event_locked</code></td><td>Al intentar iniciar un evento bloqueado por dependencias</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — formato de progreso personalizado</div>
+          <pre><code>messages:
+  enabled: true
+  progress:
+    enabled: true
+    format: "&lt;dark_gray&gt;[&lt;green&gt;EventUI&lt;/green&gt;]&lt;/dark_gray&gt; &lt;white&gt;&lt;description&gt;&lt;/white&gt; &lt;gray&gt;(&lt;current&gt;/&lt;target&gt;)&lt;/gray&gt;"</code></pre>
+        </div>
+
+        <!-- TRACKING + DEBUG -->
+        <h2>tracking y debug — No implementados</h2>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Las secciones <code>tracking</code> y <code>debug</code> están definidas en el archivo pero sus valores no son leídos por el sistema actualmente. El plugin usa valores hardcodeados. Están planeadas para versiones futuras.
+          </div>
+        </div>
+
+        <table>
+          <thead><tr><th>Key</th><th>Descripción</th><th>Default hardcodeado</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><code>tracking.updateInterval</code></td><td>Intervalo en ticks para actualizar el tracking</td><td><code>40</code></td><td>❌ No leído</td></tr>
+            <tr><td><code>tracking.locationCheckInterval</code></td><td>Intervalo para REACH_LOCATION</td><td><code>40</code></td><td>❌ No conectado al scheduler</td></tr>
+            <tr><td><code>debug.logMessages</code></td><td>Loguear mensajes del bridge plugin↔mod</td><td><code>false</code></td><td>❌ No leído</td></tr>
+            <tr><td><code>debug.logTracking</code></td><td>Loguear incrementos de progreso</td><td><code>false</code></td><td>❌ No leído</td></tr>
+            <tr><td><code>debug.logUIConfig</code></td><td>Loguear carga y validación de UIs</td><td><code>false</code></td><td>❌ No leído</td></tr>
+          </tbody>
+        </table>
+
+        <!-- CONFIG PRODUCCIÓN -->
+        <h2>Configuración recomendada para producción</h2>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>config.yml — producción</div>
+          <pre><code>ui:
+  mode: "custom"
+  custom:
+    screenId: "main-menu"
+    fallback: true
+
+events:
+  always_active: true
+
+messages:
+  enabled: true
+  progress:
+    enabled: true
+    format: "&lt;dark_gray&gt;[&lt;green&gt;EventUI&lt;/green&gt;]&lt;/dark_gray&gt; &lt;white&gt;&lt;description&gt;&lt;/white&gt; &lt;gray&gt;(&lt;current&gt;/&lt;target&gt;)&lt;/gray&gt;"
+  objective_completed:
+    enabled: true
+  event_started:
+    enabled: true
+  event_completed:
+    enabled: true
+  event_failed:
+    enabled: true
+  event_locked:
+    enabled: true</code></pre>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="comandos.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Comandos</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="tipos-ui.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Tipos de UI →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

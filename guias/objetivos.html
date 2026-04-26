@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tipos de objetivos disponibles en EventUI — parámetros reales, ejemplos y estado de implementación." />
+  <title>Objetivos — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .obj-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-family: var(--font-m);
+      padding: 2px 9px;
+      border-radius: 20px;
+      border: 1px solid;
+      font-weight: 500;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    .obj-ok   { background: var(--green-bg); color: var(--green); border-color: var(--green-dim); }
+    .obj-no   { background: rgba(239,68,68,0.08); color: #f87171; border-color: rgba(239,68,68,0.25); }
+    .obj-warn { background: rgba(245,158,11,0.08); color: #fbbf24; border-color: rgba(245,158,11,0.25); }
+    h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  </style>
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a active" href="instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Guía</span>
+          <span class="pill pill-n">YAML</span>
+          <span class="pill pill-n">objectives</span>
+        </div>
+
+        <h1 style="font-size:36px;">Objetivos</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Cada evento puede tener uno o más objetivos que el jugador debe completar. Esta página documenta todos los tipos disponibles con sus parámetros exactos y su estado de implementación actual.
+        </p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Los estados de cada tipo son: <strong style="color:var(--green)">✅ Implementado</strong> — funciona completamente.
+            <strong style="color:#fbbf24">⚠️ Parcial</strong> — el código existe pero tiene limitaciones conocidas.
+            <strong style="color:#f87171">❌ No implementado</strong> — definido en el sistema pero sin handler activo.
+          </div>
+        </div>
+
+        <!-- RESUMEN -->
+        <h2>Resumen de tipos</h2>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Descripción corta</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><code>MINE_BLOCK</code></td><td>Minar un bloque específico</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>PLACE_BLOCK</code></td><td>Colocar un bloque</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>KILL_ENTITY</code></td><td>Matar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>CRAFT_ITEM</code></td><td>Fabricar un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>SMELT_ITEM</code></td><td>Fundir un ítem en horno</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>CONSUME_ITEM</code></td><td>Consumir un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>DAMAGE_ENTITY</code></td><td>Infligir daño a una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>TAME_ENTITY</code></td><td>Domesticar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>BREED_ENTITY</code></td><td>Criar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>ENCHANT_ITEM</code></td><td>Encantar un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>BREAK_WITH_TOOL</code></td><td>Romper bloque con herramienta específica</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>INTERACT</code></td><td>Interactuar con bloque o entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>REACH_LEVEL</code></td><td>Alcanzar un nivel de XP</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>UNLOCK_ADVANCEMENT</code></td><td>Completar un avance</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_BIOME</code></td><td>Visitar un bioma</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_STRUCTURE</code></td><td>Visitar una estructura generada</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_DIMENSION</code></td><td>Entrar a una dimensión</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>REACH_LOCATION</code></td><td>Llegar a unas coordenadas</td><td><span class="obj-status obj-warn">⚠️ Parcial</span></td></tr>
+            <tr><td><code>COLLECT_ITEM</code></td><td>Tener ítems en el inventario</td><td><span class="obj-status obj-warn">⚠️ Parcial</span></td></tr>
+            <tr><td><code>BREW_POTION</code></td><td>Preparar una poción</td><td><span class="obj-status obj-no">❌ No implementado</span></td></tr>
+            <tr><td><code>CUSTOM</code></td><td>Tipo personalizado vía API</td><td><span class="obj-status obj-no">❌ No implementado</span></td></tr>
+          </tbody>
+        </table>
+
+        <!-- ── IMPLEMENTADOS ── -->
+        <h2>Tipos implementados</h2>
+
+        <!-- MINE_BLOCK -->
+        <h3>MINE_BLOCK <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador rompe un bloque. El parámetro <code>block_id</code> es el ResourceLocation del bloque.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "minar-diamantes"
+  type: MINE_BLOCK
+  description: "Mina diamantes"
+  parameters:
+    block_id: "minecraft:diamond_ore"
+    target_amount: 5</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>block_id</code></td><td>✅ Sí</td><td>ResourceLocation del bloque. Ejemplo: <code>minecraft:diamond_ore</code>, <code>minecraft:deepslate_diamond_ore</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad de bloques a minar. Puede ir dentro o fuera de <code>parameters</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- PLACE_BLOCK -->
+        <h3>PLACE_BLOCK <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador coloca un bloque.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "colocar-madera"
+  type: PLACE_BLOCK
+  description: "Coloca bloques de madera de roble"
+  parameters:
+    block_id: "minecraft:oak_log"
+    target_amount: 20</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>block_id</code></td><td>✅ Sí</td><td>ResourceLocation del bloque a colocar.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad de bloques a colocar.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- KILL_ENTITY -->
+        <h3>KILL_ENTITY <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador mata una entidad. Solo cuenta si el jugador es el asesino directo.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "matar-zombies"
+  type: KILL_ENTITY
+  description: "Mata zombies"
+  parameters:
+    entity_type: "minecraft:zombie"
+    target_amount: 25</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>entity_type</code></td><td>✅ Sí</td><td>ResourceLocation de la entidad. Ejemplo: <code>minecraft:zombie</code>, <code>minecraft:skeleton</code>, <code>minecraft:creeper</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad de entidades a matar.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- CRAFT_ITEM -->
+        <h3>CRAFT_ITEM <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador saca un ítem de la mesa de crafteo.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "craftear-pico"
+  type: CRAFT_ITEM
+  description: "Fabrica un pico de hierro"
+  parameters:
+    item_id: "minecraft:iron_pickaxe"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_id</code></td><td>✅ Sí</td><td>ResourceLocation del ítem crafteado.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad a fabricar.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- SMELT_ITEM -->
+        <h3>SMELT_ITEM <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador extrae un ítem fundido del horno. Cuenta la cantidad extraída de una vez.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "fundir-hierro"
+  type: SMELT_ITEM
+  description: "Funde lingotes de hierro"
+  parameters:
+    item_id: "minecraft:iron_ingot"
+    target_amount: 32</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_id</code></td><td>ResourceLocation del ítem resultante del horno.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad total a fundir.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- CONSUME_ITEM -->
+        <h3>CONSUME_ITEM <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador consume (come o bebe) un ítem.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "comer-manzanas"
+  type: CONSUME_ITEM
+  description: "Come manzanas doradas"
+  parameters:
+    item_id: "minecraft:golden_apple"
+    target_amount: 3</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_id</code></td><td>ResourceLocation del ítem a consumir.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad a consumir.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- DAMAGE_ENTITY -->
+        <h3>DAMAGE_ENTITY <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Acumula el daño total infligido a una entidad. El <code>target_amount</code> es la cantidad total de daño (en puntos de vida, donde 1 corazón = 2 puntos).</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "dañar-creepers"
+  type: DAMAGE_ENTITY
+  description: "Inflige daño a creepers"
+  parameters:
+    entity_type: "minecraft:creeper"
+    target_amount: 100</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>entity_type</code></td><td>ResourceLocation de la entidad objetivo.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Daño total a infligir en puntos de vida (2 puntos = 1 corazón).</td></tr>
+          </tbody>
+        </table>
+
+        <!-- TAME_ENTITY -->
+        <h3>TAME_ENTITY <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador domestica exitosamente una entidad.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "domesticar-lobos"
+  type: TAME_ENTITY
+  description: "Domestica lobos"
+  parameters:
+    entity_type: "minecraft:wolf"
+    target_amount: 3</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>entity_type</code></td><td>ResourceLocation de la entidad domesticable.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad a domesticar.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- BREED_ENTITY -->
+        <h3>BREED_ENTITY <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador cría dos entidades y nace una cría.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "criar-vacas"
+  type: BREED_ENTITY
+  description: "Cría vacas"
+  parameters:
+    entity_type: "minecraft:cow"
+    target_amount: 5</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>entity_type</code></td><td>ResourceLocation de la entidad a criar.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad de crías a producir.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ENCHANT_ITEM -->
+        <h3>ENCHANT_ITEM <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador encanta un ítem en la mesa de encantamientos. El parámetro <code>item_type</code> es opcional — si no se especifica, cualquier encantamiento cuenta.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — cualquier ítem</div>
+          <pre><code>- id: "encantar-cualquiera"
+  type: ENCHANT_ITEM
+  description: "Encanta cualquier ítem"
+  parameters:
+    target_amount: 3</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — ítem específico</div>
+          <pre><code>- id: "encantar-espada"
+  type: ENCHANT_ITEM
+  description: "Encanta una espada de diamante"
+  parameters:
+    item_type: "minecraft:diamond_sword"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_type</code></td><td>No</td><td>ResourceLocation del ítem a encantar. Si se omite, cualquier encantamiento cuenta.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad de encantamientos a realizar.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- BREAK_WITH_TOOL -->
+        <h3>BREAK_WITH_TOOL <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador rompe un bloque con una herramienta específica. El parámetro <code>block_id</code> dentro de este tipo es opcional.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — herramienta sin bloque específico</div>
+          <pre><code>- id: "usar-pico-diamante"
+  type: BREAK_WITH_TOOL
+  description: "Rompe bloques con pico de diamante"
+  parameters:
+    tool_type: "minecraft:diamond_pickaxe"
+    target_amount: 50</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — herramienta Y bloque específico</div>
+          <pre><code>- id: "minar-obsidiana-con-diamante"
+  type: BREAK_WITH_TOOL
+  description: "Mina obsidiana con pico de diamante"
+  parameters:
+    tool_type: "minecraft:diamond_pickaxe"
+    block_id: "minecraft:obsidian"
+    target_amount: 10</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>tool_type</code></td><td>✅ Sí</td><td>ResourceLocation de la herramienta requerida en la mano principal.</td></tr>
+            <tr><td><code>block_id</code></td><td>No</td><td>ResourceLocation del bloque a romper. Si se omite, cualquier bloque cuenta.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Cantidad de bloques a romper.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- INTERACT -->
+        <h3>INTERACT <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador hace clic derecho sobre un bloque o una entidad. El <code>target_type</code> define si es un bloque o entidad.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — interactuar con bloque</div>
+          <pre><code>- id: "usar-cofre"
+  type: INTERACT
+  description: "Abre cofres"
+  parameters:
+    target_type: "block"
+    target_id: "minecraft:chest"
+    target_amount: 5</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — interactuar con entidad</div>
+          <pre><code>- id: "hablar-aldeano"
+  type: INTERACT
+  description: "Habla con aldeanos"
+  parameters:
+    target_type: "entity"
+    target_id: "minecraft:villager"
+    target_amount: 3</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>target_type</code></td><td>✅ Sí</td><td><code>"block"</code> o <code>"entity"</code>.</td></tr>
+            <tr><td><code>target_id</code></td><td>✅ Sí</td><td>ResourceLocation del bloque o entidad objetivo.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Número de interacciones.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- REACH_LEVEL -->
+        <h3>REACH_LEVEL <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se completa cuando el jugador sube al nivel de XP indicado. No acumula progreso — se completa de golpe cuando el jugador alcanza o supera el nivel requerido.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "nivel-30"
+  type: REACH_LEVEL
+  description: "Alcanza el nivel 30"
+  parameters:
+    level: "30"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>level</code></td><td>Nivel mínimo requerido (como string entre comillas).</td></tr>
+            <tr><td><code>target_amount</code></td><td>Siempre <code>1</code> — este objetivo es binario.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- UNLOCK_ADVANCEMENT -->
+        <h3>UNLOCK_ADVANCEMENT <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador completa un avance específico de Minecraft.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "matar-dragon"
+  type: UNLOCK_ADVANCEMENT
+  description: "Derrota al Ender Dragon"
+  parameters:
+    advancement_id: "minecraft:end/kill_dragon"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>advancement_id</code></td><td>ResourceLocation del avance. Formato: <code>namespace:categoria/nombre</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Siempre <code>1</code> — los avances son binarios.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- VISIT_BIOME -->
+        <h3>VISIT_BIOME <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador se mueve hacia un bioma específico. Se comprueba en cada movimiento de bloque.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "visitar-desierto"
+  type: VISIT_BIOME
+  description: "Visita un desierto"
+  parameters:
+    biome_id: "minecraft:desert"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>biome_id</code></td><td>ResourceLocation del bioma. Ejemplo: <code>minecraft:desert</code>, <code>minecraft:jungle</code>, <code>minecraft:deep_dark</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Siempre <code>1</code> — se completa al pisar el bioma.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- VISIT_STRUCTURE -->
+        <h3>VISIT_STRUCTURE <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador entra en el chunk de una estructura generada.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "visitar-fortaleza"
+  type: VISIT_STRUCTURE
+  description: "Encuentra una fortaleza"
+  parameters:
+    structure_id: "minecraft:stronghold"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>structure_id</code></td><td>ResourceLocation de la estructura. Ejemplos: <code>minecraft:stronghold</code>, <code>minecraft:village</code>, <code>minecraft:nether_fortress</code>, <code>minecraft:end_city</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Siempre <code>1</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- VISIT_DIMENSION -->
+        <h3>VISIT_DIMENSION <span class="obj-status obj-ok">✅ Implementado</span></h3>
+        <p>Se activa cuando el jugador cambia de dimensión. Los valores válidos de <code>dimension</code> son fijos.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "ir-nether"
+  type: VISIT_DIMENSION
+  description: "Entra al Nether"
+  parameters:
+    dimension: "nether"
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>dimension</code></td><td>Valores válidos: <code>"overworld"</code>, <code>"nether"</code>, <code>"the_end"</code>.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Siempre <code>1</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ── PARCIALES ── -->
+        <h2>Tipos con implementación parcial</h2>
+
+        <!-- REACH_LOCATION -->
+        <h3>REACH_LOCATION <span class="obj-status obj-warn">⚠️ Parcial</span></h3>
+        <p>El código existe y los parámetros están definidos, pero el scheduler que llama a la comprobación usa valores hardcodeados y puede no funcionar consistentemente. Úsalo con precaución.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "llegar-spawn"
+  type: REACH_LOCATION
+  description: "Llega al spawn"
+  parameters:
+    x: "0"
+    y: "64"
+    z: "0"
+    radius: "10"      # radio en bloques (default: 3)
+    world: "world"    # nombre del mundo (opcional)
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>x</code></td><td>✅ Sí</td><td>Coordenada X objetivo (como string).</td></tr>
+            <tr><td><code>y</code></td><td>✅ Sí</td><td>Coordenada Y objetivo.</td></tr>
+            <tr><td><code>z</code></td><td>✅ Sí</td><td>Coordenada Z objetivo.</td></tr>
+            <tr><td><code>radius</code></td><td>No</td><td>Radio de detección en bloques. Default: <code>"3"</code>.</td></tr>
+            <tr><td><code>world</code></td><td>No</td><td>Nombre del mundo. Si se omite, funciona en cualquier mundo.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Siempre <code>1</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- COLLECT_ITEM -->
+        <h3>COLLECT_ITEM <span class="obj-status obj-warn">⚠️ Parcial</span></h3>
+        <p>Verifica ítems en el inventario del jugador. La lógica cuenta los ítems del tipo especificado y avanza el progreso con la diferencia respecto al último check. Funciona correctamente tras los fixes de v1.0.0.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "acumular-diamantes"
+  type: COLLECT_ITEM
+  description: "Ten 10 diamantes en el inventario"
+  parameters:
+    item_id: "minecraft:diamond"
+    target_amount: 10</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_id</code></td><td>ResourceLocation del ítem a acumular.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad mínima a tener en el inventario.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>COLLECT_ITEM</strong> solo avanza cuando el jugador <em>gana</em> ítems. Si los tira o los usa, el progreso no retrocede — pero tampoco vuelve a avanzar hasta que tenga más del máximo ya registrado. No es apto para objetivos de tipo "recolecta y entrega".
+          </div>
+        </div>
+
+        <!-- ── NO IMPLEMENTADOS ── -->
+        <h2>Tipos no implementados</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">Los siguientes tipos están declarados en el sistema pero no tienen un handler activo. Definirlos en un evento no causará errores — simplemente el objetivo nunca avanzará.</div>
+        </div>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>BREW_POTION</code></td><td>Preparar pociones en el soporte de pociones. Sin handler implementado en esta versión.</td></tr>
+            <tr><td><code>CUSTOM</code></td><td>Tipo personalizado para integración vía API externa. Sin handler en esta versión.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- NOTAS GENERALES -->
+        <h2>Notas generales</h2>
+
+        <p><strong>Formato de target_amount:</strong> el parser acepta el valor tanto dentro como fuera de <code>parameters</code>. Ambas formas son equivalentes:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Formas equivalentes de escribir target_amount</div>
+          <pre><code># Forma A — target_amount dentro de parameters
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    parameters:
+      block_id: "minecraft:diamond_ore"
+      target_amount: 5
+
+# Forma B — target_amount fuera de parameters
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    target_amount: 5
+    parameters:
+      block_id: "minecraft:diamond_ore"
+
+# Forma C — formato target: con subcampos
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    target:
+      block: "minecraft:diamond_ore"
+      count: 5</code></pre>
+        </div>
+
+        <p><strong>Objetivos opcionales:</strong> si añades <code>optional: true</code> a un objetivo, el evento puede completarse sin que ese objetivo esté terminado:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Objetivo opcional</div>
+          <pre><code>- id: "objetivo-bonus"
+  type: KILL_ENTITY
+  description: "Mata un creeper (bonus)"
+  optional: true
+  parameters:
+    entity_type: "minecraft:creeper"
+    target_amount: 1</code></pre>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="disenar-uis.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Diseñar UIs</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="recompensas.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Recompensas →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

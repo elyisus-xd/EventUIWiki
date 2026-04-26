@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Data binding en EventUI — variables dinámicas, propiedades de eventos y condiciones visible_if." />
+  <title>Data Binding — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a active" href="instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Guía</span>
+          <span class="pill pill-n">UI dinámica</span>
+          <span class="pill pill-n">variables</span>
+        </div>
+
+        <h1 style="font-size:36px;">Data Binding</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          El sistema de data binding permite que los textos de tu UI muestren valores en tiempo real — progreso de eventos, contadores y variables del servidor — sin necesidad de recargar la pantalla.
+        </p>
+
+        <!-- SINTAXIS -->
+        <h2>Sintaxis</h2>
+
+        <p>Las variables se escriben con <strong>dobles llaves</strong>: <code>&#123;&#123;variable&#125;&#125;</code>. Puedes navegar propiedades anidadas con puntos.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Formato general</div>
+          <pre><code># Variable simple
+content: "Eventos activos: {{in_progress_count}}"
+
+# Variable con propiedad anidada
+content: "Estado: {{event.state}}"
+
+# Múltiples variables en el mismo texto
+content: "Progreso: {{progress.current}} / {{progress.target}}"</code></pre>
+        </div>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            El patrón es <strong>dobles llaves</strong> <code>&#123;&#123; &#125;&#125;</code> — no simples. Si usas una sola llave el binding no se resuelve y el texto se muestra tal cual en pantalla.
+          </div>
+        </div>
+
+        <!-- VARIABLES DE EVENTO -->
+        <h2>Variables de evento — <code>event.*</code></h2>
+
+        <p>Acceden al estado del evento vinculado a la pantalla mediante <code>associated_event_id</code>, o al evento del contexto actual.</p>
+
+        <table>
+          <thead><tr><th>Variable</th><th>Alias</th><th>Valor devuelto</th></tr></thead>
+          <tbody>
+            <tr><td><code>{{event.id}}</code></td><td>—</td><td>ID del evento. Ejemplo: <code>matar-zombies</code></td></tr>
+            <tr><td><code>{{event.displayName}}</code></td><td><code>{{event.display_name}}</code></td><td>Nombre visible del evento.</td></tr>
+            <tr><td><code>{{event.description}}</code></td><td>—</td><td>Descripción del evento.</td></tr>
+            <tr><td><code>{{event.state}}</code></td><td>—</td><td>Estado en mayúsculas: <code>AVAILABLE</code>, <code>IN_PROGRESS</code>, <code>COMPLETED</code>, <code>FAILED</code>, <code>LOCKED</code>.</td></tr>
+            <tr><td><code>{{event.currentProgress}}</code></td><td><code>{{event.current_progress}}</code></td><td>Progreso actual del objetivo activo (número).</td></tr>
+            <tr><td><code>{{event.targetProgress}}</code></td><td><code>{{event.target_progress}}</code></td><td>Objetivo total del objetivo activo (número).</td></tr>
+            <tr><td><code>{{event.currentObjective}}</code></td><td><code>{{event.current_objective}}</code></td><td>Descripción del objetivo actual. Vacío si no hay ninguno activo.</td></tr>
+            <tr><td><code>{{event.progressPercentage}}</code></td><td><code>{{event.progress_percentage}}</code></td><td>Porcentaje ya formateado con símbolo. Ejemplo: <code>75%</code>.</td></tr>
+            <tr><td><code>{{event.repeatable}}</code></td><td>—</td><td><code>true</code> o <code>false</code> según la configuración del evento.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — texto con progreso del evento</div>
+          <pre><code>- id: "texto-progreso"
+  type: TEXT
+  x: 200
+  y: 150
+  width: 380
+  height: 20
+  properties:
+    content: "{{event.currentObjective}}: {{event.currentProgress}} / {{event.targetProgress}}"
+    align: "center"
+    shadow: "true"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — mostrar porcentaje</div>
+          <pre><code>- id: "texto-porcentaje"
+  type: TEXT
+  x: 200
+  y: 170
+  width: 380
+  height: 20
+  properties:
+    content: "Completado: {{event.progressPercentage}}"
+    align: "center"
+    shadow: "true"</code></pre>
+        </div>
+
+        <!-- VARIABLES DE PROGRESO -->
+        <h2>Variables de progreso — <code>progress.*</code></h2>
+
+        <p>Versión simplificada del progreso del evento, disponible cuando la pantalla tiene un <code>associated_event_id</code>.</p>
+
+        <table>
+          <thead><tr><th>Variable</th><th>Valor devuelto</th></tr></thead>
+          <tbody>
+            <tr><td><code>{{progress.current}}</code></td><td>Progreso actual (número entero).</td></tr>
+            <tr><td><code>{{progress.target}}</code></td><td>Objetivo total (número entero).</td></tr>
+            <tr><td><code>{{progress.percentage}}</code></td><td>Porcentaje como número entre 0 y 100 (sin símbolo %). Útil para cálculos.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Usa <code>{{event.progressPercentage}}</code> cuando quieras mostrar el porcentaje con el símbolo <code>%</code> directamente al jugador. Usa <code>{{progress.percentage}}</code> si necesitas el número sin símbolo para mostrarlo de otra forma.
+          </div>
+        </div>
+
+        <!-- VARIABLES GLOBALES -->
+        <h2>Variables globales</h2>
+
+        <p>Disponibles en cualquier pantalla sin necesidad de <code>associated_event_id</code>. Reflejan el estado general de todos los eventos del jugador.</p>
+
+        <table>
+          <thead><tr><th>Variable</th><th>Valor devuelto</th></tr></thead>
+          <tbody>
+            <tr><td><code>{{event_count}}</code></td><td>Número total de eventos cargados.</td></tr>
+            <tr><td><code>{{in_progress_count}}</code></td><td>Número de eventos actualmente en progreso.</td></tr>
+            <tr><td><code>{{available_count}}</code></td><td>Número de eventos disponibles pero no iniciados.</td></tr>
+            <tr><td><code>{{completed_count}}</code></td><td>Número de eventos completados.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — resumen en el menú principal</div>
+          <pre><code>- id: "texto-resumen"
+  type: TEXT
+  x: 200
+  y: 50
+  width: 380
+  height: 20
+  properties:
+    content: "§7Misiones activas: §e{{in_progress_count}} §7| Completadas: §a{{completed_count}}"
+    align: "center"
+    shadow: "true"</code></pre>
+        </div>
+
+        <!-- VARIABLES DE ESTADO -->
+        <h2>Variables de estado del servidor</h2>
+
+        <p>Son variables arbitrarias que el servidor establece por jugador con el comando <code>/eventui setuivar</code>. Se usan principalmente en condiciones <code>visible_if</code>, pero también pueden mostrarse en textos.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Establecer una variable desde el servidor</div>
+          <pre><code># Establecer variable para un jugador específico
+/eventui setuivar Steve zombie_card_unlocked true
+
+# Leer la variable en un texto
+content: "Carta de zombie: {{zombie_card_unlocked}}"</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Las variables de estado son por jugador — cada jugador tiene su propio mapa de variables. Se persisten en <code>playerstate/&lt;uuid&gt;.yml</code> y se restauran al reconectar.
+          </div>
+        </div>
+
+        <!-- VISIBLE_IF -->
+        <h2>Condiciones — <code>visible_if</code></h2>
+
+        <p>La propiedad <code>visible_if</code> usa las variables de estado del servidor para mostrar u ocultar elementos. A diferencia del binding de texto, <strong>no usa llaves</strong> — es solo el nombre de la variable y el operador.</p>
+
+        <table>
+          <thead><tr><th>Sintaxis</th><th>Condición</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>variable == valor</code></td>
+              <td>Visible si la variable es exactamente igual al valor.</td>
+            </tr>
+            <tr>
+              <td><code>variable != valor</code></td>
+              <td>Visible si la variable es distinta del valor.</td>
+            </tr>
+            <tr>
+              <td><code>!variable</code></td>
+              <td>Visible si la variable no existe, es <code>"false"</code> o es <code>"0"</code>.</td>
+            </tr>
+            <tr>
+              <td><code>variable</code></td>
+              <td>Visible si la variable existe y no es <code>"false"</code> ni <code>"0"</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos de visible_if</div>
+          <pre><code># Visible solo si la variable es exactamente "true"
+visible_if: "zombie_card_unlocked == true"
+
+# Visible si la variable NO es "true"
+visible_if: "zombie_card_unlocked != true"
+
+# Visible si la variable no existe o es false/0
+visible_if: "!zombie_card_unlocked"
+
+# Visible si la variable existe y tiene valor positivo
+visible_if: "zombie_card_unlocked"
+
+# Visible si el jugador está en una fase específica
+visible_if: "fase_actual == fase_3"</code></pre>
+        </div>
+
+        <!-- COMPORTAMIENTO CON VARIABLE NO ENCONTRADA -->
+        <h2>Comportamiento cuando una variable no existe</h2>
+
+        <p>Si usas una variable en <code>content</code> que no está definida en el contexto, el texto se muestra sin resolver — aparece tal cual en pantalla con las dobles llaves:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Variable no encontrada</div>
+          <pre><code># Si "puntos" no existe en el contexto:
+content: "Puntos: {{puntos}}"
+
+# El jugador verá en pantalla:
+Puntos: {{puntos}}</code></pre>
+        </div>
+
+        <p>Cuando esto ocurre, el sistema también imprime un warning en los logs del cliente: <code>Variable not found in context: puntos</code>. Úsalo para depurar bindings rotos.</p>
+
+        <!-- EJEMPLO COMPLETO -->
+        <h2>Ejemplo completo</h2>
+
+        <p>Una pantalla de misión que combina todos los tipos de binding:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>uis/pantalla-mision.yml</div>
+          <pre><code>id: "pantalla-mision"
+title: ""
+screen_width: 500
+screen_height: 350
+associated_event_id: "matar-zombies"
+
+screen_properties:
+  pause_game: "false"
+  transition_in: "scale_up"
+  transition_duration: "300"
+
+elements:
+  # Nombre del evento resuelto dinámicamente
+  - id: "titulo-evento"
+    type: TEXT
+    x: 250
+    y: 30
+    width: 480
+    height: 20
+    properties:
+      content: "§6§l{{event.displayName}}"
+      align: "center"
+      shadow: "true"
+
+  # Objetivo actual
+  - id: "objetivo-actual"
+    type: TEXT
+    x: 250
+    y: 60
+    width: 480
+    height: 20
+    properties:
+      content: "§7{{event.currentObjective}}"
+      align: "center"
+      shadow: "true"
+
+  # Progreso numérico
+  - id: "texto-progreso"
+    type: TEXT
+    x: 250
+    y: 90
+    width: 480
+    height: 20
+    properties:
+      content: "§e{{event.currentProgress}} §7/ §e{{event.targetProgress}}"
+      align: "center"
+      shadow: "true"
+
+  # Porcentaje
+  - id: "texto-porcentaje"
+    type: TEXT
+    x: 250
+    y: 115
+    width: 480
+    height: 20
+    properties:
+      content: "§a{{event.progressPercentage}} completado"
+      align: "center"
+      shadow: "true"
+
+  # Resumen global — siempre visible
+  - id: "texto-global"
+    type: TEXT
+    x: 250
+    y: 290
+    width: 480
+    height: 20
+    properties:
+      content: "§8Misiones activas: {{in_progress_count}} | Completadas: {{completed_count}}"
+      align: "center"
+      shadow: "true"
+
+  # Elemento que solo aparece si el jugador desbloqueó contenido extra
+  - id: "bonus-desbloqueado"
+    type: IMAGE
+    x: 400
+    y: 30
+    width: 50
+    height: 50
+    properties:
+      texture: "eventui:textures/ui/widgets/bonus_badge.png"
+      visible_if: "bonus_unlocked == true"</code></pre>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="dependencias.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Dependencias</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="../referencia/comandos.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Comandos →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

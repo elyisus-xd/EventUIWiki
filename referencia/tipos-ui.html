@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Referencia de todos los tipos de elementos UI disponibles en EventUI — propiedades, ejemplos y comportamiento real." />
+  <title>Tipos de UI — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .type-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .type-card-name {
+      font-family: var(--font-m);
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 500;
+    }
+    .type-card-desc {
+      font-size: 11px;
+      color: var(--text-2);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .prop-table { margin: 12px 0 0; }
+    .prop-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .prop-row:last-child { border-bottom: none; }
+    .prop-key {
+      padding: 8px 12px;
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--green);
+      background: var(--bg-3);
+      border-right: 1px solid var(--border);
+    }
+    .prop-val {
+      padding: 8px 12px;
+      color: var(--text-2);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .prop-val code {
+      font-size: 11px;
+    }
+    .req { color: var(--green); font-size: 10px; font-family: var(--font-m); }
+    .opt { color: var(--text-3); font-size: 10px; font-family: var(--font-m); }
+  </style>
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a" href="../guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a active" href="tipos-ui.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Referencia</span>
+          <span class="pill pill-n">11 tipos</span>
+          <span class="pill pill-n">UIElementType</span>
+        </div>
+
+        <h1 style="font-size:36px;">Tipos de UI</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Referencia completa de todos los tipos de elementos disponibles en EventUI. Cada tipo tiene sus propias propiedades y comportamiento dentro del árbol de la pantalla.
+        </p>
+
+        <!-- RESUMEN -->
+        <h2>Resumen</h2>
+
+        <div class="type-grid">
+          <div class="type-card">
+            <div class="type-card-name">IMAGE</div>
+            <div class="type-card-desc">Textura estática. Fondos, títulos, decoración.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">IMAGE_BUTTON</div>
+            <div class="type-card-desc">Botón con textura personalizada, ícono, hover y sonidos.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">BUTTON</div>
+            <div class="type-card-desc">Botón de texto estilo vanilla de Minecraft.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">TEXT</div>
+            <div class="type-card-desc">Texto con colores MiniMessage y data binding.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">PROGRESS_BAR</div>
+            <div class="type-card-desc">Barra de progreso vinculada a un objetivo de evento.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">PANEL</div>
+            <div class="type-card-desc">Contenedor con fondo de color. Agrupa hijos.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">ICON</div>
+            <div class="type-card-desc">Sprite 2D de un ítem de Minecraft. Solo visual.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">TOOLTIP</div>
+            <div class="type-card-desc">Texto flotante al pasar el cursor. Solo como hijo.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">ENTITY_RENDER</div>
+            <div class="type-card-desc">Entidad viva en 3D con rotación y escala.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">ITEM_RENDER</div>
+            <div class="type-card-desc">Modelo 3D de ítem con rotación.</div>
+          </div>
+          <div class="type-card">
+            <div class="type-card-name">BLOCK_RENDER</div>
+            <div class="type-card-desc">Modelo 3D de bloque con rotación.</div>
+          </div>
+        </div>
+
+        <!-- CAMPOS COMUNES -->
+        <h2>Campos comunes</h2>
+
+        <p>Todos los elementos comparten estos campos base independientemente del tipo:</p>
+
+        <table>
+          <thead><tr><th>Campo</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>id</code></td><td>✅ Sí</td><td>—</td><td>Identificador único dentro del archivo de UI.</td></tr>
+            <tr><td><code>type</code></td><td>✅ Sí</td><td>—</td><td>Tipo del elemento en mayúsculas.</td></tr>
+            <tr><td><code>x</code></td><td>✅ Sí</td><td>—</td><td>Posición X. Con <code>anchor</code> actúa como offset.</td></tr>
+            <tr><td><code>y</code></td><td>✅ Sí</td><td>—</td><td>Posición Y. Con <code>anchor</code> actúa como offset.</td></tr>
+            <tr><td><code>width</code></td><td>No</td><td><code>100</code></td><td>Ancho en píxeles de UI.</td></tr>
+            <tr><td><code>height</code></td><td>No</td><td><code>20</code></td><td>Alto en píxeles de UI.</td></tr>
+            <tr><td><code>z_index</code></td><td>No</td><td><code>0</code></td><td>Orden de capas. Mayor valor = encima.</td></tr>
+            <tr><td><code>visible</code></td><td>No</td><td><code>true</code></td><td>Visibilidad estática del elemento.</td></tr>
+            <tr><td><code>properties</code></td><td>Varía</td><td>—</td><td>Propiedades específicas del tipo.</td></tr>
+            <tr><td><code>children</code></td><td>No</td><td>—</td><td>Elementos hijos anidados.</td></tr>
+          </tbody>
+        </table>
+
+        <p>Además, dentro de <code>properties</code> cualquier tipo puede usar:</p>
+
+        <table>
+          <thead><tr><th>Propiedad</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>anchor</code></td><td>Punto de anclaje relativo a la pantalla. Ver <a href="../guias/disenar-uis.html#anclas" style="color:var(--green)">sistema de anclas</a>.</td></tr>
+            <tr><td><code>anchor_offset_x</code></td><td>Desplazamiento X adicional desde el punto de ancla.</td></tr>
+            <tr><td><code>anchor_offset_y</code></td><td>Desplazamiento Y adicional desde el punto de ancla.</td></tr>
+            <tr><td><code>visible_if</code></td><td>Condición de visibilidad basada en variables de estado. Ver <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- IMAGE -->
+        <h2>IMAGE</h2>
+
+        <p>Renderiza una textura de Minecraft o de un resource pack como imagen estática. Es el elemento más básico — ideal para fondos, títulos decorativos y separadores.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "fondo"
+  type: IMAGE
+  x: 0
+  y: 0
+  width: 500
+  height: 350
+  properties:
+    texture: "eventui:textures/ui/fondo.png"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row">
+            <div class="prop-key">texture <span class="req">✅ req</span></div>
+            <div class="prop-val">ResourceLocation de la textura. Formato: <code>namespace:textures/ruta/archivo.png</code></div>
+          </div>
+        </div>
+
+        <div class="callout callout-warn" style="margin-top:16px;">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">Si la textura no existe en el resource pack del cliente, el elemento se renderiza como un rectángulo gris (<code>0x808080</code>). No lanza error en consola del servidor.</div>
+        </div>
+
+        <!-- IMAGE_BUTTON -->
+        <h2>IMAGE_BUTTON</h2>
+
+        <p>El elemento más completo del sistema. Botón con textura personalizada que soporta íconos, animaciones de hover, sonidos, hitbox preciso y texturas dinámicas según el estado del evento vinculado.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo completo</div>
+          <pre><code>- id: "btn-mision"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 64
+  height: 64
+  properties:
+    anchor: "center"
+    anchor_offset_x: -100
+    anchor_offset_y: 0
+
+    # Texturas
+    texture: "eventui:textures/ui/btn.png"
+    hover_texture: "eventui:textures/ui/btn_hover.png"
+    in_progress_texture: "eventui:textures/ui/btn_inprogress.png"
+    completed_texture: "eventui:textures/ui/btn_completed.png"
+
+    # Ícono de ítem
+    icon: "minecraft:diamond"
+    icon_scale: "0.8"
+
+    # Hover
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.15"
+    hover_animation_duration: "200"
+    hover_animation_easing: "ease_out"
+    hover_hitbox: "texture_alpha"
+
+    # Sonidos
+    hover_sound: "minecraft:ui.toast.in"
+    hover_sound_volume: "1.0"
+    hover_sound_pitch: "1.3"
+    click_sound: "minecraft:item.book.page_turn"
+    click_sound_volume: "1.0"
+    click_sound_pitch: "1.0"
+
+    # Visibilidad y acción
+    visible_if: "mision_activa == true"
+    action: "open:misiones-menu"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">texture <span class="req">✅ req</span></div><div class="prop-val">Textura base del botón.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_texture <span class="opt">opt</span></div><div class="prop-val">Textura al pasar el cursor.</div></div>
+          <div class="prop-row"><div class="prop-key">in_progress_texture <span class="opt">opt</span></div><div class="prop-val">Textura cuando el evento vinculado está <code>IN_PROGRESS</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">completed_texture <span class="opt">opt</span></div><div class="prop-val">Textura cuando el evento vinculado está <code>COMPLETED</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">icon <span class="opt">opt</span></div><div class="prop-val">ResourceLocation del ítem renderizado encima de la textura como sprite 2D.</div></div>
+          <div class="prop-row"><div class="prop-key">icon_scale <span class="opt">opt</span></div><div class="prop-val">Escala del ícono. <code>"1"</code> = tamaño normal, <code>"0.7"</code> = 70%. Default: <code>"1"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_animation <span class="opt">opt</span></div><div class="prop-val">Tipo de animación hover. Ver <a href="animaciones.html" style="color:var(--green)">referencia de animaciones</a>.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_animation_intensity <span class="opt">opt</span></div><div class="prop-val">Intensidad de la animación. Significado varía por tipo.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_animation_duration <span class="opt">opt</span></div><div class="prop-val">Duración en ms. Default: <code>"200"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_animation_easing <span class="opt">opt</span></div><div class="prop-val"><code>linear</code>, <code>ease_in</code>, <code>ease_out</code>, <code>ease_in_out</code>. Default: <code>"ease_out"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_hitbox <span class="opt">opt</span></div><div class="prop-val"><code>"box"</code>: rectángulo completo (default). <code>"texture_alpha"</code>: solo píxeles opacos de la textura.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_sound <span class="opt">opt</span></div><div class="prop-val">ResourceLocation del sonido al hacer hover.</div></div>
+          <div class="prop-row"><div class="prop-key">hover_sound_volume <span class="opt">opt</span></div><div class="prop-val">Volumen hover (0.0 – 2.0).</div></div>
+          <div class="prop-row"><div class="prop-key">hover_sound_pitch <span class="opt">opt</span></div><div class="prop-val">Tono hover.</div></div>
+          <div class="prop-row"><div class="prop-key">click_sound <span class="opt">opt</span></div><div class="prop-val">Sonido al hacer clic. Vacío = sonido por defecto del sistema.</div></div>
+          <div class="prop-row"><div class="prop-key">click_sound_volume <span class="opt">opt</span></div><div class="prop-val">Volumen clic.</div></div>
+          <div class="prop-row"><div class="prop-key">click_sound_pitch <span class="opt">opt</span></div><div class="prop-val">Tono clic.</div></div>
+          <div class="prop-row"><div class="prop-key">visible_if <span class="opt">opt</span></div><div class="prop-val">Condición de visibilidad. Ver <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a>.</div></div>
+          <div class="prop-row"><div class="prop-key">action <span class="opt">opt</span></div><div class="prop-val">Acción al hacer clic. Ver tabla de acciones abajo.</div></div>
+        </div>
+
+        <!-- BUTTON -->
+        <h2>BUTTON</h2>
+
+        <p>Botón de texto estilo vanilla de Minecraft. Renderiza el fondo estándar del juego con texto centrado. Ideal para acciones simples como cerrar una pantalla.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "btn-cerrar"
+  type: BUTTON
+  x: 150
+  y: 260
+  width: 100
+  height: 22
+  properties:
+    text: "§7← Cerrar"
+    action: "close"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">text <span class="req">✅ req</span></div><div class="prop-val">Texto del botón. Acepta códigos <code>§</code> para colores.</div></div>
+          <div class="prop-row"><div class="prop-key">action <span class="opt">opt</span></div><div class="prop-val">Acción al hacer clic.</div></div>
+        </div>
+
+        <!-- TEXT -->
+        <h2>TEXT</h2>
+
+        <p>Renderiza texto con soporte para colores, alineación, sombra y data binding dinámico con <code>&#123;&#123;variables&#125;&#125;</code>.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo con data binding</div>
+          <pre><code>- id: "texto-progreso"
+  type: TEXT
+  x: 250
+  y: 80
+  width: 480
+  height: 20
+  properties:
+    content: "§7Progreso: §e{{event.currentProgress}}§7/§e{{event.targetProgress}}"
+    align: "center"
+    shadow: "true"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">content <span class="req">✅ req</span></div><div class="prop-val">Texto a mostrar. Acepta códigos <code>§</code>, MiniMessage y variables <code>&#123;&#123;...&#125;&#125;</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">align <span class="opt">opt</span></div><div class="prop-val"><code>"left"</code> (default), <code>"center"</code>, <code>"right"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">shadow <span class="opt">opt</span></div><div class="prop-val"><code>"true"</code> activa la sombra bajo el texto. Default: <code>"false"</code>.</div></div>
+        </div>
+
+        <!-- PROGRESS_BAR -->
+        <h2>PROGRESS_BAR</h2>
+
+        <p>Barra de progreso que lee automáticamente el avance de un objetivo específico de un evento.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "barra-zombies"
+  type: PROGRESS_BAR
+  x: 68
+  y: 190
+  width: 128
+  height: 8
+  properties:
+    event_id: "matar-zombies"
+    objective_id: "kill-zombies"
+    color: "5cb85c"
+    background_color: "2a2a2a"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">event_id <span class="req">✅ req</span></div><div class="prop-val">ID del evento del que tomar el progreso.</div></div>
+          <div class="prop-row"><div class="prop-key">objective_id <span class="req">✅ req</span></div><div class="prop-val">ID del objetivo específico dentro del evento.</div></div>
+          <div class="prop-row"><div class="prop-key">color <span class="opt">opt</span></div><div class="prop-val">Color del relleno en hexadecimal sin <code>#</code>. Default: verde.</div></div>
+          <div class="prop-row"><div class="prop-key">background_color <span class="opt">opt</span></div><div class="prop-val">Color del fondo en hexadecimal sin <code>#</code>. Default: gris oscuro.</div></div>
+        </div>
+
+        <!-- PANEL -->
+        <h2>PANEL</h2>
+
+        <p>Contenedor con fondo de color sólido. Funciona como un grupo visual — sus hijos se renderizan con posición relativa al panel. Útil para agrupar elementos con un fondo común.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "panel-info"
+  type: PANEL
+  x: 50
+  y: 100
+  width: 200
+  height: 80
+  properties:
+    color: "1a1a1a"
+    alpha: "180"
+  children:
+    - id: "texto-panel"
+      type: TEXT
+      x: 10
+      y: 10
+      width: 180
+      height: 20
+      properties:
+        content: "§eInformación"
+        shadow: "true"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">color <span class="opt">opt</span></div><div class="prop-val">Color de fondo en hexadecimal sin <code>#</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">alpha <span class="opt">opt</span></div><div class="prop-val">Opacidad del fondo (0–255). Default: <code>"255"</code> (opaco).</div></div>
+        </div>
+
+        <!-- ICON -->
+        <h2>ICON</h2>
+
+        <p>Renderiza el sprite 2D de un ítem de Minecraft — el mismo icono que ves en el inventario. A diferencia de <code>IMAGE_BUTTON</code>, no tiene hover, clic ni animaciones. Es puramente decorativo.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "icono-diamante"
+  type: ICON
+  x: 100
+  y: 50
+  width: 16
+  height: 16
+  properties:
+    item: "minecraft:diamond"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">item <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del ítem a mostrar. Solo ítems de Minecraft vanilla.</div></div>
+        </div>
+
+        <!-- TOOLTIP -->
+        <h2>TOOLTIP</h2>
+
+        <p>Muestra información al pasar el cursor sobre el elemento padre. <strong>Solo funciona como hijo</strong> (<code>children</code>) de otro elemento — no puede usarse como elemento raíz de la pantalla.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>render_type: "standard" — fondo vanilla</div>
+          <pre><code>children:
+  - id: "tooltip-info"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "standard"
+      content: "§eNombre del objeto\n§7Descripción aquí"
+      shadow: "true"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>render_type: "text" — texto flotante sin fondo</div>
+          <pre><code>children:
+  - id: "tooltip-texto"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "text"
+      content: "Texto flotante sin fondo"
+      shadow: "true"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>render_type: "advanced" — receta de crafting</div>
+          <pre><code>children:
+  - id: "tooltip-receta"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "advanced"
+      content: |
+        recipe: minecraft:diamond_chestplate [frame:eventui:textures/ui/crafting_frame.png]</code></pre>
+        </div>
+
+        <table>
+          <thead><tr><th>render_type</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>standard</code></td><td>Fondo estilo vanilla de Minecraft. Soporta <code>\n</code> y códigos <code>§</code>. Soporta también alineación con <code>offset_x</code> y <code>offset_y</code>.</td></tr>
+            <tr><td><code>text</code></td><td>Texto flotante sin fondo. Soporta <code>shadow</code>, alineación (<code>left</code>, <code>center</code>, <code>right</code>) y saltos de línea con <code>\n</code>, <code>&lt;br&gt;</code> o <code>&lt;newline&gt;</code>.</td></tr>
+            <tr><td><code>advanced</code></td><td>Tooltip enriquecido con secciones: <code>TEXT</code>, <code>ITEM</code>, <code>RECIPE</code>, <code>ENTITY</code>, <code>IMAGE</code>, <code>SEPARATOR</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ENTITY_RENDER -->
+        <h2>ENTITY_RENDER</h2>
+
+        <p>Renderiza una entidad viva en 3D dentro de la UI con animaciones y rotación. Compatible con entidades de Minecraft y de mods. Las entidades se cachean en memoria para mejor rendimiento.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "render-zombie"
+  type: ENTITY_RENDER
+  x: 100
+  y: 100
+  width: 50
+  height: 50
+  properties:
+    entity: "minecraft:zombie"
+    scale: "35"
+    rotation_mode: "spin"
+    spin_speed: "0.5"
+    y_offset: "0"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">entity <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation de la entidad. Ejemplo: <code>minecraft:zombie</code>, <code>modid:entidad</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Tamaño del render. Mayor = más grande. Default: <code>"30"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">rotation_mode <span class="opt">opt</span></div><div class="prop-val"><code>"spin"</code>: rotación continua. <code>"fixed"</code>: sin rotación. <code>"follow_mouse"</code>: mira al cursor.</div></div>
+          <div class="prop-row"><div class="prop-key">spin_speed <span class="opt">opt</span></div><div class="prop-val">Velocidad de rotación en modo <code>spin</code>. Default: <code>"0.5"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">y_offset <span class="opt">opt</span></div><div class="prop-val">Desplazamiento vertical del modelo. Default: <code>"0"</code>.</div></div>
+        </div>
+
+        <!-- ITEM_RENDER -->
+        <h2>ITEM_RENDER</h2>
+
+        <p>Renderiza un ítem de Minecraft como modelo 3D completo — muestra el modelo con iluminación, a diferencia de <code>ICON</code> que muestra el sprite 2D plano.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "render-espada"
+  type: ITEM_RENDER
+  x: 120
+  y: 80
+  width: 32
+  height: 32
+  properties:
+    item: "minecraft:diamond_sword"
+    scale: "2.0"
+    rotation_x: "20"
+    rotation_y: "45"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">item <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del ítem. Solo ítems de Minecraft vanilla.</div></div>
+          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Escala del modelo. Default: <code>"1.0"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">rotation_x <span class="opt">opt</span></div><div class="prop-val">Rotación en eje X en grados.</div></div>
+          <div class="prop-row"><div class="prop-key">rotation_y <span class="opt">opt</span></div><div class="prop-val">Rotación en eje Y en grados.</div></div>
+        </div>
+
+        <!-- BLOCK_RENDER -->
+        <h2>BLOCK_RENDER</h2>
+
+        <p>Renderiza un bloque de Minecraft como modelo 3D isométrico.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "render-diamante"
+  type: BLOCK_RENDER
+  x: 150
+  y: 100
+  width: 48
+  height: 48
+  properties:
+    block: "minecraft:diamond_block"
+    scale: "1.5"
+    rotation_y: "30"</code></pre>
+        </div>
+
+        <div class="prop-table">
+          <div class="prop-row"><div class="prop-key">block <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del bloque. Solo bloques de Minecraft vanilla.</div></div>
+          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Escala del modelo. Default: <code>"1.0"</code>.</div></div>
+          <div class="prop-row"><div class="prop-key">rotation_y <span class="opt">opt</span></div><div class="prop-val">Rotación en eje Y en grados.</div></div>
+        </div>
+
+        <!-- ACCIONES -->
+        <h2>Acciones de botones</h2>
+
+        <p>Los elementos <code>BUTTON</code> e <code>IMAGE_BUTTON</code> ejecutan una acción al hacer clic:</p>
+
+        <table>
+          <thead><tr><th>Acción</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>open:&lt;id&gt;</code></td><td>Abre otra pantalla por su id. Agrega la actual a la pila de navegación.</td></tr>
+            <tr><td><code>close</code></td><td>Cierra la pantalla actual.</td></tr>
+            <tr><td><code>back</code></td><td>Vuelve a la pantalla anterior en la pila de navegación.</td></tr>
+            <tr><td><code>start_event:&lt;id&gt;</code></td><td>Inicia el evento indicado en el servidor.</td></tr>
+            <tr><td><code>abandon_event:&lt;id&gt;</code></td><td>Abandona el evento. Pide confirmación si no es repetible.</td></tr>
+            <tr><td><code>none</code> o vacío</td><td>Sin acción — el botón es decorativo.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Las acciones <code>start_event</code> y <code>abandon_event</code> se envían al servidor vía el bridge. El cliente no modifica el progreso directamente — espera la respuesta del servidor.
+          </div>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="config.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← config.yml</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="animaciones.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Animaciones hover →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

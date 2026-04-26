@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Referencia completa de animaciones hover en EventUI — 12 tipos con sus parámetros, comportamiento real y ejemplos." />
+  <title>Animaciones hover — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .anim-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .anim-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+    }
+    .anim-card-name {
+      font-family: var(--font-m);
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .anim-card-type {
+      font-size: 10px;
+      font-family: var(--font-m);
+      color: var(--text-3);
+      margin-bottom: 6px;
+    }
+    .anim-card-desc {
+      font-size: 11px;
+      color: var(--text-2);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .intensity-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-3);
+    }
+    .intensity-row code { font-size: 10px; }
+  </style>
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a" href="../guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a active" href="animaciones.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Referencia</span>
+          <span class="pill pill-n">12 tipos</span>
+          <span class="pill pill-n">IMAGE_BUTTON</span>
+        </div>
+
+        <h1 style="font-size:36px;">Animaciones hover</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Las animaciones hover se aplican a elementos <code>IMAGE_BUTTON</code> cuando el cursor pasa sobre ellos. Cada tipo tiene su propio comportamiento y parámetro de intensidad.
+        </p>
+
+        <!-- CÓMO SE USAN -->
+        <h2>Cómo se usan</h2>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Propiedades de animación en IMAGE_BUTTON</div>
+          <pre><code>- id: "mi-boton"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 64
+  height: 64
+  properties:
+    texture: "eventui:textures/ui/btn.png"
+    hover_animation: "zoom_in"              # tipo de animación
+    hover_animation_intensity: "1.15"       # intensidad (varía por tipo)
+    hover_animation_duration: "200"         # duración en ms (default: 200)
+    hover_animation_easing: "ease_out"      # curva de aceleración
+    action: "open:mi-pantalla"</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Solo se aplica <strong>una animación de transformación</strong> por elemento a la vez. Si defines múltiples en una lista separada por comas, el sistema usa la primera que no sea <code>glow</code>. El <code>glow</code> puede combinarse con cualquier otra porque se renderiza en una capa separada.
+          </div>
+        </div>
+
+        <!-- EASING -->
+        <h2>Curvas de aceleración — easing</h2>
+
+        <p>Controlan cómo progresa la animación en el tiempo:</p>
+
+        <table>
+          <thead><tr><th>Valor</th><th>Comportamiento</th></tr></thead>
+          <tbody>
+            <tr><td><code>linear</code></td><td>Velocidad constante de inicio a fin.</td></tr>
+            <tr><td><code>ease_in</code></td><td>Empieza lento, termina rápido.</td></tr>
+            <tr><td><code>ease_out</code></td><td>Empieza rápido, termina lento. <strong>Default.</strong></td></tr>
+            <tr><td><code>ease_in_out</code></td><td>Lento al inicio y al final, rápido en el medio.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- RESUMEN -->
+        <h2>Tipos disponibles</h2>
+
+        <div class="anim-grid">
+          <div class="anim-card">
+            <div class="anim-card-name">zoom_in</div>
+            <div class="anim-card-type">Transformación de escala</div>
+            <div class="anim-card-desc">Crece desde su tamaño original hasta el factor de escala indicado.</div>
+            <div class="intensity-row">Intensity: factor de escala → <code>"1.15"</code> = crece un 15%</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">zoom_out</div>
+            <div class="anim-card-type">Transformación de escala</div>
+            <div class="anim-card-desc">Encoge desde su tamaño original. Inverso de zoom_in.</div>
+            <div class="intensity-row">Intensity: factor de encogimiento → <code>"0.85"</code> = encoge 15%</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">shake</div>
+            <div class="anim-card-type">Traslación horizontal</div>
+            <div class="anim-card-desc">Vibración horizontal que se amortigua al final. Efecto de "temblor".</div>
+            <div class="intensity-row">Intensity: amplitud en píxeles → <code>"3.0"</code> = 3px de vibración</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">bounce</div>
+            <div class="anim-card-type">Traslación vertical</div>
+            <div class="anim-card-desc">Salta hacia arriba con un arco sinusoidal y vuelve a su posición.</div>
+            <div class="intensity-row">Intensity: altura del salto → <code>"1.5"</code> = salto moderado</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">rotate</div>
+            <div class="anim-card-type">Rotación 2D</div>
+            <div class="anim-card-desc">Gira el elemento desde 0° hasta el ángulo máximo en el eje Z.</div>
+            <div class="intensity-row">Intensity: ángulo máximo en grados → <code>"15"</code> = 15°</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">swing</div>
+            <div class="anim-card-type">Rotación oscilatoria</div>
+            <div class="anim-card-desc">Oscila de lado a lado continuamente mientras el cursor está encima.</div>
+            <div class="intensity-row">Intensity: amplitud de oscilación → <code>"1.0"</code> = ±15° de base</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">float</div>
+            <div class="anim-card-type">Traslación vertical continua</div>
+            <div class="anim-card-desc">Flotación suave arriba y abajo mientras el cursor está encima.</div>
+            <div class="intensity-row">Intensity: amplitud de flotación → <code>"1.0"</code> = ±5px</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">wave</div>
+            <div class="anim-card-type">Traslación diagonal continua</div>
+            <div class="anim-card-desc">Movimiento ondulante en X e Y simultáneamente con frecuencias distintas.</div>
+            <div class="intensity-row">Intensity: amplitud de la onda → <code>"1.0"</code> = ±3px en X e Y</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">heartbeat</div>
+            <div class="anim-card-type">Escala pulsante</div>
+            <div class="anim-card-desc">Pulso de escala continuo que simula un latido. También acepta el alias <code>pulse</code>.</div>
+            <div class="intensity-row">Intensity: amplitud del pulso → <code>"1.0"</code> = latido sutil (×1.1 máx)</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">jelly</div>
+            <div class="anim-card-type">Deformación elástica</div>
+            <div class="anim-card-desc">Deforma el elemento comprimiendo un eje mientras expande el otro, efecto gelatinoso.</div>
+            <div class="intensity-row">Intensity: amplitud de deformación → <code>"1.0"</code> = deformación moderada</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">spin_3d</div>
+            <div class="anim-card-type">Rotación 3D continua</div>
+            <div class="anim-card-desc">Gira el elemento en el eje Y (como una tarjeta dando vueltas) mientras el cursor está encima.</div>
+            <div class="intensity-row">Intensity: velocidad de giro → <code>"1.0"</code> = velocidad base</div>
+          </div>
+          <div class="anim-card">
+            <div class="anim-card-name">glow</div>
+            <div class="anim-card-type">Efecto de brillo</div>
+            <div class="anim-card-desc">Halo dorado alrededor del elemento. Se combina con cualquier otra animación.</div>
+            <div class="intensity-row">Sin parámetro de intensidad. El brillo máximo es fijo (alpha 40%).</div>
+          </div>
+        </div>
+
+        <!-- DETALLES POR TIPO -->
+        <h2>Detalles por tipo</h2>
+
+        <h3>zoom_in y zoom_out</h3>
+        <p>Ambas usan la misma lógica de escala. La diferencia es que <code>zoom_out</code> usa el complemento de la intensidad (<code>2.0 - intensity</code>) para encoger en lugar de crecer.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+          <pre><code># Crece un 5% — efecto muy sutil, ideal para botones pequeños
+hover_animation: "zoom_in"
+hover_animation_intensity: "1.05"
+
+# Crece un 15% — efecto notorio
+hover_animation: "zoom_in"
+hover_animation_intensity: "1.15"
+
+# Crece un 20% — efecto pronunciado
+hover_animation: "zoom_in"
+hover_animation_intensity: "1.20"</code></pre>
+        </div>
+
+        <h3>shake</h3>
+        <p>La vibración es horizontal y se amortigua progresivamente — empieza fuerte y termina en reposo. El patrón sigue una función <code>sin(progress × π × 6) × intensity × (1 - progress)</code>.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+          <pre><code># Vibración ligera (2px)
+hover_animation: "shake"
+hover_animation_intensity: "2.0"
+
+# Vibración fuerte (5px) — útil para botones de peligro o alerta
+hover_animation: "shake"
+hover_animation_intensity: "5.0"</code></pre>
+        </div>
+
+        <h3>bounce</h3>
+        <p>El salto sigue un arco sinusoidal (<code>|sin(progress × π)| × intensity × 3</code>). El elemento sube y vuelve exactamente a su posición original.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+          <pre><code># Rebote suave
+hover_animation: "bounce"
+hover_animation_intensity: "1.5"
+
+# Rebote alto
+hover_animation: "bounce"
+hover_animation_intensity: "3.0"</code></pre>
+        </div>
+
+        <h3>rotate</h3>
+        <p>Gira el elemento desde 0° hasta el ángulo indicado. La rotación es permanente mientras el cursor está encima — no oscila de vuelta.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code># Rotación de 15° — efecto inclinado
+hover_animation: "rotate"
+hover_animation_intensity: "15"
+
+# Rotación de 360° — vuelta completa lenta
+hover_animation: "rotate"
+hover_animation_intensity: "360"
+hover_animation_duration: "800"</code></pre>
+        </div>
+
+        <h3>swing</h3>
+        <p>Oscilación continua mientras el cursor está encima. A diferencia de <code>rotate</code>, <strong>no para</strong> — el elemento sigue oscilando mientras el hover esté activo. La fórmula usa el tiempo del sistema (<code>sin(time × 0.003) × intensity × 15°</code>).</p>
+
+        <h3>float</h3>
+        <p>Flotación vertical continua y suave mientras el cursor está encima. Basada en el tiempo del sistema (<code>sin(time × 0.002) × intensity × 5px</code>). Ideal para logotipos o elementos decorativos que quieras que "respiren".</p>
+
+        <h3>wave</h3>
+        <p>Movimiento ondulante en ambos ejes simultáneamente con frecuencias levemente distintas en X e Y, lo que genera una trayectoria orgánica no repetitiva a corto plazo.</p>
+
+        <h3>heartbeat / pulse</h3>
+        <p>Ambos nombres apuntan al mismo tipo. Pulso de escala continuo basado en el valor absoluto de un seno (<code>|sin(time × 0.004)| × intensity × 0.1</code>). La escala máxima real es <code>1.0 + intensity × 0.1</code>.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code># Pulso muy sutil — como un corazón latiendo
+hover_animation: "heartbeat"
+hover_animation_intensity: "1.0"   # escala máx ≈ 1.10
+
+# Pulso pronunciado
+hover_animation: "heartbeat"
+hover_animation_intensity: "3.0"   # escala máx ≈ 1.30</code></pre>
+        </div>
+
+        <h3>jelly</h3>
+        <p>Deformación elástica que comprime el eje X mientras expande el Y y viceversa, creando el efecto de una gelatina. Usa la misma frecuencia en ambos ejes pero signos opuestos. La deformación máxima real es <code>intensity × 0.1</code>.</p>
+
+        <h3>spin_3d</h3>
+        <p>Gira el elemento en el eje Y (como una tarjeta dando vuelta) usando una transformación 3D (<code>Axis.YP.rotationDegrees</code>). La velocidad depende del tiempo y la intensidad (<code>time × intensity × 0.1 mod 360°</code>). Mientras mayor la intensidad, más rápido gira.</p>
+
+        <h3>glow</h3>
+        <p>El único tipo que no modifica la transformación del elemento — en su lugar renderiza un halo dorado (<code>#FFD700</code>) de 3px alrededor. El brillo aparece y desaparece gradualmente con un fade de 0.05 por frame. Se puede combinar con cualquier otro tipo:</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Combinando glow con zoom_in</div>
+          <pre><code># Separados por coma — zoom_in se aplica, glow se renderiza encima
+hover_animation: "zoom_in,glow"
+hover_animation_intensity: "1.1"</code></pre>
+        </div>
+
+        <!-- TABLA RESUMEN -->
+        <h2>Tabla de referencia rápida</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Alias</th>
+              <th>Continuo</th>
+              <th>Intensidad</th>
+              <th>Default recomendado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>zoom_in</code></td><td>—</td><td>No</td><td>Factor de escala</td><td><code>"1.15"</code></td></tr>
+            <tr><td><code>zoom_out</code></td><td>—</td><td>No</td><td>Factor de encogimiento</td><td><code>"0.85"</code></td></tr>
+            <tr><td><code>shake</code></td><td>—</td><td>No</td><td>Amplitud en px</td><td><code>"3.0"</code></td></tr>
+            <tr><td><code>bounce</code></td><td>—</td><td>No</td><td>Altura del salto</td><td><code>"1.5"</code></td></tr>
+            <tr><td><code>rotate</code></td><td>—</td><td>No</td><td>Ángulo máximo en °</td><td><code>"15"</code></td></tr>
+            <tr><td><code>swing</code></td><td>—</td><td>✅ Sí</td><td>Amplitud de oscilación</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>float</code></td><td>—</td><td>✅ Sí</td><td>Amplitud vertical en px</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>wave</code></td><td>—</td><td>✅ Sí</td><td>Amplitud de la onda</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>heartbeat</code></td><td><code>pulse</code></td><td>✅ Sí</td><td>Amplitud del pulso</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>jelly</code></td><td>—</td><td>✅ Sí</td><td>Amplitud de deformación</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>spin_3d</code></td><td>—</td><td>✅ Sí</td><td>Velocidad de giro</td><td><code>"1.0"</code></td></tr>
+            <tr><td><code>glow</code></td><td>—</td><td>✅ Sí</td><td>Sin parámetro</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>Continuo</strong> significa que la animación no para mientras el cursor esté sobre el elemento — sigue ejecutándose indefinidamente. Las no continuas se ejecutan una vez por entrada del cursor y quedan en el estado final hasta que el cursor sale.
+          </div>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="tipos-ui.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Tipos de UI</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="../desarrollo/api-bridge.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">API Bridge →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

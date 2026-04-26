@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Referencia completa de comandos de EventUI — /ev con ejemplos y permisos." />
+  <title>Comandos — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a" href="../guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a active" href="comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">/ev</span>
+          <span class="pill pill-n">16 subcomandos</span>
+          <span class="pill pill-n">Tab-completion</span>
+        </div>
+
+        <h1 style="font-size:36px;">Comandos</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Referencia completa del sistema de comandos de EventUI. Usa <code>/ev</code> o <code>/eventui</code> indistintamente — son alias del mismo comando.
+        </p>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>Autocompletado disponible.</strong> Escribe <code>/ev</code> y presiona TAB para ver sugerencias de subcomandos, IDs de eventos, IDs de UIs y más.
+          </div>
+        </div>
+
+        <!-- RESUMEN -->
+        <h2>Descripción general</h2>
+
+        <table>
+          <thead><tr><th>Categoría</th><th>Comandos</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Jugador</strong></td><td>6</td><td>Interactuar con eventos: listar, iniciar, ver progreso, abrir UI</td></tr>
+            <tr><td><strong>Testing</strong></td><td>6</td><td>Herramientas de desarrollo: completar, resetear, debug, setprogress</td></tr>
+            <tr><td><strong>UI State</strong></td><td>4</td><td>Gestión de variables de interfaz para data binding dinámico</td></tr>
+          </tbody>
+        </table>
+
+        <!-- JUGADOR -->
+        <h2>Comandos para jugadores</h2>
+
+        <h3>list</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev list <span class="badge badge-gray">Sin parámetros</span></div>
+          <p>Muestra todos los eventos cargados en el servidor con su ID y nombre visible.</p>
+        </div>
+
+        <h3>info</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev info &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Muestra detalles completos de un evento: nombre, descripción y lista de objetivos.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev info matar-zombies</code></pre>
+          </div>
+        </div>
+
+        <h3>progress</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev progress &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Muestra tu progreso actual en un evento específico: estado, objetivos completados y cantidad acumulada.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev progress matar-zombies</code></pre>
+          </div>
+        </div>
+
+        <h3>start</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev start &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Inicia un evento manualmente. Valida dependencias automáticamente. Si el evento ya está completado y es repetible, lo reinicia.</p>
+          <div class="callout callout-info" style="margin-top:4px;">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <div class="callout-text">Si <code>always_active: true</code> está activado, los eventos se inician automáticamente y este comando es opcional.</div>
+          </div>
+        </div>
+
+        <h3>open</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev open &lt;ui_id&gt; <span class="badge badge-yellow">Opcional</span></div>
+          <p>Abre una pantalla UI personalizada en el cliente del jugador que ejecuta el comando. Si no se especifica ID, muestra las UIs disponibles.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev open main-menu</code></pre>
+          </div>
+        </div>
+
+        <h3>reload</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev reload <span class="badge badge-red">Admin</span></div>
+          <p>Recarga todos los eventos desde <code>events/</code> y todas las UIs desde <code>uis/</code>. Notifica a los clientes conectados del cambio. No reinicia el servidor.</p>
+          <p><strong>Permiso requerido:</strong> <code>eventui.admin</code></p>
+        </div>
+
+        <!-- TESTING -->
+        <h2>Comandos de testing</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">Estos comandos son para desarrollo y testing. Permiten simular estados de eventos sin completarlos naturalmente.</div>
+        </div>
+
+        <h3>complete</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev complete &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Marca un evento como completado al instante y entrega sus recompensas.</p>
+        </div>
+
+        <h3>fail</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev fail &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Marca un evento como fallido (estado <code>FAILED</code>).</p>
+        </div>
+
+        <h3>reset</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev reset &lt;id | all&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Elimina el progreso de un evento específico o de todos los eventos a la vez.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplos</div>
+            <pre><code>/ev reset matar-zombies
+/ev reset all</code></pre>
+          </div>
+        </div>
+
+        <h3>debug</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev debug &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Muestra información detallada de un evento: estado actual, progreso exacto por objetivo y timestamp de inicio.</p>
+        </div>
+
+        <h3>setprogress</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev setprogress &lt;event&gt; &lt;objective&gt; &lt;amount&gt; <span class="badge badge-green">Obligatorios</span></div>
+          <p>Modifica manualmente el progreso de un objetivo específico dentro de un evento.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev setprogress matar-zombies kill-zombies 20</code></pre>
+          </div>
+        </div>
+
+        <h3>reloadevent</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev reloadevent &lt;id&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Recarga un evento específico desde su archivo YAML sin recargar todos los eventos del servidor.</p>
+        </div>
+
+        <!-- UI STATE -->
+        <h2>Gestión de UI State</h2>
+
+        <p>Estos comandos gestionan variables dinámicas por jugador que pueden usarse en las UIs mediante <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a> y condiciones <code>visible_if</code>.</p>
+
+        <h3>setuivar</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev setuivar &lt;jugador&gt; &lt;key&gt; &lt;valor&gt; <span class="badge badge-green">Obligatorios</span></div>
+          <p>Establece una variable de UI para un jugador. Acepta selectores de Minecraft.</p>
+          <table>
+            <thead><tr><th>Parámetro</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+            <tbody>
+              <tr><td><code>&lt;jugador&gt;</code></td><td>Nombre o selector</td><td><code>Steve</code>, <code>@a</code>, <code>@p</code></td></tr>
+              <tr><td><code>&lt;key&gt;</code></td><td>Nombre de la variable</td><td><code>zombie_card_unlocked</code></td></tr>
+              <tr><td><code>&lt;valor&gt;</code></td><td>Valor a asignar</td><td><code>true</code>, <code>100</code></td></tr>
+            </tbody>
+          </table>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev setuivar Steve zombie_card_unlocked true
+/ev setuivar @a coins 500</code></pre>
+          </div>
+        </div>
+
+        <h3>getuivar</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev getuivar &lt;jugador&gt; &lt;key&gt; <span class="badge badge-green">Obligatorios</span></div>
+          <p>Obtiene el valor actual de una variable de UI. Muestra <code>null</code> si la variable no existe.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Salida</div>
+            <pre><code>[Steve] zombie_card_unlocked = true</code></pre>
+          </div>
+        </div>
+
+        <h3>clearuivars</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev clearuivars &lt;jugador&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Elimina todas las variables de UI de un jugador o grupo de jugadores.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>/ev clearuivars @p</code></pre>
+          </div>
+        </div>
+
+        <h3>dumpuivars</h3>
+        <div class="cmd-block">
+          <div class="cmd-sig">/ev dumpuivars &lt;jugador&gt; <span class="badge badge-green">Obligatorio</span></div>
+          <p>Muestra todas las variables de UI definidas para un jugador, útil para depurar el estado de la UI.</p>
+        </div>
+
+        <!-- PERMISOS -->
+        <h2>Permisos</h2>
+
+        <table>
+          <thead><tr><th>Permiso</th><th>Comandos</th><th>Otorgado a</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>eventui.admin</code></td>
+              <td><code>reload</code>, <code>complete</code>, <code>fail</code>, <code>reset</code>, <code>debug</code>, <code>setprogress</code>, <code>setuivar</code>, <code>getuivar</code>, <code>clearuivars</code>, <code>dumpuivars</code></td>
+              <td>Operadores / Admins</td>
+            </tr>
+            <tr>
+              <td>Sin permiso</td>
+              <td><code>list</code>, <code>info</code>, <code>progress</code>, <code>start</code>, <code>open</code></td>
+              <td>Todos los jugadores</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- AUTOCOMPLETADO -->
+        <h2>Autocompletado (TAB)</h2>
+
+        <p>El sistema de tab-completion es contextual — las sugerencias cambian según el subcomando:</p>
+
+        <table>
+          <thead><tr><th>Posición</th><th>Subcomando</th><th>Sugerencias</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Cualquiera</td><td>Todos los subcomandos disponibles</td></tr>
+            <tr><td>2</td><td><code>info</code>, <code>start</code>, <code>complete</code>, <code>fail</code>, <code>reset</code>, <code>debug</code></td><td>IDs de eventos cargados</td></tr>
+            <tr><td>2</td><td><code>open</code></td><td>IDs de UIs disponibles</td></tr>
+            <tr><td>2</td><td><code>setprogress</code></td><td>Eventos en progreso del jugador</td></tr>
+            <tr><td>2</td><td><code>setuivar</code>, <code>getuivar</code>, <code>clearuivars</code>, <code>dumpuivars</code></td><td>Selectores (<code>@a</code>, <code>@p</code>) y nombres de jugadores</td></tr>
+            <tr><td>3</td><td><code>setprogress</code></td><td>IDs de objetivos del evento seleccionado</td></tr>
+          </tbody>
+        </table>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="../guias/data-binding.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Data Binding</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="config.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">config.yml →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

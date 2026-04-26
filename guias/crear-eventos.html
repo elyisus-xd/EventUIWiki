@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cómo crear eventos en EventUI — formato YAML completo con todos los campos, objetivos y recompensas." />
+  <title>Crear eventos — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a active" href="instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0" aria-label="Buscar">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Buscar...
+        <span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- ── MAIN ── -->
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Guía</span>
+          <span class="pill pill-n">YAML</span>
+          <span class="pill pill-n">events/</span>
+        </div>
+
+        <h1 style="font-size:36px;">Crear eventos</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Los eventos se definen como archivos <code>.yml</code> dentro de la carpeta <code>plugins/EventUI/events/</code>. Cada archivo puede contener un evento con sus objetivos, recompensas y metadatos.
+        </p>
+
+        <!-- ESTRUCTURA BÁSICA -->
+        <h2>Estructura de un evento</h2>
+
+        <p>Este es un evento completo con todos los campos disponibles. Los marcados como <strong>obligatorios</strong> deben estar siempre presentes.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>events/mi-evento.yml — estructura completa</div>
+          <pre><code># ── CAMPOS OBLIGATORIOS ──────────────────────────────────────
+id: "mi-evento"               # Identificador único del evento
+display_name: "Mi Evento"     # Nombre visible en la UI
+description: "Descripción."   # Descripción del evento
+
+# ── METADATOS (opcionales) ────────────────────────────────────
+metadata:
+  icon: "minecraft:diamond"   # Ítem usado como ícono en la UI
+  difficulty: "medium"        # easy | medium | hard (solo visual)
+  category: "combate"         # Categoría libre (solo visual)
+  repeatable: "false"         # "true" = se puede repetir al completar
+
+# ── COMPORTAMIENTO ────────────────────────────────────────────
+always_active: true           # true = se inicia automáticamente
+                              # false = requiere /eventui start
+                              # Si no se define, usa el valor global de config.yml
+
+# ── DEPENDENCIAS (opcionales) ─────────────────────────────────
+dependencies:
+  - "evento-anterior"         # IDs de eventos que deben completarse antes
+
+# ── OBJETIVOS (al menos uno) ──────────────────────────────────
+objectives:
+  - id: "obj-1"
+    type: KILL_ENTITY
+    description: "Mata zombies"
+    target_amount: 10
+    parameters:
+      entity_type: "minecraft:zombie"
+
+# ── RECOMPENSAS (opcionales) ──────────────────────────────────
+rewards:
+  xp: 500
+  items:
+    - "minecraft:diamond 3"
+    - "minecraft:cooked_beef 16"</code></pre>
+        </div>
+
+        <!-- CAMPOS RAÍZ -->
+        <h2>Campos raíz</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Obligatorio</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Identificador único. Solo letras, números y guiones. Debe ser único entre todos los eventos.</td>
+            </tr>
+            <tr>
+              <td><code>display_name</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Nombre visible en la UI y en mensajes del chat. Acepta <code>§</code> para colores.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Descripción mostrada en la pantalla de detalle del evento.</td>
+            </tr>
+            <tr>
+              <td><code>objectives</code></td>
+              <td>Lista</td>
+              <td>✅ Sí</td>
+              <td>Lista de objetivos que el jugador debe completar. Al menos uno requerido.</td>
+            </tr>
+            <tr>
+              <td><code>metadata</code></td>
+              <td>Mapa</td>
+              <td>No</td>
+              <td>Datos adicionales del evento: ícono, dificultad, categoría, repeatable.</td>
+            </tr>
+            <tr>
+              <td><code>always_active</code></td>
+              <td>Boolean</td>
+              <td>No</td>
+              <td>Si es <code>true</code>, el evento se inicia automáticamente. Si no se define, usa el valor global de <code>config.yml</code>.</td>
+            </tr>
+            <tr>
+              <td><code>dependencies</code></td>
+              <td>Lista de IDs</td>
+              <td>No</td>
+              <td>Eventos que deben estar completados antes de que este esté disponible.</td>
+            </tr>
+            <tr>
+              <td><code>rewards</code></td>
+              <td>Mapa</td>
+              <td>No</td>
+              <td>Recompensas entregadas al completar el evento: XP e ítems.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- METADATA -->
+        <h2>Campos de metadata</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Ejemplo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>icon</code></td>
+              <td><code>minecraft:diamond</code></td>
+              <td>ResourceLocation del ítem usado como ícono en la UI. Si no se define, usa <code>minecraft:paper</code>.</td>
+            </tr>
+            <tr>
+              <td><code>difficulty</code></td>
+              <td><code>easy</code></td>
+              <td>Valor libre — solo visual. Sugeridos: <code>easy</code>, <code>medium</code>, <code>hard</code>, <code>expert</code>.</td>
+            </tr>
+            <tr>
+              <td><code>category</code></td>
+              <td><code>combate</code></td>
+              <td>Categoría libre — solo visual. Útil para organizar eventos en la UI.</td>
+            </tr>
+            <tr>
+              <td><code>repeatable</code></td>
+              <td><code>"false"</code></td>
+              <td><code>"true"</code> para que el evento se pueda repetir una vez completado. Por defecto <code>"false"</code>. Nota: debe escribirse entre comillas.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- OBJETIVOS -->
+        <h2>Definición de objetivos</h2>
+
+        <p>Cada objetivo dentro de <code>objectives</code> requiere estos campos:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Obligatorio</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Identificador único del objetivo dentro del evento.</td>
+            </tr>
+            <tr>
+              <td><code>type</code></td>
+              <td>Enum</td>
+              <td>✅ Sí</td>
+              <td>Tipo de objetivo. Ver la <a href="objetivos.html" style="color:var(--green)">lista completa de tipos</a>.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Texto mostrado en el HUD y en los mensajes de progreso.</td>
+            </tr>
+            <tr>
+              <td><code>target_amount</code></td>
+              <td>Número</td>
+              <td>✅ Sí</td>
+              <td>Cantidad necesaria para completar el objetivo. Debe ser un número sin comillas.</td>
+            </tr>
+            <tr>
+              <td><code>parameters</code></td>
+              <td>Mapa</td>
+              <td>Varía</td>
+              <td>Parámetros específicos del tipo de objetivo (entity_type, block_id, item_id, etc.).</td>
+            </tr>
+            <tr>
+              <td><code>optional</code></td>
+              <td>Boolean</td>
+              <td>No</td>
+              <td>Si es <code>true</code>, el objetivo no es necesario para completar el evento.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="callout-text">
+            <strong><code>target_amount</code> debe ser un número sin comillas.</strong> Escribir <code>target_amount: "10"</code> causará un error YAML en la consola del servidor. La forma correcta es <code>target_amount: 10</code>.
+          </div>
+        </div>
+
+        <!-- FORMATO ALTERNATIVO -->
+        <h3>Formato alternativo con target:</h3>
+
+        <p>El parser también acepta el formato <code>target:</code> con subcampos, útil para objetivos donde el parámetro principal y el contador van juntos:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Formato con target: (equivalente)</div>
+          <pre><code>objectives:
+  - id: "minar-piedra"
+    type: MINE_BLOCK
+    description: "Mina bloques de piedra"
+    # Formato A — recomendado
+    target_amount: 10
+    parameters:
+      block_id: "minecraft:stone"
+
+  - id: "minar-piedra-alt"
+    type: MINE_BLOCK
+    description: "Mina bloques de piedra"
+    # Formato B — alternativo, equivalente al anterior
+    target:
+      count: 10
+      block_id: "minecraft:stone"</code></pre>
+        </div>
+
+        <!-- RECOMPENSAS -->
+        <h2>Recompensas</h2>
+
+        <p>El bloque <code>rewards</code> soporta XP e ítems. Ambos son opcionales y se pueden combinar:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos de recompensas</div>
+          <pre><code># Solo XP
+rewards:
+  xp: 1000
+
+# Solo ítems
+rewards:
+  items:
+    - "minecraft:diamond 5"        # 5 diamantes
+    - "minecraft:golden_apple 1"   # 1 manzana dorada
+    - "minecraft:bread 32"         # 32 panes
+
+# XP + ítems combinados
+rewards:
+  xp: 500
+  items:
+    - "minecraft:emerald 3"
+    - "minecraft:experience_bottle 10"</code></pre>
+        </div>
+
+        <p>El formato de cada ítem es <code>"namespace:id cantidad"</code>. Si no se especifica cantidad, se entrega 1 unidad.</p>
+
+        <!-- EJEMPLOS COMPLETOS -->
+        <h2>Ejemplos completos</h2>
+
+        <h3>Evento simple — un solo objetivo</h3>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>events/matar-zombies.yml</div>
+          <pre><code>id: "matar-zombies"
+display_name: "§cCazador de no-muertos"
+description: "Elimina zombies para ganar experiencia."
+
+metadata:
+  icon: "minecraft:rotten_flesh"
+  difficulty: "easy"
+  category: "combate"
+  repeatable: "false"
+
+always_active: true
+
+objectives:
+  - id: "kill-zombies"
+    type: KILL_ENTITY
+    description: "Mata zombies"
+    target_amount: 25
+    parameters:
+      entity_type: "minecraft:zombie"
+
+rewards:
+  xp: 300
+  items:
+    - "minecraft:iron_sword 1"</code></pre>
+        </div>
+
+        <h3>Evento con múltiples objetivos</h3>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>events/supervivencia-basica.yml</div>
+          <pre><code>id: "supervivencia-basica"
+display_name: "§eSupervivencia básica"
+description: "Reúne los recursos esenciales para sobrevivir tu primera noche."
+
+metadata:
+  icon: "minecraft:crafting_table"
+  difficulty: "easy"
+  category: "tutorial"
+  repeatable: "false"
+
+always_active: true
+
+objectives:
+  - id: "minar-madera"
+    type: MINE_BLOCK
+    description: "Recolecta madera"
+    target_amount: 16
+    parameters:
+      block_id: "minecraft:oak_log"
+
+  - id: "craftear-pico"
+    type: CRAFT_ITEM
+    description: "Fabrica un pico de madera"
+    target_amount: 1
+    parameters:
+      item_id: "minecraft:wooden_pickaxe"
+
+  - id: "minar-piedra"
+    type: MINE_BLOCK
+    description: "Mina bloques de piedra"
+    target_amount: 8
+    parameters:
+      block_id: "minecraft:stone"
+
+  - id: "craftear-cama"
+    type: CRAFT_ITEM
+    description: "Fabrica una cama"
+    target_amount: 1
+    parameters:
+      item_id: "minecraft:white_bed"
+    optional: true   # No es obligatorio para completar el evento
+
+rewards:
+  xp: 150
+  items:
+    - "minecraft:cooked_beef 8"
+    - "minecraft:torch 16"</code></pre>
+        </div>
+
+        <h3>Evento con dependencias</h3>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>events/mineria-avanzada.yml</div>
+          <pre><code>id: "mineria-avanzada"
+display_name: "§6Minería avanzada"
+description: "Desciende hasta el bedrock y encuentra diamantes."
+
+metadata:
+  icon: "minecraft:diamond_pickaxe"
+  difficulty: "hard"
+  category: "mineria"
+  repeatable: "false"
+
+# Este evento solo aparece si "supervivencia-basica" está completado
+dependencies:
+  - "supervivencia-basica"
+
+objectives:
+  - id: "alcanzar-nivel"
+    type: REACH_LEVEL
+    description: "Alcanza el nivel 10"
+    target_amount: 10
+
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Extrae diamantes"
+    target_amount: 5
+    parameters:
+      block_id: "minecraft:diamond_ore"
+
+rewards:
+  xp: 1000
+  items:
+    - "minecraft:diamond_pickaxe 1"</code></pre>
+        </div>
+
+        <!-- ORGANIZACIÓN -->
+        <h2>Organización de archivos</h2>
+
+        <p>El plugin carga archivos <code>.yml</code> de forma recursiva desde la carpeta <code>events/</code>. Puedes usar subcarpetas para organizar tus eventos sin ningún problema:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Estructura con subcarpetas</div>
+          <pre><code>plugins/EventUI/events/
+├── tutoriales/
+│   ├── supervivencia-basica.yml
+│   └── primera-noche.yml
+├── combate/
+│   ├── matar-zombies.yml
+│   ├── matar-esqueletos.yml
+│   └── boss/
+│       └── derrotar-wither.yml
+└── mineria/
+    ├── mineria-basica.yml
+    └── mineria-avanzada.yml</code></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/>
+              <path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="callout-text">
+            El nombre del archivo <strong>no importa</strong> — el plugin usa el campo <code>id</code> dentro del YAML para identificar cada evento. Dos archivos con el mismo <code>id</code> causarán que el segundo sobreescriba al primero.
+          </div>
+        </div>
+
+        <!-- ERRORES COMUNES -->
+        <h2>Errores comunes en el YAML</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Error en consola</th>
+              <th>Causa</th>
+              <th>Solución</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><em>Un campo numérico tiene comillas</em></td>
+              <td><code>target_amount: "10"</code></td>
+              <td>Quita las comillas: <code>target_amount: 10</code></td>
+            </tr>
+            <tr>
+              <td><em>Un campo de texto necesita comillas</em></td>
+              <td>Descripción con caracteres especiales sin comillas</td>
+              <td>Envuelve el valor entre comillas: <code>description: "Mata 25: enemigos"</code></td>
+            </tr>
+            <tr>
+              <td><em>Falta un campo obligatorio</em></td>
+              <td>Falta <code>id</code>, <code>type</code> o <code>description</code></td>
+              <td>Verifica que todos los campos obligatorios estén presentes</td>
+            </tr>
+            <tr>
+              <td><em>Tipo de objetivo inválido</em></td>
+              <td><code>type: kill_entity</code> (minúsculas)</td>
+              <td>El tipo debe estar en mayúsculas: <code>type: KILL_ENTITY</code></td>
+            </tr>
+            <tr>
+              <td><em>Verifica la indentación</em></td>
+              <td>Uso de tabs en lugar de espacios</td>
+              <td>YAML solo acepta espacios. Usa 2 o 4 espacios por nivel de indentación</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/>
+              <path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="callout-text">
+            Si tienes dudas sobre la sintaxis de tu YAML, pégalo en <strong>yamllint.com</strong> para detectar errores antes de subirlo al servidor. El plugin también imprime en consola el archivo exacto que causó el problema.
+          </div>
+        </div>
+
+        <!-- HOT RELOAD -->
+        <h2>Hot reload</h2>
+
+        <p>No necesitas reiniciar el servidor para aplicar cambios en los archivos de eventos ni uis. Al hacer un cambio en cualquier archivo de UI y guardarlo, esta se recargará automaticamente despues de 2-3s.</p>
+        <p>Esto recarga todos los archivos de <code>events/</code> y <code>uis/</code>, y notifica a los clientes conectados del cambio. El progreso de los jugadores no se pierde al hacer reload.</p>
+
+        <!-- FOOTER NAV -->
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="instalacion.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Instalación</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="disenar-uis.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Diseñar UIs →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

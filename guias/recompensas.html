@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Recompensas en EventUI — XP, ítems y comandos. Configuración completa basada en el código real." />
+  <title>Recompensas — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a active" href="instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Guía</span>
+          <span class="pill pill-n">YAML</span>
+          <span class="pill pill-n">rewards</span>
+        </div>
+
+        <h1 style="font-size:36px;">Recompensas</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Las recompensas se entregan automáticamente cuando un jugador completa todos los objetivos de un evento. Se definen en el bloque <code>rewards</code> de cada archivo de evento y soportan tres tipos: XP, ítems y comandos.
+        </p>
+
+        <!-- RESUMEN -->
+        <h2>Tipos disponibles</h2>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>xp</code></td><td>Otorga puntos de experiencia al jugador.</td></tr>
+            <tr><td><code>item</code></td><td>Entrega uno o varios ítems de Minecraft vanilla al inventario del jugador.</td></tr>
+            <tr><td><code>command</code></td><td>Ejecuta un comando desde consola con el nombre del jugador como variable.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- XP -->
+        <h2>XP</h2>
+
+        <p>Otorga experiencia directamente al jugador. El valor es la cantidad exacta de puntos de XP, no niveles.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>rewards:
+  xp: 500</code></pre>
+        </div>
+
+        <p>Al recibir la recompensa, el jugador ve el mensaje <code>§a+ 500 XP</code> en el chat.</p>
+
+        <!-- ÍTEMS -->
+        <h2>Ítems</h2>
+
+        <p>Entrega una lista de ítems al inventario del jugador. El formato de cada ítem es <code>"namespace:id cantidad"</code>. Si no se especifica cantidad, se entrega 1 unidad.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplos</div>
+          <pre><code>rewards:
+  items:
+    - "minecraft:diamond 5"
+    - "minecraft:golden_apple 1"
+    - "minecraft:cooked_beef 32"
+    - "minecraft:iron_sword"       # sin cantidad = 1 unidad</code></pre>
+        </div>
+
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>Inventario lleno:</strong> si el jugador no tiene espacio, los ítems que no caben se dropean en el suelo en su posición actual. No se pierden.
+          </div>
+        </div>
+
+        <!-- COMANDOS -->
+        <h2>Comandos</h2>
+
+        <p>Ejecuta uno o varios comandos desde la consola del servidor al completar el evento. El placeholder <code>{player}</code> se reemplaza automáticamente por el nombre del jugador.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Sintaxis</div>
+          <pre><code>rewards:
+  commands:
+    - "comando {player} argumentos"</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Los comandos se ejecutan con permisos de <strong>consola</strong>, no del jugador. Esto significa que puedes usar cualquier comando de cualquier plugin sin restricciones de permisos.
+          </div>
+        </div>
+
+        <h3>Ejemplos prácticos</h3>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>EssentialsX — dar dinero</div>
+          <pre><code>rewards:
+  commands:
+    - "eco give {player} 5000"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>LuckPerms — dar rango temporalmente</div>
+          <pre><code>rewards:
+  commands:
+    - "lp user {player} parent addtemp vip 7d"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Vanilla — dar ítem con NBT o encantamiento</div>
+          <pre><code>rewards:
+  commands:
+    - "give {player} minecraft:diamond_sword{Enchantments:[{id:sharpness,lvl:5}]} 1"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Múltiples comandos a la vez</div>
+          <pre><code>rewards:
+  commands:
+    - "eco give {player} 1000"
+    - "lp user {player} parent addtemp vip 30d"
+    - "minecraft:title {player} title {\"text\":\"¡Misión completada!\",\"color\":\"gold\"}"</code></pre>
+        </div>
+
+        <!-- COMBINAR -->
+        <h2>Combinar tipos</h2>
+
+        <p>Los tres tipos se pueden combinar libremente en el mismo evento:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Recompensa completa con los tres tipos</div>
+          <pre><code>rewards:
+  xp: 1000
+  items:
+    - "minecraft:diamond 3"
+    - "minecraft:enchanted_golden_apple 1"
+    - "minecraft:experience_bottle 16"
+  commands:
+    - "eco give {player} 2500"
+    - "lp user {player} parent addtemp elite 14d"</code></pre>
+        </div>
+
+        <!-- SIN RECOMPENSA -->
+        <h2>Eventos sin recompensa</h2>
+
+        <p>El bloque <code>rewards</code> es completamente opcional. Si no lo incluyes, el evento se completa normalmente sin entregar nada. El jugador verá el mensaje de completado pero no recibirá ítems ni XP.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Evento sin recompensa</div>
+          <pre><code>id: "tutorial-bienvenida"
+displayName: "Bienvenida"
+description: "Completa el tutorial inicial."
+
+objectives:
+  - id: "hablar-aldeano"
+    type: INTERACT
+    description: "Habla con el aldeano de bienvenida"
+    parameters:
+      target_type: "entity"
+      target_id: "minecraft:villager"
+      target_amount: 1
+
+# Sin bloque rewards — evento de progresión pura</code></pre>
+        </div>
+
+        <!-- MENSAJES -->
+        <h2>Mensajes al recibir recompensas</h2>
+
+        <p>Al completar un evento con recompensas, el jugador recibe automáticamente estos mensajes en el chat:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Mensajes generados automáticamente</div>
+          <pre><code># Por cada punto de XP:
+§a+ 1000 XP
+
+# Por cada ítem:
+§a+ 3x diamond
+
+# Por cada ítem de mods entregado vía comando:
+# (depende del plugin externo)
+
+# Al final, resumen:
+§6✓ ¡Recibiste 3 recompensa(s)!</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Los mensajes de completado del evento (<code>§6[EventUI] ¡Evento completado: nombre!</code>) y los mensajes de recompensa son independientes. Ambos se muestran siempre — actualmente no hay forma de desactivar los mensajes de recompensa individualmente desde el YAML.
+          </div>
+        </div>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="objetivos.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Objetivos</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="dependencias.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Dependencias →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
