@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Registro de cambios entre versiones de EventUI. Cada entrada documenta bugs corregidos, mejoras y nuevas features." />
+  <title>Changelog — EventUI Docs</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    /* CSS del selector de versiones */
+    .version-selector { position: relative; }
+    .version-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .version-btn:hover { border-color: var(--border-2); color: var(--text-1); }
+    .version-chevron {
+      width: 12px; height: 12px;
+      transition: transform 0.2s; color: var(--text-3);
+    }
+    .version-selector.open .version-chevron { transform: rotate(180deg); }
+    .version-dropdown {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 6px;
+      min-width: 140px; z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .version-selector.open .version-dropdown { display: block; }
+    .version-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 8px 10px; border: none; background: none;
+      border-radius: 6px; font-size: 12px; color: var(--text-2);
+      cursor: pointer; font-family: 'JetBrains Mono', monospace;
+      transition: background 0.1s;
+    }
+    .version-option:hover { background: var(--bg-3); color: var(--text-1); }
+    .version-option.active { color: var(--green); }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: transparent;
+    }
+    .version-option.active .version-dot { background: var(--green); }
+    .version-tag {
+      margin-left: auto; font-size: 10px;
+      background: var(--green-bg); color: var(--green);
+      border-radius: 4px; padding: 1px 6px;
+    }
+
+    /* CSS del changelog */
+    .cl-version-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cl-version-title {
+      font-family: var(--font-d); font-size: 28px;
+      color: var(--text-1); margin: 0;
+    }
+    .cl-version-date { font-size: 13px; color: var(--text-3); font-weight: 300; }
+    
+    .cl-group { margin-bottom: 28px; }
+    .cl-group-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+    }
+    .cl-group-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--text-2);
+    }
+    .cl-group-icon svg { width: 14px; height: 14px; }
+    .cl-group-label {
+      font-family: var(--font-d); font-size: 15px;
+      font-weight: 600; color: var(--text-1);
+    }
+    
+    .cl-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+    .cl-item {
+      display: flex; align-items: baseline; gap: 10px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: var(--text-2); font-weight: 300; line-height: 1.6;
+    }
+    .cl-item:hover { border-color: var(--border-2); }
+    
+    .cl-tag {
+      font-family: var(--font-m); font-size: 9px; font-weight: 600;
+      padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .cl-tag-new { background: var(--green-bg); color: var(--green); }
+    .cl-tag-fix { background: rgba(251,191,36,0.1); color: #fbbf24; }
+    .cl-tag-improved { background: rgba(96,165,250,0.1); color: #60a5fa; }
+    .cl-tag-perf { background: rgba(167,139,250,0.1); color: #a78bfa; }
+
+    .cl-separator { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* Inline Code Style */
+    code {
+      font-family: var(--font-m);
+      font-size: 12px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-1);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="index.html">Docs</a>
+      <a class="gh-nav-a" href="guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      
+      <!-- SELECTOR DE VERSIÓN -->
+      <div class="version-selector" id="version-selector">
+        <button class="version-btn" onclick="toggleVersionDropdown()">
+          <span id="current-version-label">v1.0.1</span>
+          <svg class="version-chevron" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="version-dropdown" id="version-dropdown">
+          <button class="version-option active" data-v="1.0.1" onclick="switchVersion('1.0.1')">
+            <span class="version-dot"></span>
+            v1.0.1 <span class="version-tag">latest</span>
+          </button>
+          <button class="version-option" data-v="1.0.0" onclick="switchVersion('1.0.0')">
+            <span class="version-dot"></span>
+            v1.0.0
+          </button>
+        </div>
+      </div>
+
+      <a class="gh-github" href="https://github.com/elyisus-xd/Event-UI" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-n">Versiones</span>
+          <span class="pill pill-g">v1.0.1</span>
+        </div>
+
+        <h1 style="font-size:36px;">Changelog</h1>
+
+        <p style="font-size:15px; max-width:580px; margin-bottom: 32px;">
+          Registro de cambios entre versiones de EventUI. Cada entrada documenta bugs corregidos, mejoras y nuevas features.
+        </p>
+
+        <!-- CONTENIDO v1.0.1 -->
+        <div class="version-content" data-version="1.0.1">
+          <div class="cl-version-header">
+            <h2 class="cl-version-title">v1.0.1</h2>
+            <span class="cl-version-date">2025 — En progreso</span>
+            <span class="pill pill-g">latest</span>
+          </div>
+
+          <!-- CATEGORÍA: Sistema de Tooltips Avanzados -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3l4.5 10 2-4.5 4.5-2L3 3z" />
+                  <path d="M9.5 9.5L13 13" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Sistema de Tooltips Avanzados</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Nuevos tipos de sección de receta: <code>FURNACE_RECIPE</code>, <code>SMITHING_RECIPE</code>, <code>ANVIL_RECIPE</code>, <code>BREWING_RECIPE</code> — cada uno con su textura de interfaz vanilla incluida en el mod</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>CUSTOM_RECIPE</code> — tipo genérico donde el admin define su propia textura y las coordenadas X,Y de cada slot en el YAML, para recetas de mods</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Soporte para override de textura de frame desde el YAML con <code>section_1_recipe_frame</code> — compatible con resource packs</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>RecipeCache</code> — las recetas se cachean tras la primera búsqueda, eliminando búsquedas O(n) en el <code>RecipeManager</code> cada frame</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>inventory_preview</code> — overlay oscuro en ingredientes que el jugador no tiene en su inventario (opcional, activar con <code>inventory_preview: true</code>)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>show_tooltip_background</code> — controla si se muestra el cuadro morado/negro del tooltip. Poner en false para mostrar solo la receta sin fondo</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Cycling de items en todos los tipos de receta — múltiples items separados por coma se rotan automáticamente cada segundo</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span><code>show_grid_frame</code> ahora funciona correctamente en Shaped/Shapeless (mostraba el frame aunque estuviera en false)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>FURNACE_RECIPE</code>, <code>SMITHING_RECIPE</code>, <code>ANVIL_RECIPE</code> y <code>BREWING_RECIPE</code> no se reconocían como <code>SectionType</code> válidos (el catch del <code>valueOf</code> hacía fallback silencioso a <code>RECIPE</code>)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Sistema de guardado de progreso -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V5l-3-3z" />
+                  <path d="M4 2v4h6V2" />
+                  <path d="M6 10h4v4H6v-4z" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Sistema de guardado de progreso</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Guardado inmediato al completar un objetivo, evento, o auto-inicio — ya no hay que esperar al auto-save periódico para eventos importantes</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Guardado inmediato en cambios de estado desde <code>/ev</code> y desde el bridge</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span>Auto-save periódico reducido de 5 minutos a 2 minutos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span>Sistema de throttle/coalescing por jugador — si llegan múltiples solicitudes de guardado juntas, se agrupan en una sola escritura</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Validación al cargar playerdata: estado inválido → fallback a <code>AVAILABLE</code>, evento inexistente → ignorado con warning, values fuera de rango → clamping</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Sistema de mensajería del mod -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 13V5a2 2 0 012-2h6a2 2 0 012 2v8" />
+                  <path d="M1 13h14" />
+                  <path d="M6 6.5L4.5 8 6 9.5" />
+                  <path d="M10 6.5l1.5 1.5-1.5 1.5" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Sistema de mensajería del mod</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>EVENT_RELOAD_NOTIFICATION</code> era sobreescrito silenciosamente por <code>EventViewModel</code> (<code>Map&lt;MessageType, MessageHandler&gt;</code> hacía <code>put()</code> en vez de <code>add()</code>) — la reconstrucción de UI tras <code>/ev reload</code> nunca se ejecutaba</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span><code>MessageHandler</code> cambiado a <code>Map&lt;MessageType, List&lt;MessageHandler&gt;&gt;</code> con <code>CopyOnWriteArrayList</code> — múltiples handlers por tipo de mensaje</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>removeHandler(type, handler)</code> para remover un handler específico sin afectar a los demás (patrón <code>MessageHandler[]</code> handlerRef para auto-remoción)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Caché de UI en el cliente -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 8c0 3.59-2.91 6.5-6.5 6.5S1.5 11.59 1.5 8 4.41 1.5 8 1.5c2 0 3.8.9 5 2.3V1.5" />
+                  <path d="M10 3.8h3v-3" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Caché de UI en el cliente</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>cachedUIMode</code> y <code>cachedScreenId</code> (campos static) sobrevivían entre reconexiones — al reconectar a un servidor con UI distinta, el cliente seguía mostrando la UI anterior</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Cambiar <code>screenId</code> en <code>config.yml</code> en caliente no actualizaba la UI en el cliente porque el handler de <code>EVENT_RELOAD_NOTIFICATION</code> era sobreescrito (ver fix de <code>MessageHandler</code> arriba)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>invalidateCache()</code> llamado automáticamente en <code>ClientPlayConnectionEvents.JOIN</code> y <code>DISCONNECT</code> — cada conexión nueva siempre pide el modo de UI fresco</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Objetivos y tracking -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8" cy="8" r="6" />
+                  <circle cx="8" cy="8" r="2.5" />
+                  <path d="M8 1v2M8 13v2M1 8h2M13 8h2" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Objetivos y tracking</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>BREW_POTION</code>: el handler de <code>InventoryClickEvent</code> no detectaba pociones completadas cuando el jugador cerraba la GUI antes de que terminara el brewing — migrado a <code>BrewEvent</code> de Bukkit</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>tryAutoStart()</code> tenía la lógica de retorno completamente invertida en las tres ramas — afectaba a TODOS los tipos de objetivo, haciendo que los eventos <code>IN_PROGRESS</code> siempre se saltaran en <code>processAction()</code></span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>/ev abandon</code> conectado al switch de comandos (existía el handler pero nunca se llamaba — el cliente enviaba "abandon_event" sin el <code>event_id</code>)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Cliente enviaba action: "abandon_event" sin concatenar el <code>event_id</code> — ahora envía "abandon_event:{eventId}" como esperaba <code>PluginEventBridge</code></span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Toolchain y build -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13.2 2.8a4.5 4.5 0 00-6.36 0l-.84.84a1 1 0 00-.23.95l1 3.5a1 1 0 00.91.73h.38c.3 0 .58.12.78.34l2.9 2.9a1 1 0 001.41 0l1-1a1 1 0 000-1.41l-2.9-2.9a1.1 1.1 0 01-.34-.78v-.38a1 1 0 00-.73-.91l-3.5-1a1 1 0 00-.95.23l-.84.84a4.5 4.5 0 000 6.36" />
+                  <path d="M1.5 14.5l3.5-3.5" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Toolchain y build</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>fabric-loom</code> migrado de <code>1.8-SNAPSHOT</code> a <code>1.12.7</code> (<code>getDependencyProject()</code> removido en Gradle 8.14+)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Shadow plugin migrado de <code>com.github.johnrengelman.shadow:8.1.1</code> a <code>com.gradleup.shadow:9.4.2</code> (<code>StubbedFileCopyDetails.mode</code> removido en Gradle 8.14)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CONTENIDO v1.0.0 -->
+        <div class="version-content" data-version="1.0.0" style="display:none;">
+          <div class="cl-version-header">
+            <h2 class="cl-version-title">v1.0.0</h2>
+            <span class="cl-version-date">2025 — Versión inicial</span>
+          </div>
+          
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5,3 12,8 5,13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Lanzamiento inicial</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Primera versión pública de EventUI. Incluye el sistema completo de misiones con 21 tipos de objetivo, el motor de UI declarativa en YAML, el bridge de comunicación plugin-mod, y la UI hardcoded de referencia.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleVersionDropdown() {
+      document.getElementById('version-selector').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#version-selector')) {
+        document.getElementById('version-selector')?.classList.remove('open');
+      }
+    });
+    function switchVersion(v) {
+      document.getElementById('current-version-label').textContent = 'v' + v;
+      document.querySelectorAll('.version-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.v === v);
+      });
+      document.getElementById('version-selector').classList.remove('open');
+      // Mostrar/ocultar secciones de versión
+      document.querySelectorAll('.version-content').forEach(el => {
+        el.style.display = el.dataset.version === v ? 'block' : 'none';
+      });
+    }
+    // Inicializar mostrando solo v1.0.1
+    document.addEventListener('DOMContentLoaded', () => switchVersion('1.0.1'));
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

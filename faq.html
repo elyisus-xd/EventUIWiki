@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ayuda y preguntas frecuentes de EventUI — soluciones a los problemas más comunes." />
+  <title>Ayuda & FAQ — EventUI Docs</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .faq-group { margin-bottom: 40px; }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--bg-2);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-1);
+      gap: 16px;
+      user-select: none;
+      transition: background 0.12s;
+    }
+
+    .faq-question:hover { background: var(--bg-3); }
+
+    .faq-question.open { background: var(--bg-3); color: var(--green); }
+
+    .faq-chevron {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      color: var(--text-3);
+    }
+
+    .faq-question.open .faq-chevron {
+      transform: rotate(180deg);
+      color: var(--green);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 16px 20px 20px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .faq-answer.open { display: block; }
+
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer p:last-child { margin-bottom: 0; }
+    .faq-answer strong { color: var(--text-1); font-weight: 500; }
+    .faq-answer a { color: var(--green); }
+
+    .faq-answer pre {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: 12px 0;
+      font-family: var(--font-m);
+      font-size: 12px;
+      color: var(--text-1);
+      line-height: 1.7;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .support-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    .support-card:hover { border-color: var(--border-2); }
+
+    .support-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .support-card-icon.green { background: var(--green-bg); }
+    .support-card-icon.purple { background: rgba(139,92,246,0.1); }
+    .support-card-icon svg { width: 16px; height: 16px; }
+
+    .support-card-title {
+      font-family: var(--font-d);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    .support-card-desc {
+      font-size: 12px;
+      color: var(--text-2);
+      font-weight: 300;
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a active" href="index.html">Docs</a>
+      <a class="gh-nav-a" href="guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com/elyisus-xd/Event-UI" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Soporte</span>
+          <span class="pill pill-n">FAQ</span>
+        </div>
+
+        <h1 style="font-size:36px;">Ayuda & FAQ</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Respuestas a los problemas más comunes. Si no encuentras lo que buscas, el Discord de la comunidad está disponible para soporte directo.
+        </p>
+
+        <!-- INSTALACIÓN -->
+        <h2>Instalación y compatibilidad</h2>
+
+        <div class="faq-group">
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              ¿EventUI funciona en Spigot?
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>No. EventUI requiere <strong>Paper 1.21.1</strong> o <strong>Arclight 1.21.1</strong>. El plugin usa la API de Adventure de Paper para enviar mensajes — en Spigot esto lanza un <code>NoSuchMethodError</code> en runtime porque Spigot no expone esa API.</p>
+              <p>Si tu servidor usa Spigot, migra a Paper — es un reemplazo directo compatible con todos los plugins de Spigot.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              ¿Qué versión de Minecraft es compatible?
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Actualmente solo <strong>Minecraft 1.21.1</strong>, tanto en el servidor (Paper/Arclight) como en el cliente (Fabric). No hay planes de backport a versiones anteriores por el momento.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              ¿El mod es obligatorio para los jugadores?
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>No es obligatorio. Los jugadores sin el mod pueden conectarse y jugar normalmente. Simplemente no verán las UIs personalizadas ni el HUD de misiones — el progreso de sus eventos sigue funcionando en el servidor igual.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El plugin no aparece en /plugins después de instalarlo
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Causas más comunes:</p>
+              <p><strong>Java desactualizado</strong> — verifica que usas Java 21 o superior con <code>java -version</code>.</p>
+              <p><strong>JAR corrupto</strong> — descarga el JAR de nuevo desde Modrinth o GitHub Releases.</p>
+              <p><strong>Servidor Spigot</strong> — EventUI solo funciona en Paper o Arclight.</p>
+              <p>Revisa la consola del servidor al arrancar — si el plugin falla al cargar, el error aparece ahí con el motivo exacto.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- UI Y YAML -->
+        <h2>Configuración de UIs y eventos</h2>
+
+        <div class="faq-group">
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Abro la UI con la tecla K pero está en blanco
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Esto ocurre cuando el <code>screenId</code> en <code>config.yml</code> no coincide con el campo <code>id</code> dentro del archivo de UI. Verifica que:</p>
+              <pre>config.yml:
+  ui:
+    mode: "custom"
+    custom:
+      screenId: "main-menu"   # ← debe coincidir exactamente
+
+uis/main-menu.yml:
+  id: "main-menu"             # ← con este campo</pre>
+              <p>Si <code>fallback: true</code> está activado, el plugin usa la UI hardcoded cuando falla — por eso no ves un error sino una pantalla por defecto.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Las texturas de mis elementos aparecen como rectángulos rojos
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>El cliente no encuentra la textura en su resource pack. EventUI no valida la existencia de texturas desde el servidor — si el archivo no está en el resource pack del cliente, el elemento se renderiza rojo.</p>
+              <p>Verifica que la ruta en el YAML coincide exactamente con la ruta dentro del resource pack, incluyendo el namespace. Por ejemplo:</p>
+              <pre>texture: "eventui:textures/ui/fondo.png"
+# El resource pack debe tener:
+# assets/eventui/textures/ui/fondo.png</pre>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Mi archivo de evento no se carga — veo 0 events en la consola
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Causas más comunes en el YAML de eventos:</p>
+              <p><strong>Tabs en lugar de espacios</strong> — YAML no acepta tabs. Usa siempre espacios (2 o 4 por nivel).</p>
+              <p><strong>target_amount entre comillas</strong> — debe ser un número sin comillas: <code>target_amount: 10</code>, no <code>target_amount: "10"</code>.</p>
+              <p><strong>Tipo de objetivo en minúsculas</strong> — debe ir en mayúsculas: <code>type: KILL_ENTITY</code>, no <code>type: kill_entity</code>.</p>
+              <p>El error exacto aparece en la consola del servidor con el nombre del archivo que falló. Pega el contenido del archivo en <strong>yamllint.com</strong> para detectar errores de sintaxis.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Los cambios en mis archivos YAML no se aplican sin reiniciar
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Usa el comando <code>/ev reload</code> para recargar todos los eventos y UIs en caliente sin reiniciar el servidor. Los cambios se aplican inmediatamente y los clientes conectados son notificados.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El data binding con &#123;&#123;variable&#125;&#125; no se resuelve — aparece tal cual en pantalla
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Verifica dos cosas:</p>
+              <p><strong>Dobles llaves</strong> — el binding usa <code>&#123;&#123;variable&#125;&#125;</code> con llaves dobles, no simples. Una sola llave no se resuelve.</p>
+              <p><strong>La variable existe</strong> — si usas <code>&#123;&#123;state.mi_variable&#125;&#125;</code>, asegúrate de haberla establecido con <code>/ev setuivar &lt;jugador&gt; mi_variable &lt;valor&gt;</code>.</p>
+              <p>Cuando una variable no se encuentra, el cliente imprime un warning en sus logs: <code>Variable not found in context: nombre</code>.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El elemento con visible_if no se muestra aunque la condición debería cumplirse
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p><code>visible_if</code> compara strings — todos los valores de las variables de estado son strings. Asegúrate de que el valor en la condición coincide exactamente:</p>
+              <pre># Si estableciste la variable así:
+/ev setuivar Steve activo true
+
+# La condición debe ser:
+visible_if: "activo == true"   # ✅ correcto
+visible_if: "activo == True"   # ❌ incorrecto (mayúscula)</pre>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROGRESO Y EVENTOS -->
+        <h2>Progreso y eventos</h2>
+
+        <div class="faq-group">
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El progreso de un objetivo no avanza aunque hago la acción correcta
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Verifica en orden:</p>
+              <p><strong>El evento está activo</strong> — usa <code>/ev progress &lt;id&gt;</code> para ver el estado. Si dice <code>AVAILABLE</code> en lugar de <code>IN_PROGRESS</code>, el evento no ha iniciado. Actívalo con <code>/ev start &lt;id&gt;</code> o verifica que <code>always_active: true</code> esté configurado.</p>
+              <p><strong>El parámetro del objetivo es correcto</strong> — por ejemplo, para <code>MINE_BLOCK</code> el parámetro es <code>block_id</code>, no <code>block_type</code>. Consulta la <a href="guias/objetivos.html">referencia de objetivos</a> para el parámetro exacto de cada tipo.</p>
+              <p><strong>El tipo de objetivo está implementado</strong> — <code>BREW_POTION</code> y <code>COLLECT_ITEM</code> tienen limitaciones conocidas. Consulta la <a href="guias/objetivos.html">página de objetivos</a> para ver el estado de cada tipo.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Un evento completado no entregó las recompensas
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Verifica el bloque <code>rewards</code> en el archivo del evento. Los ítems usan el formato <code>"minecraft:id cantidad"</code> — si el ID del material no existe en Minecraft vanilla el ítem se descarta silenciosamente.</p>
+              <p>Para recompensas de ítems de mods, usa el tipo <code>command</code> en lugar de <code>item</code>:</p>
+              <pre>rewards:
+  commands:
+    - "give {player} modid:mi_item 1"</pre>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El progreso de un jugador se perdió después de reiniciar el servidor
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>El progreso se guarda de forma asíncrona cuando el jugador se desconecta. Si el servidor se apaga abruptamente (crash) antes de que el guardado termine, puede haber pérdida de datos.</p>
+              <p>Para minimizar este riesgo, usa siempre <code>/stop</code> para apagar el servidor en lugar de matar el proceso directamente. No hay base de datos en esta versión — todo se guarda en archivos YAML en <code>playerdata/</code>.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              ¿Cómo reseteo el progreso de un jugador en un evento?
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <pre># Resetear un evento específico
+/ev reset &lt;id-del-evento&gt;
+
+# Resetear todos los eventos del jugador
+/ev reset all</pre>
+              <p>Estos comandos requieren el permiso <code>eventui.admin</code>.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MOD CLIENTE -->
+        <h2>Mod cliente</h2>
+
+        <div class="faq-group">
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              La tecla K no abre nada cuando entro al servidor
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Verifica en orden:</p>
+              <p><strong>El mod está instalado</strong> — asegúrate de que <code>eventui-fabric.jar</code> está en tu carpeta <code>mods/</code> junto a <strong>Fabric API</strong>.</p>
+              <p><strong>Estás conectado a un servidor con el plugin</strong> — el mod no funciona en singleplayer ni en servidores sin EventUI Plugin.</p>
+              <p><strong>Conflicto de teclas</strong> — ve a <em>Opciones → Controles → EventUI</em> y verifica que la tecla K no está asignada a otra acción.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              El HUD de misiones no aparece aunque tengo una misión activa
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>El HUD puede estar oculto. Presioca la tecla <strong>H</strong> para alternarlo. Si sigue sin aparecer, verifica que el evento está en estado <code>IN_PROGRESS</code> con <code>/ev progress &lt;id&gt;</code> — el HUD solo muestra eventos activos.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              ¿Cómo activo el debug overlay para ajustar mi UI?
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>Con la pantalla de EventUI abierta, presiona <strong>F3 + Shift</strong>. Esto activa el overlay de depuración que muestra las posiciones, dimensiones e IDs de todos los elementos renderizados. Muy útil para ajustar layouts con el sistema de anclas.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SOPORTE -->
+        <h2>¿No encontraste lo que buscabas?</h2>
+
+        <p>Si tu problema no está en esta página, tienes dos opciones:</p>
+
+        <div class="support-grid">
+          <a class="support-card" href="https://discord.gg/JykGT832Ky" target="_blank">
+            <div class="support-card-icon purple">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M13.5 2.5C12.5 2 11.5 1.8 10.5 1.7l-.2.4c-1 .2-2 .2-3 0L7 1.7C6 1.8 5 2 4 2.5 2 5.5 1.5 8.5 2 11c1 .8 2 1.3 3 1.5l.5-.8c-.5-.2-1-.4-1.5-.7l.3-.3c2 1 4.5 1 6.5 0l.3.3c-.5.3-1 .5-1.5.7l.5.8c1-.2 2-.7 3-1.5.5-2.5 0-5.5-2-8.5zM5.8 9.3c-.6 0-1-.5-1-1.1s.4-1.1 1-1.1c.6 0 1 .5 1 1.1s-.4 1.1-1 1.1zm4.4 0c-.6 0-1-.5-1-1.1s.4-1.1 1-1.1c.6 0 1 .5 1 1.1s-.4 1.1-1 1.1z" fill="#a78bfa"/></svg>
+            </div>
+            <div class="support-card-title">Discord</div>
+            <div class="support-card-desc">Soporte directo de la comunidad y del autor. El lugar más rápido para resolver problemas.</div>
+          </a>
+          <a class="support-card" href="https://github.com/elyisus-xd/Event-UI/issues" target="_blank">
+            <div class="support-card-icon green">
+              <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--green)" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="support-card-title">GitHub Issues</div>
+            <div class="support-card-desc">Para reportar bugs o proponer nuevas funcionalidades. Incluye siempre los logs del servidor y la versión de EventUI.</div>
+          </a>
+        </div>
+
+        <div class="callout callout-tip" style="margin-top:24px;">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Al reportar un bug, incluye siempre: <strong>versión de EventUI</strong>, <strong>versión del servidor</strong> (Paper/Arclight), <strong>versión del mod</strong> (Fabric), y el <strong>log de error</strong> de la consola del servidor o del cliente.
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleFaq(el) {
+      const answer = el.nextElementSibling;
+      const isOpen = el.classList.contains('open');
+      el.classList.toggle('open', !isOpen);
+      answer.classList.toggle('open', !isOpen);
+    }
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

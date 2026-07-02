@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Guía de contribución de EventUI — cómo configurar el entorno, compilar los módulos y enviar un Pull Request." />
+  <title>Contribuir — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a" href="../guias/instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a active" href="contribuir.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar...<span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.0</span>
+      <a class="gh-github" href="https://github.com/elyisus-xd/Event-UI" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Desarrollo</span>
+          <span class="pill pill-n">Java 21</span>
+          <span class="pill pill-n">Gradle</span>
+          <span class="pill pill-n">Open Source</span>
+        </div>
+
+        <h1 style="font-size:36px;">Contribuir</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          EventUI es open source y acepta contribuciones. Esta guía explica cómo configurar el entorno de desarrollo, compilar los módulos y enviar un Pull Request correctamente.
+        </p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Los Pull Requests van siempre a la rama <code>dev</code>, nunca directamente a <code>master</code>. Los cambios pasan de <code>dev</code> a <code>master</code> solo en releases oficiales.
+          </div>
+        </div>
+
+        <!-- REQUISITOS -->
+        <h2>Requisitos previos</h2>
+
+        <table>
+          <thead><tr><th>Herramienta</th><th>Versión</th><th>Notas</th></tr></thead>
+          <tbody>
+            <tr><td><strong>JDK</strong></td><td>21</td><td>El proyecto usa el toolchain de Gradle para Java 21. OpenJDK o Temurin recomendados.</td></tr>
+            <tr><td><strong>Git</strong></td><td>Cualquiera reciente</td><td>Para clonar el repo y gestionar ramas.</td></tr>
+            <tr><td><strong>IDE</strong></td><td>IntelliJ IDEA recomendado</td><td>Tiene soporte nativo para proyectos Gradle multi-módulo y Fabric Loom.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            No instales Gradle manualmente. El proyecto incluye <strong>Gradle Wrapper</strong> (<code>gradlew</code>) que descarga automáticamente la versión correcta. Usa siempre <code>./gradlew</code> en lugar de <code>gradle</code>.
+          </div>
+        </div>
+
+        <!-- ESTRUCTURA -->
+        <h2>Estructura del proyecto</h2>
+
+        <p>EventUI es un proyecto Gradle multi-módulo con tres subproyectos:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Estructura de carpetas</div>
+          <pre><code>Event-UI/
+├── eventui-common/     ← Contratos e interfaces compartidas (sin dependencias externas)
+├── eventui-core/       ← Plugin Paper/Arclight — lógica, tracking, bridge server-side
+├── eventui-fabric/     ← Mod Fabric — rendering, UI, bridge client-side
+├── build.gradle.kts    ← Configuración raíz del proyecto
+├── settings.gradle.kts ← Registro de subproyectos
+├── gradle.properties   ← Versiones de Minecraft, Fabric API y Fabric Loader
+└── gradlew             ← Gradle Wrapper (usar siempre este)</code></pre>
+        </div>
+
+        <p>El módulo <code>eventui-common</code> no tiene dependencias externas — es compartido entre el plugin y el mod. Nunca añadas dependencias externas a <code>eventui-common</code>.</p>
+
+        <!-- CONFIGURACIÓN -->
+        <h2>Configurar el entorno</h2>
+
+        <div class="timeline">
+          <div class="timeline-line"></div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Haz un fork del repositorio</div>
+              <div class="timeline-step-desc">Ve a <code>github.com/elyisus-xd/Event-UI</code> y haz clic en <strong>Fork</strong>. Esto crea una copia del repo en tu cuenta de GitHub.</div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Clona tu fork localmente</div>
+              <div class="code-block" style="margin-top:10px;">
+                <div class="code-label"><span class="dot"></span>Terminal</div>
+                <pre><code>git clone https://github.com/TU-USUARIO/Event-UI.git
+cd Event-UI</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Añade el repositorio original como remoto</div>
+              <div class="timeline-step-desc">Esto te permite sincronizar tu fork con los cambios del repo principal.</div>
+              <div class="code-block" style="margin-top:10px;">
+                <div class="code-label"><span class="dot"></span>Terminal</div>
+                <pre><code>git remote add upstream https://github.com/elyisus-xd/Event-UI.git
+git fetch upstream</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Abre el proyecto en IntelliJ IDEA</div>
+              <div class="timeline-step-desc">Selecciona <strong>File → Open</strong> y elige la carpeta raíz <code>Event-UI/</code>. IntelliJ detectará automáticamente el proyecto Gradle y descargará las dependencias. La primera vez puede tardar varios minutos mientras descarga Minecraft, los mappings y Fabric API.</div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Genera los sources de Minecraft (solo para el mod)</div>
+              <div class="timeline-step-desc">Fabric Loom necesita generar los sources de Minecraft para que el IDE pueda hacer autocomplete del código del juego.</div>
+              <div class="code-block" style="margin-top:10px;">
+                <div class="code-label"><span class="dot"></span>Terminal</div>
+                <pre><code>./gradlew :eventui-fabric:genSources</code></pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COMPILAR -->
+        <h2>Compilar los módulos</h2>
+
+        <p>Usa siempre el Gradle Wrapper desde la raíz del proyecto:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Compilar el plugin (eventui-core)</div>
+          <pre><code># Genera el JAR con todas las dependencias incluidas (shadowJar)
+./gradlew :eventui-core:shadowJar
+
+# El JAR resultante estará en:
+# eventui-core/build/libs/eventui-core-1.0.0-all.jar</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Compilar el mod (eventui-fabric)</div>
+          <pre><code># Build completo del mod (incluye remap de Fabric Loom)
+./gradlew :eventui-fabric:build
+
+# El JAR final estará en:
+# eventui-fabric/build/libs/eventui-fabric-1.0.0.jar</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Compilar ambos a la vez</div>
+          <pre><code>./gradlew :eventui-core:shadowJar :eventui-fabric:build</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Limpiar archivos de build anteriores</div>
+          <pre><code>./gradlew clean</code></pre>
+        </div>
+
+        <!-- RAMAS -->
+        <h2>Modelo de ramas</h2>
+
+        <table>
+          <thead><tr><th>Rama</th><th>Propósito</th><th>PRs directos</th></tr></thead>
+          <tbody>
+            <tr><td><code>master</code></td><td>Código estable en producción. Solo recibe merges desde <code>dev</code> en releases oficiales.</td><td>❌ No</td></tr>
+            <tr><td><code>dev</code></td><td>Rama de integración. Aquí van todos los PRs de features y fixes.</td><td>✅ Sí</td></tr>
+            <tr><td><code>feature/nombre</code></td><td>Ramas individuales de trabajo. Se crean desde <code>dev</code> y se mergean a <code>dev</code>.</td><td>— (son tuyas)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Flujo de trabajo estándar</div>
+          <pre><code># Asegúrate de estar en dev y tenerla actualizada
+git checkout dev
+git pull upstream dev
+
+# Crea tu rama de trabajo
+git checkout -b feature/mi-nueva-feature
+
+# ... haz tus cambios ...
+
+# Sube tu rama a tu fork
+git push origin feature/mi-nueva-feature
+
+# Abre un PR desde tu rama → dev del repo principal</code></pre>
+        </div>
+
+        <!-- CONVENCIONES -->
+        <h2>Convenciones de commits</h2>
+
+        <p>EventUI usa <strong>Conventional Commits</strong> — un formato estándar que hace el historial legible y facilita generar el changelog automáticamente. El formato es:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Formato</div>
+          <pre><code>tipo(scope): descripción corta en inglés
+
+# Ejemplos reales:
+feat(tracker): add BREED_ENTITY objective handler
+fix(ui): correct anchor resolution for bottom_right elements
+docs(api): document bridge serialization format
+refactor(common): rename block_type parameter to block_id
+chore(gradle): update fabric-api to 0.108.0+1.21.1</code></pre>
+        </div>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Cuándo usarlo</th></tr></thead>
+          <tbody>
+            <tr><td><code>feat</code></td><td>Nueva funcionalidad o tipo de objetivo.</td></tr>
+            <tr><td><code>fix</code></td><td>Corrección de un bug.</td></tr>
+            <tr><td><code>docs</code></td><td>Cambios solo en documentación.</td></tr>
+            <tr><td><code>refactor</code></td><td>Refactorización que no añade ni rompe funcionalidad.</td></tr>
+            <tr><td><code>chore</code></td><td>Tareas de mantenimiento: dependencias, build, etc.</td></tr>
+            <tr><td><code>perf</code></td><td>Mejora de rendimiento.</td></tr>
+            <tr><td><code>test</code></td><td>Añadir o corregir tests.</td></tr>
+          </tbody>
+        </table>
+
+        <p>Los scopes recomendados para EventUI son: <code>tracker</code>, <code>ui</code>, <code>bridge</code>, <code>common</code>, <code>core</code>, <code>fabric</code>, <code>config</code>, <code>rewards</code>, <code>gradle</code>.</p>
+
+        <!-- QUÉ CONTRIBUIR -->
+        <h2>¿Qué puedo contribuir?</h2>
+
+        <p>Estas son las áreas donde una contribución tiene más impacto en este momento:</p>
+
+        <table>
+          <thead><tr><th>Área</th><th>Estado actual</th><th>Qué se necesita</th></tr></thead>
+          <tbody>
+            <tr><td><code>BREW_POTION</code></td><td>❌ Sin handler</td><td>Implementar el listener de <code>BrewingStandFuelEvent</code> en <code>ObjectiveTracker</code></td></tr>
+            <tr><td><code>ObjectiveGroup</code></td><td>❌ Sin integración</td><td>Conectar la lógica COMPOSITE/OR/SEQUENCE en <code>ObjectiveTracker</code> y <code>checkEventCompletion</code></td></tr>
+            <tr><td><code>tracking.updateInterval</code></td><td>⚠️ Hardcodeado</td><td>Leer el valor de <code>config.yml</code> en lugar de usar 40 ticks fijos</td></tr>
+            <tr><td><code>debug.*</code></td><td>⚠️ Sin leer</td><td>Conectar las keys de debug al sistema de logging en cada manager</td></tr>
+            <tr><td>Soporte Paper puro</td><td>⚠️ Workaround</td><td>Detectar si el servidor es Paper puro y omitir el shading de Adventure cuando no es necesario</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ABRIR UN PR -->
+        <h2>Abrir un Pull Request</h2>
+
+        <div class="timeline">
+          <div class="timeline-line"></div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Asegúrate de que el proyecto compila</div>
+              <div class="code-block" style="margin-top:10px;">
+                <div class="code-label"><span class="dot"></span>Terminal</div>
+                <pre><code>./gradlew :eventui-core:shadowJar :eventui-fabric:build</code></pre>
+              </div>
+              <div class="timeline-step-desc" style="margin-top:8px;">Si el build falla, no abras el PR todavía.</div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Abre el PR desde tu rama hacia dev</div>
+              <div class="timeline-step-desc">Ve a GitHub → tu fork → <strong>Compare & pull request</strong>. Asegúrate de que la rama destino sea <code>dev</code> del repo principal, no <code>master</code>.</div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Describe tus cambios claramente</div>
+              <div class="timeline-step-desc">El título del PR debe seguir el formato de Conventional Commits. En la descripción explica qué cambias, por qué, y si hay algo que el revisor deba probar manualmente.</div>
+              <div class="code-block" style="margin-top:10px;">
+                <div class="code-label"><span class="dot"></span>Ejemplo de título de PR</div>
+                <pre><code>feat(tracker): implement BREW_POTION objective handler</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="timeline-step-title">Espera la revisión</div>
+              <div class="timeline-step-desc">Los PRs son revisados manualmente. Si hay comentarios o cambios solicitados, súbelos a la misma rama — el PR se actualiza automáticamente.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GITIGNORE -->
+        <h2>Archivos a no subir al repo</h2>
+
+        <p>El <code>.gitignore</code> ya cubre los casos más importantes, pero asegúrate de que nunca subes estos archivos:</p>
+
+        <table>
+          <thead><tr><th>Archivo / Carpeta</th><th>Por qué no subirlo</th></tr></thead>
+          <tbody>
+            <tr><td><code>build/</code></td><td>Generado por Gradle. Se regenera con cada compilación.</td></tr>
+            <tr><td><code>.gradle/</code></td><td>Caché local de Gradle. Específico de cada máquina.</td></tr>
+            <tr><td><code>.idea/</code></td><td>Configuración local de IntelliJ. Puede tener rutas absolutas de tu máquina.</td></tr>
+            <tr><td><code>run/</code></td><td>Carpeta de ejecución del cliente/servidor de desarrollo de Fabric Loom. Contiene mundos y configs locales.</td></tr>
+            <tr><td><code>*.jar</code></td><td>Los JARs compilados no van al repo. Se distribuyen en Modrinth/CurseForge y GitHub Releases.</td></tr>
+            <tr><td><code>plugins/EventUI/playerdata/</code></td><td>Datos de progreso de jugadores. Nunca deben estar en el repo.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="api-bridge.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← API Bridge</span>
+            </a>
+          </div>
+          <div class="footer-nav">
+            <a class="footer-nav-btn next" href="../faq.html">
+              <span class="fnb-label">Siguiente</span>
+              <span class="fnb-title">Ayuda & FAQ →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

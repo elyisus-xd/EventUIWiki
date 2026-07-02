@@ -158,10 +158,51 @@ function onSearchKey(e) {
   }
 }
 
+// ── HIGHLIGHT.JS ──
+// Carga highlight.js desde CDN y aplica syntax highlighting a todos los bloques
+async function loadHighlightJS() {
+  // Cargar el script
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  document.head.appendChild(script);
+
+  await new Promise(resolve => script.onload = resolve);
+
+  // Configurar y aplicar
+  hljs.configure({ ignoreUnescapedHTML: true });
+
+  document.querySelectorAll('pre code').forEach(block => {
+    // Detectar lenguaje por el contenido del bloque padre (.code-label)
+    const label = block.closest('.code-block')?.querySelector('.code-label');
+    const labelText = label?.textContent?.toLowerCase() ?? '';
+
+    if (labelText.includes('.yml') || labelText.includes('yaml') ||
+        labelText.includes('config') || labelText.includes('events/') ||
+        labelText.includes('uis/') || labelText.includes('estructura') ||
+        labelText.includes('ejemplo') || labelText.includes('sintaxis')) {
+      block.classList.add('language-yaml');
+    } else if (labelText.includes('.java') || labelText.includes('plugin') ||
+               labelText.includes('mod fabric') || labelText.includes('listener')) {
+      block.classList.add('language-java');
+    } else if (labelText.includes('terminal') || labelText.includes('gradle') ||
+               labelText.includes('bash') || labelText.includes('./gradlew')) {
+      block.classList.add('language-bash');
+    } else if (labelText.includes('.xml') || labelText.includes('pom')) {
+      block.classList.add('language-xml');
+    } else if (labelText.includes('consola') || labelText.includes('salida') ||
+               labelText.includes('[eventui]') || labelText.includes('flujo')) {
+      block.classList.add('language-accesslog');
+    }
+
+    hljs.highlightElement(block);
+  });
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSidebar();
   setActiveNav();
+  loadHighlightJS();
 
   document.querySelectorAll('.gh-search, [data-search]').forEach(el => {
     el.addEventListener('click', openSearch);
