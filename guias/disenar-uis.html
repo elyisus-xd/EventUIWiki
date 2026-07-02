@@ -7,6 +7,50 @@
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/search.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .version-selector { position: relative; }
+    .version-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .version-btn:hover { border-color: var(--border-2); color: var(--text-1); }
+    .version-chevron {
+      width: 12px; height: 12px;
+      transition: transform 0.2s; color: var(--text-3);
+    }
+    .version-selector.open .version-chevron { transform: rotate(180deg); }
+    .version-dropdown {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 6px;
+      min-width: 140px; z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .version-selector.open .version-dropdown { display: block; }
+    .version-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 8px 10px; border: none; background: none;
+      border-radius: 6px; font-size: 12px; color: var(--text-2);
+      cursor: pointer; font-family: 'JetBrains Mono', monospace;
+      transition: background 0.1s;
+    }
+    .version-option:hover { background: var(--bg-3); color: var(--text-1); }
+    .version-option.active { color: var(--green); }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: transparent;
+    }
+    .version-option.active .version-dot { background: var(--green); }
+    .version-tag {
+      margin-left: auto; font-size: 10px;
+      background: var(--green-bg); color: var(--green);
+      border-radius: 4px; padding: 1px 6px;
+    }
+  </style>
 </head>
 <body>
 
@@ -24,7 +68,26 @@
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Buscar...<span class="kbd">⌘K</span>
       </div>
-      <span class="gh-badge">v1.0.0</span>
+      
+      <div class="version-selector" id="version-selector">
+        <button class="version-btn" onclick="toggleVersionDropdown()">
+          <span id="current-version-label">v1.0.1</span>
+          <svg class="version-chevron" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="version-dropdown" id="version-dropdown">
+          <button class="version-option active" data-v="1.0.1" onclick="switchVersion('1.0.1')">
+            <span class="version-dot"></span>
+            v1.0.1 <span class="version-tag">latest</span>
+          </button>
+          <button class="version-option" data-v="1.0.0" onclick="switchVersion('1.0.0')">
+            <span class="version-dot"></span>
+            v1.0.0
+          </button>
+        </div>
+      </div>
+
       <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
     </div>
   </header>
@@ -35,13 +98,15 @@
     <main class="main-content">
       <div class="content-inner">
 
-        <div class="pill-row">
-          <span class="pill pill-g">Guía</span>
-          <span class="pill pill-n">YAML</span>
-          <span class="pill pill-n">uis/</span>
-        </div>
+        <div class="version-content" data-version="1.0.1">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">YAML</span>
+            <span class="pill pill-n">uis/</span>
+            <span class="pill pill-b">v1.0.1</span>
+          </div>
 
-        <h1 style="font-size:36px;">Diseñar UIs</h1>
+          <h1 style="font-size:36px;">Diseñar UIs</h1>
         <p style="font-size:15px; max-width:580px;">Las pantallas de EventUI se definen como archivos <code>.yml</code> en <code>plugins/EventUI/uis/</code>. Cada archivo describe una pantalla completa con elementos, posiciones, sonidos y transiciones.</p>
 
         <h2>Estructura de una pantalla</h2>
@@ -358,10 +423,21 @@ elements:
         </div>
 
         <h3>TOOLTIP</h3>
-        <p>Siempre como hijo (<code>children</code>) de otro elemento. Se muestra al pasar el cursor sobre el padre.</p>
+        <p>Siempre como hijo (<code>children</code>) de otro elemento. Se muestra al pasar el cursor sobre el padre. Los tooltips soportan tres modos de renderizado (<code>render_type</code>): los modos simples <code>standard</code> y <code>text</code>, y el modo avanzado <code>advanced</code> que permite combinar múltiples secciones (recetas, ítems, entidades, imágenes y separadores).</p>
 
+        <h4>render_type disponibles</h4>
+        <table>
+          <thead><tr><th>render_type</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>standard</code></td><td>Fondo estilo vanilla. Soporta <code>\n</code> y códigos <code>§</code>.</td></tr>
+            <tr><td><code>text</code></td><td>Texto flotante sin fondo.</td></tr>
+            <tr><td><code>advanced</code></td><td>Tooltip enriquecido con múltiples secciones: recetas, ítems, entidades, imágenes y separadores.</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Ejemplo: render_type "standard"</h4>
         <div class="code-block">
-          <div class="code-label"><span class="dot"></span>render_type: "standard" — fondo vanilla</div>
+          <div class="code-label"><span class="dot"></span>Fondo vanilla con texto formateado</div>
           <pre><code>children:
   - id: "tooltip-libro"
     type: TOOLTIP
@@ -375,8 +451,9 @@ elements:
       shadow: "true"</code></pre>
         </div>
 
+        <h4>Ejemplo: render_type "text"</h4>
         <div class="code-block">
-          <div class="code-label"><span class="dot"></span>render_type: "text" — texto flotante sin fondo</div>
+          <div class="code-label"><span class="dot"></span>Texto flotante sin fondo</div>
           <pre><code>children:
   - id: "tooltip-mision"
     type: TOOLTIP
@@ -390,10 +467,159 @@ elements:
       shadow: "true"</code></pre>
         </div>
 
+        <h4>render_type "advanced" — múltiples secciones</h4>
+        <p>El modo <code>advanced</code> usa secciones numeradas (<code>section_1_</code>, <code>section_2_</code>, etc.). Cada sección tiene un tipo que determina cómo se renderiza, y propiedades adicionales específicas de ese tipo. Se pueden combinar múltiples secciones en un mismo tooltip.</p>
+
+        <h5>Tipos de sección disponibles</h5>
+        <table>
+          <thead><tr><th>section_type</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>TEXT</code></td><td>Texto con soporte MiniMessage y códigos <code>§</code>.</td></tr>
+            <tr><td><code>ITEM</code></td><td>Ítem de Minecraft con cantidad y etiqueta opcional.</td></tr>
+            <tr><td><code>SEPARATOR</code></td><td>Línea divisoria horizontal.</td></tr>
+            <tr><td><code>RECIPE</code></td><td>Receta de crafteo 3×3 (shaped o shapeless) desde el RecipeManager.</td></tr>
+            <tr><td><code>FURNACE_RECIPE</code></td><td>Receta de horno, alto horno o ahumador. Items definidos manualmente.</td></tr>
+            <tr><td><code>SMITHING_RECIPE</code></td><td>Receta de mesa de herrería (template + base + addition).</td></tr>
+            <tr><td><code>ANVIL_RECIPE</code></td><td>Receta de yunque (input1 + input2 opcional).</td></tr>
+            <tr><td><code>BREWING_RECIPE</code></td><td>Receta de soporte de pociones.</td></tr>
+            <tr><td><code>CUSTOM_RECIPE</code></td><td>Receta con textura propia y slots definidos con coordenadas X,Y. Para mods.</td></tr>
+            <tr><td><code>ENTITY</code></td><td>Entidad 3D renderizada.</td></tr>
+            <tr><td><code>IMAGE</code></td><td>Imagen/textura personalizada.</td></tr>
+          </tbody>
+        </table>
+
+        <h5>Ejemplos de cada tipo de sección</h5>
+
+        <p><strong>TEXT</strong> — Texto con soporte de códigos de color</p>
         <div class="code-block">
-          <div class="code-label"><span class="dot"></span>render_type: "advanced" — receta de crafting</div>
+          <div class="code-label"><span class="dot"></span>section_type: TEXT</div>
+          <pre><code>section_1_type: "TEXT"
+section_1_content: "§6Crafting de ejemplo"</code></pre>
+        </div>
+
+        <p><strong>ITEM</strong> — Ítem con cantidad y etiqueta (soporta cycling con múltiples items)</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: ITEM</div>
+          <pre><code>section_1_type: "ITEM"
+section_1_item: "minecraft:diamond"
+section_1_count: "3"
+section_1_label: "×3 Diamantes"</code></pre>
+        </div>
+
+        <p><strong>SEPARATOR</strong> — Línea divisoria</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: SEPARATOR</div>
+          <pre><code>section_1_type: "SEPARATOR"</code></pre>
+        </div>
+
+        <p><strong>RECIPE</strong> — Receta de crafteo 3×3</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: RECIPE</div>
+          <pre><code>section_1_type: "RECIPE"
+section_1_recipe: "minecraft:diamond_chestplate"
+section_1_show_grid_frame: "true"
+# Opcionales:
+# section_1_inventory_preview: "true"   # oscurece ingredientes que no tienes
+# section_1_show_tooltip_background: "false"   # oculta el fondo morado</code></pre>
+        </div>
+
+        <p><strong>FURNACE_RECIPE</strong> — Receta de horno/alto horno/ahumador</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: FURNACE_RECIPE</div>
+          <pre><code>section_1_type: "FURNACE_RECIPE"
+section_1_input: "minecraft:iron_ore,minecraft:raw_iron,minecraft:deepslate_iron_ore"
+section_1_fuel: "minecraft:coal"          # opcional
+section_1_result: "minecraft:iron_ingot"
+# El input acepta múltiples items separados por coma — se rotan cada segundo</code></pre>
+        </div>
+
+        <p><strong>SMITHING_RECIPE</strong> — Receta de mesa de herrería</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: SMITHING_RECIPE</div>
+          <pre><code>section_1_type: "SMITHING_RECIPE"
+section_1_template: "minecraft:netherite_upgrade_smithing_template"
+section_1_base: "minecraft:diamond_sword"
+section_1_addition: "minecraft:netherite_ingot"
+section_1_result: "minecraft:netherite_sword"</code></pre>
+        </div>
+
+        <p><strong>ANVIL_RECIPE</strong> — Receta de yunque</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: ANVIL_RECIPE</div>
+          <pre><code>section_1_type: "ANVIL_RECIPE"
+section_1_input1: "minecraft:diamond_sword"
+section_1_input2: "minecraft:enchanted_book"   # opcional
+section_1_result: "minecraft:diamond_sword"</code></pre>
+        </div>
+
+        <p><strong>BREWING_RECIPE</strong> — Receta de soporte de pociones</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: BREWING_RECIPE</div>
+          <pre><code>section_1_type: "BREWING_RECIPE"
+section_1_ingredient: "minecraft:nether_wart"
+section_1_bottle: "minecraft:water_bottle"
+section_1_result: "minecraft:awkward_potion"</code></pre>
+        </div>
+
+        <p><strong>CUSTOM_RECIPE</strong> — Receta personalizada para mods</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: CUSTOM_RECIPE</div>
+          <pre><code>section_1_type: "CUSTOM_RECIPE"
+section_1_texture: "mymod:textures/gui/recipes/crusher.png"
+section_1_texture_width: "90"
+section_1_texture_height: "50"
+section_1_slots: "input@10,17|output@65,26"
+section_1_slot_0: "minecraft:iron_ore,minecraft:raw_iron"
+section_1_slot_1: "minecraft:iron_ingot"
+# section_1_slots define los slots con formato "role@X,Y" separados por |
+# X,Y son píxeles desde la esquina superior izquierda de la textura
+# slot_N referencia al slot N del string de slots (empezando en 0)</code></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">Las coordenadas X,Y de <code>section_1_slots</code> son píxeles desde la esquina superior izquierda de la textura. Abre el PNG en cualquier editor de imágenes, localiza el centro de cada slot y usa esas coordenadas.</div>
+        </div>
+
+        <p><strong>ENTITY</strong> — Entidad 3D</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: ENTITY</div>
+          <pre><code>section_1_type: "ENTITY"
+section_1_entity: "minecraft:zombie"</code></pre>
+        </div>
+
+        <p><strong>IMAGE</strong> — Imagen/textura personalizada</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>section_type: IMAGE</div>
+          <pre><code>section_1_type: "IMAGE"
+section_1_texture: "eventui:textures/ui/banner.png"
+section_1_width: "200"
+section_1_height: "50"</code></pre>
+        </div>
+
+        <h5>Propiedades globales del tooltip advanced</h5>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>show_tooltip_background</code></td><td><code>"true"</code></td><td>Muestra el cuadro morado/negro de fondo. <code>"false"</code> = solo el contenido.</td></tr>
+          </tbody>
+        </table>
+
+        <h5>Propiedades opcionales de secciones RECIPE (grid 3×3)</h5>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>section_N_show_grid_frame</code></td><td><code>"true"</code></td><td>Muestra el frame de la mesa de crafteo vanilla.</td></tr>
+            <tr><td><code>section_N_inventory_preview</code></td><td><code>"false"</code></td><td>Oscurece con overlay los ingredientes que el jugador no tiene en inventario.</td></tr>
+            <tr><td><code>section_N_recipe_frame</code></td><td>—</td><td>ResourceLocation de una textura custom para el frame del grid. Compatible con resource packs.</td></tr>
+          </tbody>
+        </table>
+
+        <h5>Ejemplo completo — tooltip con varias secciones</h5>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Tooltip advanced con múltiples secciones de texto, separador y receta</div>
           <pre><code>children:
-  - id: "tooltip-receta"
+  - id: "tooltip-pechera"
     type: TOOLTIP
     x: 0
     y: 0
@@ -401,23 +627,17 @@ elements:
     height: 0
     properties:
       render_type: "advanced"
-      content: |
-        recipe: minecraft:diamond_chestplate [frame:eventui:textures/ui/widgets/crafting_frame.png]</code></pre>
+      show_tooltip_background: "true"
+      section_1_type: "TEXT"
+      section_1_content: "§6§lPechera de Diamante"
+      section_2_type: "TEXT"
+      section_2_content: "§7Protección máxima contra ataques."
+      section_3_type: "SEPARATOR"
+      section_4_type: "RECIPE"
+      section_4_recipe: "minecraft:diamond_chestplate"
+      section_4_show_grid_frame: "true"
+      section_4_inventory_preview: "true"</code></pre>
         </div>
-
-        <div class="callout callout-tip">
-          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
-          <div class="callout-text">El formato del tooltip <code>advanced</code> con receta es <code>recipe: namespace:id [frame:ruta_textura]</code>. El parámetro <code>frame</code> es opcional y define la textura del marco del crafteo.</div>
-        </div>
-
-        <table>
-          <thead><tr><th>render_type</th><th>Descripción</th></tr></thead>
-          <tbody>
-            <tr><td><code>standard</code></td><td>Fondo estilo vanilla. Soporta <code>\n</code> y códigos <code>§</code>.</td></tr>
-            <tr><td><code>text</code></td><td>Texto flotante sin fondo. Soporta <code>shadow</code> y saltos de línea.</td></tr>
-            <tr><td><code>advanced</code></td><td>Tooltip enriquecido con recetas, ítems, entidades, imágenes y separadores.</td></tr>
-          </tbody>
-        </table>
 
         <h2>Acciones de botones</h2>
         <table>
@@ -481,11 +701,483 @@ content: "Zombies: {event.matar-zombies.kill-zombies.current}/{event.matar-zombi
             </a>
           </div>
         </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0" style="display:none;">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">YAML</span>
+            <span class="pill pill-n">uis/</span>
+            <span class="pill pill-b">v1.0.0</span>
+          </div>
+
+          <h1 style="font-size:36px;">Diseñar UIs</h1>
+          <p style="font-size:15px; max-width:580px;">Las pantallas de EventUI se definen como archivos <code>.yml</code> en <code>plugins/EventUI/uis/</code>. Cada archivo describe una pantalla completa con elementos, posiciones, sonidos y transiciones.</p>
+
+          <h2>Estructura de una pantalla</h2>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>uis/mi-pantalla.yml — estructura completa</div>
+            <pre><code>id: "mi-pantalla"
+title: ""
+screen_width: 1366       # escala automáticamente a la resolución del cliente
+screen_height: 720
+
+screen_properties:
+  pause_game: "false"
+  blur: false                           # booleano sin comillas
+  transition_in: "scale_up"
+  transition_out: "none"
+  transition_duration: "300"            # milisegundos
+  transition_easing: "ease_in_out_quad"
+  open_sound: "minecraft:ui.toast.in"   # vacío = sin sonido
+  open_sound_volume: "1.0"
+  open_sound_pitch: "1.0"
+  close_sound: ""
+  close_sound_volume: "0.5"
+
+elements:
+  - id: "mi-elemento"
+    type: IMAGE
+    x: 0
+    y: 0
+    width: 200
+    height: 200
+    properties:
+      texture: "eventui:textures/ui/fondo.png"</code></pre>
+          </div>
+
+          <h3>screen_properties disponibles</h3>
+          <table>
+            <thead><tr><th>Propiedad</th><th>Tipo</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>pause_game</code></td><td><code>"true"</code> / <code>"false"</code></td><td>Si la pantalla pausa el juego al abrirse.</td></tr>
+              <tr><td><code>blur</code></td><td><code>true</code> / <code>false</code></td><td>Blur del mundo de fondo. Sin comillas.</td></tr>
+              <tr><td><code>transition_in</code></td><td>String</td><td>Animación de entrada: <code>scale_up</code>, <code>slide_left</code>, <code>slide_right</code>, <code>fade</code>, <code>none</code>.</td></tr>
+              <tr><td><code>transition_out</code></td><td>String</td><td>Animación de salida. Mismos valores.</td></tr>
+              <tr><td><code>transition_duration</code></td><td><code>"300"</code></td><td>Duración de la transición en milisegundos.</td></tr>
+              <tr><td><code>transition_easing</code></td><td>String</td><td><code>linear</code>, <code>ease_in</code>, <code>ease_out</code>, <code>ease_in_out</code>, <code>ease_in_out_quad</code>.</td></tr>
+              <tr><td><code>open_sound</code></td><td>String</td><td>Sonido al abrir la pantalla. Vacío = sin sonido.</td></tr>
+              <tr><td><code>open_sound_volume</code></td><td><code>"1.0"</code></td><td>Volumen de apertura (0.0 – 2.0).</td></tr>
+              <tr><td><code>open_sound_pitch</code></td><td><code>"1.0"</code></td><td>Tono de apertura.</td></tr>
+              <tr><td><code>close_sound</code></td><td>String</td><td>Sonido al cerrar.</td></tr>
+              <tr><td><code>close_sound_volume</code></td><td><code>"0.5"</code></td><td>Volumen de cierre.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Campos comunes de todos los elementos</h2>
+          <table>
+            <thead><tr><th>Campo</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>✅ Sí</td><td>Identificador único dentro del archivo.</td></tr>
+              <tr><td><code>type</code></td><td>✅ Sí</td><td>Tipo en mayúsculas: IMAGE, IMAGE_BUTTON, BUTTON, TEXT, PROGRESS_BAR, ENTITY_RENDER, TOOLTIP, ITEM_RENDER, BLOCK_RENDER, PANEL, ICON.</td></tr>
+              <tr><td><code>x</code></td><td>✅ Sí</td><td>Posición X. Con <code>anchor</code> activo funciona como offset adicional.</td></tr>
+              <tr><td><code>y</code></td><td>✅ Sí</td><td>Posición Y.</td></tr>
+              <tr><td><code>width</code></td><td>No</td><td>Ancho. Default: <code>100</code>.</td></tr>
+              <tr><td><code>height</code></td><td>No</td><td>Alto. Default: <code>20</code>.</td></tr>
+              <tr><td><code>z_index</code></td><td>No</td><td>Orden de capas — mayor = encima. Default: <code>0</code>.</td></tr>
+              <tr><td><code>visible</code></td><td>No</td><td>Visibilidad estática. Default: <code>true</code>.</td></tr>
+              <tr><td><code>properties</code></td><td>Varía</td><td>Propiedades específicas del tipo.</td></tr>
+              <tr><td><code>children</code></td><td>No</td><td>Elementos hijos: tooltips, sub-botones, renders de entidades.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Sistema de anclas</h2>
+          <p>Con <code>anchor</code> en <code>properties</code>, el elemento se posiciona relativo a un punto de la pantalla. Los campos <code>x</code> e <code>y</code> pasan a ser offsets desde ese punto, y <code>anchor_offset_x</code> / <code>anchor_offset_y</code> dan un desplazamiento adicional.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo con anchor</div>
+            <pre><code>- id: "btn-volver"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 65
+  height: 65
+  properties:
+    anchor: "bottom_center"
+    anchor_offset_x: 0
+    anchor_offset_y: -50      # 50px hacia arriba desde el borde inferior
+    texture: "eventui:textures/ui/logo/logo.png"
+    action: "open:main-menu"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Valor</th><th>Posición</th></tr></thead>
+            <tbody>
+              <tr><td><code>top_left</code></td><td>Esquina superior izquierda</td></tr>
+              <tr><td><code>top_center</code></td><td>Centro superior</td></tr>
+              <tr><td><code>top_right</code></td><td>Esquina superior derecha</td></tr>
+              <tr><td><code>center_left</code></td><td>Centro izquierdo</td></tr>
+              <tr><td><code>center</code></td><td>Centro de la pantalla</td></tr>
+              <tr><td><code>center_right</code></td><td>Centro derecho</td></tr>
+              <tr><td><code>bottom_left</code></td><td>Esquina inferior izquierda</td></tr>
+              <tr><td><code>bottom_center</code></td><td>Centro inferior</td></tr>
+              <tr><td><code>bottom_right</code></td><td>Esquina inferior derecha</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Visibilidad condicional — visible_if</h2>
+          <p>Muestra u oculta un elemento según el valor de una variable de estado del servidor. Perfecto para mostrar contenido bloqueado o desbloqueado según el progreso del jugador.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo — carta bloqueada vs desbloqueada</div>
+            <pre><code># Solo visible si zombie_card_unlocked NO es "true"
+- id: "carta-bloqueada"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 250
+  height: 250
+  properties:
+    anchor: "center_left"
+    anchor_offset_x: 0
+    anchor_offset_y: -125
+    visible_if: "zombie_card_unlocked != true"
+    texture: "eventui:textures/ui/widgets/tarjeta_bloqueada.png"
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.03"
+    hover_hitbox: "texture_alpha"
+    action: ""
+
+# Solo visible si zombie_card_unlocked ES "true"
+- id: "carta-desbloqueada"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 250
+  height: 250
+  properties:
+    anchor: "center_left"
+    anchor_offset_x: 0
+    anchor_offset_y: -125
+    visible_if: "zombie_card_unlocked == true"
+    texture: "eventui:textures/ui/widgets/tarjeta_desbloqueada.png"
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.03"
+    hover_hitbox: "texture_alpha"
+    action: ""
+  children:
+    - id: "render-zombie"
+      type: ENTITY_RENDER
+      x: 100
+      y: 100
+      width: 50
+      height: 50
+      properties:
+        entity: "minecraft:zombie"
+        scale: "35"
+        rotation_mode: "spin"
+        spin_speed: "0.5"
+        y_offset: "0"</code></pre>
+          </div>
+
+          <p>Las variables se establecen desde el servidor con <code>/eventui setuivar &lt;jugador&gt; &lt;clave&gt; &lt;valor&gt;</code>. Los operadores disponibles son <code>==</code> y <code>!=</code>.</p>
+
+          <h2>Tipos de elementos</h2>
+
+          <h3>IMAGE</h3>
+          <p>Imagen estática para fondos, títulos y decoraciones.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>IMAGE</div>
+            <pre><code>- id: "titulo"
+  type: IMAGE
+  x: 0
+  y: 0
+  width: 500
+  height: 100
+  properties:
+    anchor: "top_center"
+    anchor_offset_x: 0
+    anchor_offset_y: 75
+    texture: "eventui:textures/ui/titles/mi_titulo.png"</code></pre>
+          </div>
+
+          <h3>IMAGE_BUTTON</h3>
+          <p>El elemento más completo. Botón con textura personalizada, ícono, animación hover, sonidos, hitbox preciso y texturas de estado por evento.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>IMAGE_BUTTON — todas las propiedades</div>
+            <pre><code>- id: "mi-boton"
+  type: IMAGE_BUTTON
+  x: 0
+  y: 0
+  width: 100
+  height: 100
+  properties:
+    anchor: "center"
+    anchor_offset_x: -100
+    anchor_offset_y: -125
+
+    # Texturas
+    texture: "eventui:textures/ui/books/blue_book.png"
+    hover_texture: "eventui:textures/ui/books/hovers/blue_book_hover.png"
+    in_progress_texture: "eventui:textures/ui/widgets/icon_in_progress.png"
+    completed_texture: "eventui:textures/ui/widgets/icon_completed.png"
+
+    # Ícono de ítem encima de la textura
+    icon: "minecraft:diamond"
+    icon_scale: "0.7"              # escala del ícono (default: "1")
+
+    # Animación de hover
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.15"
+
+    # Sonidos
+    hover_sound: "minecraft:ui.toast.in"
+    hover_sound_volume: "1.8"
+    hover_sound_pitch: "1.3"
+    click_sound: "minecraft:item.book.page_turn"
+    click_sound_volume: "1.0"
+    click_sound_pitch: "1.0"
+
+    # Hitbox del hover
+    hover_hitbox: "texture_alpha"  # "box" (default) | "texture_alpha"
+
+    # Visibilidad condicional
+    visible_if: "mi_variable == true"
+
+    # Acción al clic
+    action: "open:otra-pantalla"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>texture</code></td><td>Textura base.</td></tr>
+              <tr><td><code>hover_texture</code></td><td>Textura al pasar el cursor. Opcional.</td></tr>
+              <tr><td><code>in_progress_texture</code></td><td>Textura cuando el evento vinculado está en progreso.</td></tr>
+              <tr><td><code>completed_texture</code></td><td>Textura cuando el evento está completado.</td></tr>
+              <tr><td><code>icon</code></td><td>ResourceLocation del ítem renderizado encima.</td></tr>
+              <tr><td><code>icon_scale</code></td><td>Escala del ícono. <code>"1"</code> = normal, <code>"0.7"</code> = 70%.</td></tr>
+              <tr><td><code>hover_animation</code></td><td>Animación al hacer hover. Ver <a href="../referencia/animaciones.html" style="color:var(--green)">referencia de animaciones</a>.</td></tr>
+              <tr><td><code>hover_animation_intensity</code></td><td>Intensidad de la animación.</td></tr>
+              <tr><td><code>hover_sound</code></td><td>Sonido al pasar el cursor. Vacío = sin sonido.</td></tr>
+              <tr><td><code>hover_sound_volume</code></td><td>Volumen hover (0.0 – 2.0).</td></tr>
+              <tr><td><code>hover_sound_pitch</code></td><td>Tono hover.</td></tr>
+              <tr><td><code>click_sound</code></td><td>Sonido al clic. Vacío = sonido por defecto del sistema.</td></tr>
+              <tr><td><code>click_sound_volume</code></td><td>Volumen clic.</td></tr>
+              <tr><td><code>click_sound_pitch</code></td><td>Tono clic.</td></tr>
+              <tr><td><code>hover_hitbox</code></td><td><code>"box"</code>: rectángulo completo (default). <code>"texture_alpha"</code>: solo píxeles opacos — ideal para formas irregulares.</td></tr>
+              <tr><td><code>visible_if</code></td><td>Condición de visibilidad. Operadores: <code>==</code> y <code>!=</code>.</td></tr>
+              <tr><td><code>action</code></td><td>Acción al clic. Ver tabla de acciones abajo.</td></tr>
+            </tbody>
+          </table>
+
+          <h3>BUTTON</h3>
+          <p>Botón de texto estilo vanilla.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>BUTTON</div>
+            <pre><code>- id: "btn-cerrar"
+  type: BUTTON
+  x: 150
+  y: 260
+  width: 100
+  height: 22
+  properties:
+    text: "§7← Cerrar"
+    action: "close"</code></pre>
+          </div>
+
+          <h3>TEXT</h3>
+          <p>Texto con colores, alineación y sombra.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>TEXT</div>
+            <pre><code>- id: "nombre"
+  type: TEXT
+  x: 110
+  y: 50
+  width: 0
+  height: 0
+  properties:
+    content: "§6Zombie"
+    shadow: true
+    align: "center"    # left | center | right</code></pre>
+          </div>
+
+          <h3>PROGRESS_BAR</h3>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>PROGRESS_BAR</div>
+            <pre><code>- id: "barra"
+  type: PROGRESS_BAR
+  x: 68
+  y: 190
+  width: 128
+  height: 8
+  properties:
+    event_id: "matar-zombies"
+    objective_id: "kill-zombies"
+    color: "5cb85c"
+    background_color: "2a2a2a"</code></pre>
+          </div>
+
+          <h3>ENTITY_RENDER</h3>
+          <p>Renderiza una entidad viva en 3D. Compatible con entidades de mods.</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>ENTITY_RENDER</div>
+            <pre><code>- id: "render-zombie"
+  type: ENTITY_RENDER
+  x: 100
+  y: 100
+  width: 50
+  height: 50
+  properties:
+    entity: "minecraft:zombie"    # mods: "modid:nombre_entidad"
+    scale: "35"
+    rotation_mode: "spin"         # spin | fixed | follow_mouse
+    spin_speed: "0.5"
+    y_offset: "0"</code></pre>
+          </div>
+
+          <h3>TOOLTIP</h3>
+          <p>Siempre como hijo (<code>children</code>) de otro elemento. Se muestra al pasar el cursor sobre el padre.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "standard" — fondo vanilla</div>
+            <pre><code>children:
+  - id: "tooltip-libro"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "standard"
+      content: "§1Árbol Tecnológico\n§7Consulta las recetas disponibles"
+      shadow: "true"</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "text" — texto flotante sin fondo</div>
+            <pre><code>children:
+  - id: "tooltip-mision"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "text"
+      content: "Consigue un casco de diamante."
+      shadow: "true"</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "advanced" — receta de crafting</div>
+            <pre><code>children:
+  - id: "tooltip-receta"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "advanced"
+      content: |
+        recipe: minecraft:diamond_chestplate [frame:eventui:textures/ui/widgets/crafting_frame.png]</code></pre>
+          </div>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+            <div class="callout-text">El formato del tooltip <code>advanced</code> con receta es <code>recipe: namespace:id [frame:ruta_textura]</code>. El parámetro <code>frame</code> es opcional y define la textura del marco del crafteo.</div>
+          </div>
+
+          <table>
+            <thead><tr><th>render_type</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>standard</code></td><td>Fondo estilo vanilla. Soporta <code>\n</code> y códigos <code>§</code>.</td></tr>
+              <tr><td><code>text</code></td><td>Texto flotante sin fondo. Soporta <code>shadow</code> y saltos de línea.</td></tr>
+              <tr><td><code>advanced</code></td><td>Tooltip enriquecido con recetas, ítems, entidades, imágenes y separadores.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Acciones de botones</h2>
+          <table>
+            <thead><tr><th>Acción</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>open:&lt;id&gt;</code></td><td>Abre otra pantalla. Ejemplo: <code>open:main-menu</code></td></tr>
+              <tr><td><code>close</code></td><td>Cierra la pantalla actual.</td></tr>
+              <tr><td><code>back</code></td><td>Vuelve a la pantalla anterior en la pila de navegación.</td></tr>
+              <tr><td><code>start_event:&lt;id&gt;</code></td><td>Inicia el evento indicado.</td></tr>
+              <tr><td><code>abandon_event:&lt;id&gt;</code></td><td>Abandona el evento. Pide confirmación si no es repetible.</td></tr>
+              <tr><td><code>none</code> o vacío</td><td>Sin acción — botón decorativo.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Sonidos</h2>
+          <p>Todos los sonidos usan ResourceLocation estándar. Puedes usar sonidos de vanilla o de tu resource pack:</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplos de sonidos</div>
+            <pre><code># Vanilla
+"minecraft:ui.toast.in"
+"minecraft:ui.button.click"
+"minecraft:item.book.page_turn"
+
+# Resource pack personalizado
+"eventui:ui.hover"
+"eventui:ui.click"</code></pre>
+          </div>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <div class="callout-text">Deja el campo del sonido en blanco (<code>""</code>) para desactivarlo. Si omites el campo por completo, los botones usarán el sonido de clic por defecto del sistema.</div>
+          </div>
+
+          <h2>Data binding</h2>
+          <p>Los textos soportan variables dinámicas con la sintaxis <code>{{variable}}</code>:</p>
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Variables disponibles</div>
+            <pre><code># Variable de estado del servidor (establecida con /eventui setuivar)
+content: "Puntos: {state.puntos_totales}"
+
+# Progreso de un objetivo
+content: "Zombies: {event.matar-zombies.kill-zombies.current}/{event.matar-zombies.kill-zombies.target}"</code></pre>
+          </div>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+            <div class="callout-text"><strong>Debug overlay:</strong> presiona <code>F3 + Shift</code> con la pantalla abierta para ver posiciones, dimensiones e IDs de todos los elementos. Esencial para ajustar layouts con anclas.</div>
+          </div>
+
+          <div class="page-footer">
+            <div class="footer-nav">
+              <a class="footer-nav-btn" href="crear-eventos.html">
+                <span class="fnb-label">Anterior</span>
+                <span class="fnb-title">← Crear eventos</span>
+              </a>
+            </div>
+            <div class="footer-nav">
+              <a class="footer-nav-btn next" href="objetivos.html">
+                <span class="fnb-label">Siguiente</span>
+                <span class="fnb-title">Objetivos →</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </main>
   </div>
 
+  <script>
+    function toggleVersionDropdown() {
+      document.getElementById('version-selector').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#version-selector')) {
+        document.getElementById('version-selector')?.classList.remove('open');
+      }
+    });
+    function switchVersion(v) {
+      document.getElementById('current-version-label').textContent = 'v' + v;
+      document.querySelectorAll('.version-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.v === v);
+      });
+      document.getElementById('version-selector').classList.remove('open');
+      document.querySelectorAll('.version-content').forEach(el => {
+        el.style.display = el.dataset.version === v ? 'block' : 'none';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => switchVersion('1.0.1'));
+  </script>
   <script src="../js/main.js"></script>
 </body>
 </html>
