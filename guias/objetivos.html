@@ -9,6 +9,48 @@
   <link rel="stylesheet" href="../css/search.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
   <style>
+    .version-selector { position: relative; }
+    .version-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .version-btn:hover { border-color: var(--border-2); color: var(--text-1); }
+    .version-chevron {
+      width: 12px; height: 12px;
+      transition: transform 0.2s; color: var(--text-3);
+    }
+    .version-selector.open .version-chevron { transform: rotate(180deg); }
+    .version-dropdown {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 6px;
+      min-width: 140px; z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .version-selector.open .version-dropdown { display: block; }
+    .version-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 8px 10px; border: none; background: none;
+      border-radius: 6px; font-size: 12px; color: var(--text-2);
+      cursor: pointer; font-family: 'JetBrains Mono', monospace;
+      transition: background 0.1s;
+    }
+    .version-option:hover { background: var(--bg-3); color: var(--text-1); }
+    .version-option.active { color: var(--green); }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: transparent;
+    }
+    .version-option.active .version-dot { background: var(--green); }
+    .version-tag {
+      margin-left: auto; font-size: 10px;
+      background: var(--green-bg); color: var(--green);
+      border-radius: 4px; padding: 1px 6px;
+    }
     .obj-status {
       display: inline-flex;
       align-items: center;
@@ -44,7 +86,26 @@
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Buscar...<span class="kbd">⌘K</span>
       </div>
-      <span class="gh-badge">v1.0.1</span>
+      
+      <div class="version-selector" id="version-selector">
+        <button class="version-btn" onclick="toggleVersionDropdown()">
+          <span id="current-version-label">v1.0.1</span>
+          <svg class="version-chevron" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="version-dropdown" id="version-dropdown">
+          <button class="version-option active" data-v="1.0.1" onclick="switchVersion('1.0.1')">
+            <span class="version-dot"></span>
+            v1.0.1 <span class="version-tag">latest</span>
+          </button>
+          <button class="version-option" data-v="1.0.0" onclick="switchVersion('1.0.0')">
+            <span class="version-dot"></span>
+            v1.0.0
+          </button>
+        </div>
+      </div>
+
       <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
     </div>
   </header>
@@ -55,15 +116,27 @@
     <main class="main-content">
       <div class="content-inner">
 
-        <div class="pill-row">
-          <span class="pill pill-g">Guía</span>
-          <span class="pill pill-n">YAML</span>
-          <span class="pill pill-n">objectives</span>
-          <span class="pill pill-b">v1.0.1</span>
+        <div class="version-content" data-version="1.0.1">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">YAML</span>
+            <span class="pill pill-n">objectives</span>
+            <span class="pill pill-b">v1.0.1</span>
+          </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">YAML</span>
+            <span class="pill pill-n">objectives</span>
+            <span class="pill pill-b">v1.0.0</span>
+          </div>
         </div>
 
         <h1 style="font-size:36px;">Objetivos</h1>
 
+        <div class="version-content" data-version="1.0.1">
         <p style="font-size:15px; max-width:580px;">
           Cada evento puede tener uno o más objetivos que el jugador debe completar. Esta página documenta todos los tipos disponibles con sus parámetros exactos y su estado de implementación actual.
         </p>
@@ -627,6 +700,183 @@ objectives:
     entity_type: "minecraft:creeper"
     target_amount: 1</code></pre>
         </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">YAML</span>
+            <span class="pill pill-n">objectives</span>
+            <span class="pill pill-b">v1.0.0</span>
+          </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0">
+        <p style="font-size:15px; max-width:580px;">
+          Cada evento puede tener uno o más objetivos que el jugador debe completar. Esta página documenta todos los tipos disponibles con sus parámetros exactos y su estado de implementación actual.
+        </p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            Los estados de cada tipo son: <strong style="color:var(--green)">✅ Implementado</strong> — funciona completamente.
+            <strong style="color:#fbbf24">⚠️ Parcial</strong> — el código existe pero tiene limitaciones conocidas.
+            <strong style="color:#f87171">❌ No implementado</strong> — definido en el sistema pero sin handler activo.
+          </div>
+        </div>
+
+        <!-- RESUMEN -->
+        <h2>Resumen de tipos</h2>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Descripción corta</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><code>MINE_BLOCK</code></td><td>Minar un bloque específico</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>PLACE_BLOCK</code></td><td>Colocar un bloque</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>KILL_ENTITY</code></td><td>Matar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>CRAFT_ITEM</code></td><td>Fabricar un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>SMELT_ITEM</code></td><td>Fundir un ítem en horno</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>CONSUME_ITEM</code></td><td>Consumir un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>DAMAGE_ENTITY</code></td><td>Infligir daño a una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>TAME_ENTITY</code></td><td>Domesticar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>BREED_ENTITY</code></td><td>Criar una entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>ENCHANT_ITEM</code></td><td>Encantar un ítem</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>BREAK_WITH_TOOL</code></td><td>Romper bloque con herramienta específica</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>INTERACT</code></td><td>Interactuar con bloque o entidad</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>REACH_LEVEL</code></td><td>Alcanzar un nivel de XP</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>UNLOCK_ADVANCEMENT</code></td><td>Completar un avance</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_BIOME</code></td><td>Visitar un bioma</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_STRUCTURE</code></td><td>Visitar una estructura generada</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>VISIT_DIMENSION</code></td><td>Entrar a una dimensión</td><td><span class="obj-status obj-ok">✅ Implementado</span></td></tr>
+            <tr><td><code>REACH_LOCATION</code></td><td>Llegar a unas coordenadas</td><td><span class="obj-status obj-warn">⚠️ Parcial</span></td></tr>
+            <tr><td><code>COLLECT_ITEM</code></td><td>Tener ítems en el inventario</td><td><span class="obj-status obj-warn">⚠️ Parcial</span></td></tr>
+            <tr><td><code>BREW_POTION</code></td><td>Preparar una poción</td><td><span class="obj-status obj-no">❌ No implementado</span></td></tr>
+            <tr><td><code>CUSTOM</code></td><td>Tipo personalizado vía API</td><td><span class="obj-status obj-no">❌ No implementado</span></td></tr>
+          </tbody>
+        </table>
+
+        <!-- ── PARCIALES ── -->
+        <h2>Tipos con implementación parcial</h2>
+
+        <!-- REACH_LOCATION -->
+        <h3>REACH_LOCATION <span class="obj-status obj-warn">⚠️ Parcial</span></h3>
+        <p>El código existe y los parámetros están definidos, pero el scheduler que llama a la comprobación usa valores hardcodeados y puede no funcionar consistentemente. Úsalo con precaución.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "llegar-spawn"
+  type: REACH_LOCATION
+  description: "Llega al spawn"
+  parameters:
+    x: "0"
+    y: "64"
+    z: "0"
+    radius: "10"      # radio en bloques (default: 3)
+    world: "world"    # nombre del mundo (opcional)
+    target_amount: 1</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Obligatorio</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>x</code></td><td>✅ Sí</td><td>Coordenada X objetivo (como string).</td></tr>
+            <tr><td><code>y</code></td><td>✅ Sí</td><td>Coordenada Y objetivo.</td></tr>
+            <tr><td><code>z</code></td><td>✅ Sí</td><td>Coordenada Z objetivo.</td></tr>
+            <tr><td><code>radius</code></td><td>No</td><td>Radio de detección en bloques. Default: <code>"3"</code>.</td></tr>
+            <tr><td><code>world</code></td><td>No</td><td>Nombre del mundo. Si se omite, funciona en cualquier mundo.</td></tr>
+            <tr><td><code>target_amount</code></td><td>✅ Sí</td><td>Siempre <code>1</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- COLLECT_ITEM -->
+        <h3>COLLECT_ITEM <span class="obj-status obj-warn">⚠️ Parcial</span></h3>
+        <p>Verifica ítems en el inventario del jugador. La lógica cuenta los ítems del tipo especificado y avanza el progreso con la diferencia respecto al último check. Funciona correctamente tras los fixes de v1.0.0.</p>
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "acumular-diamantes"
+  type: COLLECT_ITEM
+  description: "Ten 10 diamantes en el inventario"
+  parameters:
+    item_id: "minecraft:diamond"
+    target_amount: 10</code></pre>
+        </div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item_id</code></td><td>ResourceLocation del ítem a acumular.</td></tr>
+            <tr><td><code>target_amount</code></td><td>Cantidad mínima a tener en el inventario.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warn">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <strong>COLLECT_ITEM</strong> solo avanza cuando el jugador <em>gana</em> ítems. Si los tira o los usa, el progreso no retrocede — pero tampoco vuelve a avanzar hasta que tenga más del máximo ya registrado. No es apto para objetivos de tipo "recolecta y entrega".
+          </div>
+        </div>
+
+        <!-- ── NO IMPLEMENTADOS ── -->
+        <h2>Tipos no implementados</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">Los siguientes tipos están declarados en el sistema pero no tienen un handler activo. Definirlos en un evento no causará errores — simplemente el objetivo nunca avanzará.</div>
+        </div>
+
+        <table>
+          <thead><tr><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>BREW_POTION</code></td><td>Preparar pociones en el soporte de pociones. Sin handler implementado en esta versión.</td></tr>
+            <tr><td><code>CUSTOM</code></td><td>Tipo personalizado para integración vía API externa. Sin handler en esta versión.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- NOTAS GENERALES -->
+        <h2>Notas generales</h2>
+
+        <p><strong>Formato de target_amount:</strong> el parser acepta el valor tanto dentro como fuera de <code>parameters</code>. Ambas formas son equivalentes:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Formas equivalentes de escribir target_amount</div>
+          <pre><code># Forma A — target_amount dentro de parameters (tu ejemplo funcional)
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    parameters:
+      block_id: "minecraft:diamond_ore"
+      target_amount: 5
+
+# Forma B — target_amount fuera de parameters
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    target_amount: 5
+    parameters:
+      block_id: "minecraft:diamond_ore"
+
+# Forma C — formato target: con subcampos
+objectives:
+  - id: "minar-diamantes"
+    type: MINE_BLOCK
+    description: "Mina diamantes"
+    target:
+      block: "minecraft:diamond_ore"
+      count: 5</code></pre>
+        </div>
+
+        <p><strong>Objetivos opcionales:</strong> si añades <code>optional: true</code> a un objetivo, el evento puede completarse sin que ese objetivo esté terminado:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Objetivo opcional</div>
+          <pre><code>- id: "objetivo-bonus"
+  type: KILL_ENTITY
+  description: "Mata un creeper (bonus)"
+  optional: true
+  parameters:
+    entity_type: "minecraft:creeper"
+    target_amount: 1</code></pre>
+        </div>
+        </div>
 
         <div class="page-footer">
           <div class="footer-nav">
@@ -648,5 +898,47 @@ objectives:
   </div>
 
   <script src="../js/main.js"></script>
+  <script>
+    function toggleVersionDropdown() {
+      const selector = document.getElementById('version-selector');
+      selector.classList.toggle('open');
+    }
+    
+    function switchVersion(v) {
+      const selector = document.getElementById('version-selector');
+      const label = document.getElementById('current-version-label');
+      const versionContents = document.querySelectorAll('.version-content');
+      const options = document.querySelectorAll('.version-option');
+      
+      // Update label
+      label.textContent = v;
+      
+      // Update active option
+      options.forEach(opt => {
+        if (opt.getAttribute('data-v') === v) {
+          opt.classList.add('active');
+        } else {
+          opt.classList.remove('active');
+        }
+      });
+      
+      // Show/hide content based on version
+      versionContents.forEach(content => {
+        if (content.getAttribute('data-version') === v) {
+          content.style.display = 'block';
+        } else {
+          content.style.display = 'none';
+        }
+      });
+      
+      // Close dropdown
+      selector.classList.remove('open');
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      switchVersion('1.0.1');
+    });
+  </script>
 </body>
 </html>
