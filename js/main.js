@@ -106,10 +106,7 @@ function setActiveNav() {
 
 // ── DISCLOSURE TRIANGLES ──
 // Toggle para colapsar/expandir grupos de navegación
-function toggleNavGroup(link, event) {
-  event.preventDefault();
-  event.stopPropagation();
-
+function toggleNavGroup(link) {
   const wasExpanded = link.classList.contains('expanded');
   link.classList.toggle('expanded');
   const content = link.nextElementSibling;
@@ -130,6 +127,7 @@ function toggleNavGroup(link, event) {
       window.location.href = href;
     }, 300);
   }
+  return false; // Prevenir navegación por defecto
 }
 
 // Restaurar estado de grupos desde localStorage
