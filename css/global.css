@@ -511,8 +511,8 @@ pre code {
 /* ── CONTENT WITH DEMO (Right sidebar layout) ── */
 .content-with-demo {
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 32px;
+  grid-template-columns: 1fr 500px;
+  gap: 48px;
   align-items: start;
 }
 
@@ -520,6 +520,7 @@ pre code {
   position: sticky;
   top: 24px;
   margin: 0;
+  margin-left: auto;
 }
 
 .card-icon {

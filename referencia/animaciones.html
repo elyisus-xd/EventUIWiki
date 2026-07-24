@@ -214,10 +214,12 @@
         <h2>Detalles por tipo</h2>
 
         <h3>zoom_in y zoom_out</h3>
-        <p>Ambas usan la misma lógica de escala. La diferencia es que <code>zoom_out</code> usa el complemento de la intensidad (<code>2.0 - intensity</code>) para encoger en lugar de crecer.</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
-          <pre><code># Crece un 5% — efecto muy sutil, ideal para botones pequeños
+        <div class="content-with-demo">
+          <div>
+            <p>Ambas usan la misma lógica de escala. La diferencia es que <code>zoom_out</code> usa el complemento de la intensidad (<code>2.0 - intensity</code>) para encoger en lugar de crecer.</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+              <pre><code># Crece un 5% — efecto muy sutil, ideal para botones pequeños
 hover_animation: "zoom_in"
 hover_animation_intensity: "1.05"
 
@@ -228,6 +230,13 @@ hover_animation_intensity: "1.15"
 # Crece un 20% — efecto pronunciado
 hover_animation: "zoom_in"
 hover_animation_intensity: "1.20"</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: zoom_in</div>
+            <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHpzd3dyNDVwOHJjbWY0NWg4Z3F0ODFld2FxcGtuYTJrajFqdDk3dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eLA8An8QsBPPnplCL1/giphy.gif" alt="zoom_in animation demo">
+            <div class="demo-caption">El botón crece cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <h3>shake</h3>
