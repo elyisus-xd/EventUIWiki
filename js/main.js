@@ -268,11 +268,87 @@ async function loadHighlightJS() {
   });
 }
 
+// ── IMAGE COMPARISON SLIDER ──
+function initImageComparisonSliders() {
+  document.querySelectorAll('.image-comparison').forEach(comparison => {
+    const slider = comparison.querySelector('.image-comparison-slider');
+    const imageAfter = comparison.querySelector('.image-after');
+    const container = comparison.querySelector('.image-comparison-container');
+    const labelBefore = comparison.querySelector('.image-comparison-label.before');
+    const labelAfter = comparison.querySelector('.image-comparison-label.after');
+    
+    if (!slider || !imageAfter || !container) return;
+
+    let isDragging = false;
+
+    function updateSliderPosition(x) {
+      const rect = container.getBoundingClientRect();
+      let percentage = ((x - rect.left) / rect.width) * 100;
+      
+      // Clamp between 0 and 100
+      percentage = Math.max(0, Math.min(100, percentage));
+      
+      slider.style.left = percentage + '%';
+      imageAfter.style.width = percentage + '%';
+
+      // Update label opacity based on slider position
+      if (labelBefore && labelAfter) {
+        // Before label fades out as slider moves right
+        labelBefore.style.opacity = 1 - (percentage / 100);
+        // After label fades in as slider moves right
+        labelAfter.style.opacity = percentage / 100;
+      }
+    }
+
+    slider.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      updateSliderPosition(e.clientX);
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    // Touch support
+    slider.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      e.preventDefault();
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      updateSliderPosition(e.touches[0].clientX);
+    });
+
+    document.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Click on container to jump to position
+    container.addEventListener('click', (e) => {
+      if (e.target === slider || slider.contains(e.target)) return;
+      updateSliderPosition(e.clientX);
+    });
+
+    // Initialize label opacity
+    if (labelBefore && labelAfter) {
+      labelBefore.style.opacity = '1';
+      labelAfter.style.opacity = '0';
+    }
+  });
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSidebar();
   setActiveNav();
   loadHighlightJS();
+  initImageComparisonSliders();
 
   document.querySelectorAll('.gh-search, [data-search]').forEach(el => {
     el.addEventListener('click', openSearch);

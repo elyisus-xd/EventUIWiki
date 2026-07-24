@@ -232,51 +232,72 @@ hover_animation: "zoom_in"
 hover_animation_intensity: "1.20"</code></pre>
             </div>
           </div>
-          <div>
-            <div class="demo-gif">
-              <div class="demo-label">Demo: zoom_in</div>
-              <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHpzd3dyNDVwOHJjbWY0NWg4Z3F0ODFld2FxcGtuYTJrajFqdDk3dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eLA8An8QsBPPnplCL1/giphy.gif" alt="zoom_in animation demo">
-              <div class="demo-caption">El botón crece cuando el cursor pasa sobre él</div>
-            </div>
-            <div class="demo-gif">
-              <div class="demo-label">Demo: zoom_out</div>
-              <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExajQ5ZzNhajkxczRyamM5dzFncnBia2VjYTk2NzFyNGhsYnFka3JnMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TeU4knjqitYqar3rIy/giphy.gif" alt="zoom_out animation demo">
-              <div class="demo-caption">El botón encoge cuando el cursor pasa sobre él</div>
+          <div class="image-comparison" id="zoomComparison">
+            <div class="image-comparison-container">
+              <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHpzd3dyNDVwOHJjbWY0NWg4Z3F0ODFld2FxcGtuYTJrajFqdDk3dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eLA8An8QsBPPnplCL1/giphy.gif" alt="zoom_in">
+              <div class="image-after">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExajQ5ZzNhajkxczRyamM5dzFncnBia2VjYTk2NzFyNGhsYnFka3JnMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TeU4knjqitYqar3rIy/giphy.gif" alt="zoom_out">
+              </div>
+              <div class="image-comparison-slider"></div>
+              <div class="image-comparison-labels">
+                <span class="image-comparison-label before">zoom_in</span>
+                <span class="image-comparison-label after">zoom_out</span>
+              </div>
             </div>
           </div>
         </div>
 
         <h3>shake</h3>
-        <p>La vibración es horizontal y se amortigua progresivamente — empieza fuerte y termina en reposo. El patrón sigue una función <code>sin(progress × π × 6) × intensity × (1 - progress)</code>.</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
-          <pre><code># Vibración ligera (2px)
+        <div class="content-with-demo">
+          <div>
+            <p>La vibración es horizontal y se amortigua progresivamente — empieza fuerte y termina en reposo. El patrón sigue una función <code>sin(progress × π × 6) × intensity × (1 - progress)</code>.</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+              <pre><code># Vibración ligera (2px)
 hover_animation: "shake"
 hover_animation_intensity: "2.0"
 
 # Vibración fuerte (5px) — útil para botones de peligro o alerta
 hover_animation: "shake"
 hover_animation_intensity: "5.0"</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: shake</div>
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmVpdzZscmgyNDl3dnZibjVlcDhtNjl6eHFqNmlvYzdoamF0NW5yZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/709BvMoki91RXkc2fm/giphy.gif" alt="shake animation demo">
+            <div class="demo-caption">El botón vibra horizontalmente cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <h3>bounce</h3>
-        <p>El salto sigue un arco sinusoidal (<code>|sin(progress × π)| × intensity × 3</code>). El elemento sube y vuelve exactamente a su posición original.</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
-          <pre><code># Rebote suave
+        <div class="content-with-demo">
+          <div>
+            <p>El salto sigue un arco sinusoidal (<code>|sin(progress × π)| × intensity × 3</code>). El elemento sube y vuelve exactamente a su posición original.</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Ejemplos de intensidad</div>
+              <pre><code># Rebote suave
 hover_animation: "bounce"
 hover_animation_intensity: "1.5"
 
 # Rebote alto
 hover_animation: "bounce"
 hover_animation_intensity: "3.0"</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: bounce</div>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcW1rMzJsdWxudWR1dzJpMDJjYml0ZGZiOWN0eWJlNGJieGlpdHB0byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WkVi2NAUkzVRJ263ie/giphy.gif" alt="bounce animation demo">
+            <div class="demo-caption">El botón salta hacia arriba cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <h3>rotate</h3>
-        <p>Gira el elemento desde 0° hasta el ángulo indicado. La rotación es permanente mientras el cursor está encima — no oscila de vuelta.</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Ejemplo</div>
-          <pre><code># Rotación de 15° — efecto inclinado
+        <div class="content-with-demo">
+          <div>
+            <p>Gira el elemento desde 0° hasta el ángulo indicado. La rotación es permanente mientras el cursor está encima — no oscila de vuelta.</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Ejemplo</div>
+              <pre><code># Rotación de 15° — efecto inclinado
 hover_animation: "rotate"
 hover_animation_intensity: "15"
 
@@ -284,43 +305,104 @@ hover_animation_intensity: "15"
 hover_animation: "rotate"
 hover_animation_intensity: "360"
 hover_animation_duration: "800"</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: rotate</div>
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnN3Zmd6a21oODgyZm1qb3VtcjR1cGFyenFvaGdvN3NudXhlaWM5biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7j0b02NFoN2glWAfWA/giphy.gif" alt="rotate animation demo">
+            <div class="demo-caption">El botón gira cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <h3>swing</h3>
-        <p>Oscilación continua mientras el cursor está encima. A diferencia de <code>rotate</code>, <strong>no para</strong> — el elemento sigue oscilando mientras el hover esté activo. La fórmula usa el tiempo del sistema (<code>sin(time × 0.003) × intensity × 15°</code>).</p>
+        <div class="content-with-demo">
+          <div>
+            <p>Oscilación continua mientras el cursor está encima. A diferencia de <code>rotate</code>, <strong>no para</strong> — el elemento sigue oscilando mientras el hover esté activo. La fórmula usa el tiempo del sistema (<code>sin(time × 0.003) × intensity × 15°</code>).</p>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: swing</div>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTJncGF4cTBoZzlkNHM1YzU4cWJtem5vcnhzNzJraTNheHJpNTJyayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/is3FcqUrCtAxbigX0h/giphy.gif" alt="swing animation demo">
+            <div class="demo-caption">El botón oscila de lado a lado cuando el cursor pasa sobre él</div>
+          </div>
+        </div>
 
         <h3>float</h3>
-        <p>Flotación vertical continua y suave mientras el cursor está encima. Basada en el tiempo del sistema (<code>sin(time × 0.002) × intensity × 5px</code>). Ideal para logotipos o elementos decorativos que quieras que "respiren".</p>
+        <div class="content-with-demo">
+          <div>
+            <p>Flotación vertical continua y suave mientras el cursor está encima. Basada en el tiempo del sistema (<code>sin(time × 0.002) × intensity × 5px</code>). Ideal para logotipos o elementos decorativos que quieras que "respiren".</p>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: float</div>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmZpaW85cTd2b3ZhNXk4aTU3MDI1aXlrdDAya3RuZ2EyeXVhbnp0bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZDBidJqQTBwFViruAN/giphy.gif" alt="float animation demo">
+            <div class="demo-caption">El botón flota suavemente cuando el cursor pasa sobre él</div>
+          </div>
+        </div>
 
         <h3>wave</h3>
-        <p>Movimiento ondulante en ambos ejes simultáneamente con frecuencias levemente distintas en X e Y, lo que genera una trayectoria orgánica no repetitiva a corto plazo.</p>
+        <div class="content-with-demo">
+          <div>
+            <p>Movimiento ondulante en ambos ejes simultáneamente con frecuencias levemente distintas en X e Y, lo que genera una trayectoria orgánica no repetitiva a corto plazo.</p>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: wave</div>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWRjeHNlaDRqZTZ0OW43YmxwMXRmOGRpeWR0a2JmcjJvc2FmajNoMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2U31d6nOVIkMBIl9qf/giphy.gif" alt="wave animation demo">
+            <div class="demo-caption">El botón se mueve en onda cuando el cursor pasa sobre él</div>
+          </div>
+        </div>
 
         <h3>heartbeat / pulse</h3>
-        <p>Ambos nombres apuntan al mismo tipo. Pulso de escala continuo basado en el valor absoluto de un seno (<code>|sin(time × 0.004)| × intensity × 0.1</code>). La escala máxima real es <code>1.0 + intensity × 0.1</code>.</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Ejemplo</div>
-          <pre><code># Pulso muy sutil — como un corazón latiendo
+        <div class="content-with-demo">
+          <div>
+            <p>Ambos nombres apuntan al mismo tipo. Pulso de escala continuo basado en el valor absoluto de un seno (<code>|sin(time × 0.004)| × intensity × 0.1</code>). La escala máxima real es <code>1.0 + intensity × 0.1</code>.</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Ejemplo</div>
+              <pre><code># Pulso muy sutil — como un corazón latiendo
 hover_animation: "heartbeat"
 hover_animation_intensity: "1.0"   # escala máx ≈ 1.10
 
 # Pulso pronunciado
 hover_animation: "heartbeat"
 hover_animation_intensity: "3.0"   # escala máx ≈ 1.30</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: heartbeat</div>
+            <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHY3dm54NHQweDR5YXZzcWxwNWIzbjZjOGE1ajlxM2E4dHRmNmptaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SvJGklEVDP3iC7hqx9/giphy.gif" alt="heartbeat animation demo">
+            <div class="demo-caption">El botón pulsa como un corazón cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <h3>jelly</h3>
-        <p>Deformación elástica que comprime el eje X mientras expande el Y y viceversa, creando el efecto de una gelatina. Usa la misma frecuencia en ambos ejes pero signos opuestos. La deformación máxima real es <code>intensity × 0.1</code>.</p>
+        <div class="content-with-demo">
+          <div>
+            <p>Deformación elástica que comprime el eje X mientras expande el Y y viceversa, creando el efecto de una gelatina. Usa la misma frecuencia en ambos ejes pero signos opuestos. La deformación máxima real es <code>intensity × 0.1</code>.</p>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: jelly</div>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3N0bDFhcTJxNmZpaW9remFnZHZvOXY1ZWVoMm9qY2R4cXZuOGxxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gYBQpIiMeamhVIvgx6/giphy.gif" alt="jelly animation demo">
+            <div class="demo-caption">El botón se deforma como gelatina cuando el cursor pasa sobre él</div>
+          </div>
+        </div>
 
         <h3>spin_3d</h3>
         <p>Gira el elemento en el eje Y (como una tarjeta dando vuelta) usando una transformación 3D (<code>Axis.YP.rotationDegrees</code>). La velocidad depende del tiempo y la intensidad (<code>time × intensity × 0.1 mod 360°</code>). Mientras mayor la intensidad, más rápido gira.</p>
 
         <h3>glow</h3>
-        <p>El único tipo que no modifica la transformación del elemento — en su lugar renderiza un halo dorado (<code>#FFD700</code>) de 3px alrededor. El brillo aparece y desaparece gradualmente con un fade de 0.05 por frame. Se puede combinar con cualquier otro tipo:</p>
-        <div class="code-block">
-          <div class="code-label"><span class="dot"></span>Combinando glow con zoom_in</div>
-          <pre><code># Separados por coma — zoom_in se aplica, glow se renderiza encima
+        <div class="content-with-demo">
+          <div>
+            <p>El único tipo que no modifica la transformación del elemento — en su lugar renderiza un halo dorado (<code>#FFD700</code>) de 3px alrededor. El brillo aparece y desaparece gradualmente con un fade de 0.05 por frame. Se puede combinar con cualquier otro tipo:</p>
+            <div class="code-block">
+              <div class="code-label"><span class="dot"></span>Combinando glow con zoom_in</div>
+              <pre><code># Separados por coma — zoom_in se aplica, glow se renderiza encima
 hover_animation: "zoom_in,glow"
 hover_animation_intensity: "1.1"</code></pre>
+            </div>
+          </div>
+          <div class="demo-gif">
+            <div class="demo-label">Demo: glow</div>
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMml4ZWFtb3I1eXpqZ2I0eXU4YzM0dmpyNGMycmRkd2NkajN3NjVjeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9cFNH9VMmP1Gr4SqtI/giphy.gif" alt="glow animation demo">
+            <div class="demo-caption">El botón brilla cuando el cursor pasa sobre él</div>
+          </div>
         </div>
 
         <!-- TABLA RESUMEN -->
