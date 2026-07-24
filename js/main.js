@@ -106,15 +106,18 @@ function setActiveNav() {
 
 // ── DISCLOSURE TRIANGLES ──
 // Toggle para colapsar/expandir grupos de navegación
-function toggleNavGroup(link) {
+function toggleNavGroup(link, event) {
+  event.preventDefault();
+  event.stopPropagation();
+
   const wasExpanded = link.classList.contains('expanded');
   link.classList.toggle('expanded');
   const content = link.nextElementSibling;
   if (content && content.classList.contains('nav-group-content')) {
     content.classList.toggle('expanded');
   }
-  // Guardar estado en localStorage
-  const groupId = link.getAttribute('href');
+  // Guardar estado en localStorage usando data-group-id
+  const groupId = link.getAttribute('data-group-id');
   if (groupId) {
     const isExpanded = link.classList.contains('expanded');
     localStorage.setItem('nav-group-' + groupId, isExpanded ? 'expanded' : 'collapsed');
@@ -132,9 +135,9 @@ function toggleNavGroup(link) {
 // Restaurar estado de grupos desde localStorage
 function restoreNavGroupStates() {
   document.querySelectorAll('.nav-a-collapsible').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href) {
-      const state = localStorage.getItem('nav-group-' + href);
+    const groupId = link.getAttribute('data-group-id');
+    if (groupId) {
+      const state = localStorage.getItem('nav-group-' + groupId);
       if (state === 'expanded') {
         link.classList.add('expanded');
         const content = link.nextElementSibling;
