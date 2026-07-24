@@ -106,12 +106,7 @@ function setActiveNav() {
 
 // ── DISCLOSURE TRIANGLES ──
 // Toggle para colapsar/expandir grupos de navegación
-function toggleNavGroup(link, event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
+function toggleNavGroup(link) {
   const wasExpanded = link.classList.contains('expanded');
   link.classList.toggle('expanded');
   const content = link.nextElementSibling;
@@ -123,11 +118,6 @@ function toggleNavGroup(link, event) {
   if (groupId) {
     const isExpanded = link.classList.contains('expanded');
     localStorage.setItem('nav-group-' + groupId, isExpanded ? 'expanded' : 'collapsed');
-  }
-  // Navegar a la página si estaba colapsado (ahora está expandido)
-  const href = link.getAttribute('href');
-  if (href && !wasExpanded) {
-    window.location.href = href;
   }
 }
 
