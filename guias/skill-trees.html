@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sistema de Skill Trees en EventUI — árboles de habilidades con ramas exclusivas, efectos de atributos y múltiples tipos de puntos." />
+  <title>Skill Trees — EventUI Docs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/search.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="global-header">
+    <a class="gh-logo" href="../index.html">Event<span>UI</span></a>
+    <div class="gh-divider"></div>
+    <nav class="gh-nav">
+      <a class="gh-nav-a" href="../index.html">Docs</a>
+      <a class="gh-nav-a active" href="instalacion.html">Guías</a>
+      <a class="gh-nav-a" href="../referencia/comandos.html">Referencia</a>
+      <a class="gh-nav-a" href="../desarrollo/api-bridge.html">API</a>
+    </nav>
+    <div class="gh-right">
+      <div class="gh-search" role="button" tabindex="0" aria-label="Buscar">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Buscar...
+        <span class="kbd">⌘K</span>
+      </div>
+      <span class="gh-badge">v1.0.1</span>
+      <a class="gh-github" href="https://github.com" target="_blank" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="page-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- ── MAIN ── -->
+    <main class="main-content">
+      <div class="content-inner">
+
+        <div class="pill-row">
+          <span class="pill pill-g">Guía</span>
+          <span class="pill pill-n">YAML</span>
+          <span class="pill pill-n">skills/</span>
+        </div>
+
+        <h1 style="font-size:36px;">Skill Trees</h1>
+
+        <p style="font-size:15px; max-width:580px;">
+          Los árboles de habilidades permiten a los jugadores desbloquear mejoras progresivas mediante puntos. Cada árbol puede tener ramas exclusivas, efectos de atributos y múltiples tipos de puntos.
+        </p>
+
+        <!-- ESTRUCTURA BÁSICA -->
+        <h2>Estructura de un árbol de habilidades</h2>
+
+        <p>Los skill trees se definen como archivos <code>.yml</code> dentro de la carpeta <code>plugins/EventUI/skills/</code>.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>skills/combat-tree.yml — estructura básica</div>
+          <pre><code>id: "combat-tree"
+display_name: "Árbol de Combate"
+description: "Mejora tus estadísticas de combate"
+point_type: "Puntos de Combate"
+
+# Grupos exclusivos (opcional)
+exclusive_groups:
+  - id: "class_choice"
+    name: "Clase de Combate"
+    description: "Elige una especialización de combate"
+    max_selections: 1
+    branches:
+      - id: "healer"
+        name: "Aguante"
+        nodes: ["vitality_1", "vitality_2", "regeneration"]
+      - id: "assassin"
+        name: "Asesino"
+        nodes: ["attack_1", "attack_2", "attack_3"]
+
+# Nodos del árbol
+nodes:
+  - id: "vitality_1"
+    display_name: "Vitalidad I"
+    description: "+1 corazon de vida máxima por nivel"
+    icon: "minecraft:apple"
+    max_level: 5
+    cost_per_level: 1
+    requires: []
+    position:
+      x: 0
+      y: 0
+    effects:
+      - type: "attribute"
+        attribute: "GENERIC_MAX_HEALTH"
+        operation: "add"
+        value_per_level: 2</code></pre>
+        </div>
+
+        <!-- CAMPOS RAÍZ -->
+        <h2>Campos raíz</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Obligatorio</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Identificador único del árbol. Solo letras, números y guiones.</td>
+            </tr>
+            <tr>
+              <td><code>display_name</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Nombre visible en la UI. Acepta <code>§</code> para colores.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Descripción del árbol de habilidades.</td>
+            </tr>
+            <tr>
+              <td><code>point_type</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Tipo de puntos usado por defecto en este árbol. Puede ser un alias (ej: "Puntos de Combate").</td>
+            </tr>
+            <tr>
+              <td><code>exclusive_groups</code></td>
+              <td>Lista</td>
+              <td>No</td>
+              <td>Grupos de ramas exclusivas. Los jugadores seleccionan una rama por grupo.</td>
+            </tr>
+            <tr>
+              <td><code>nodes</code></td>
+              <td>Lista</td>
+              <td>✅ Sí</td>
+              <td>Lista de nodos que componen el árbol de habilidades.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- GRUPOS EXCLUSIVOS -->
+        <h2>Grupos exclusivos</h2>
+
+        <p>Los grupos exclusivos permiten crear especializaciones mutuamente excluyentes. Un jugador solo puede seleccionar una rama por grupo.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>Identificador único del grupo exclusivo.</td>
+            </tr>
+            <tr>
+              <td><code>name</code></td>
+              <td>String</td>
+              <td>Nombre visible del grupo en la UI.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>String</td>
+              <td>Descripción del grupo exclusivo.</td>
+            </tr>
+            <tr>
+              <td><code>max_selections</code></td>
+              <td>Número</td>
+              <td>Máximo de ramas seleccionables en este grupo (usualmente 1).</td>
+            </tr>
+            <tr>
+              <td><code>branches</code></td>
+              <td>Lista</td>
+              <td>Lista de ramas disponibles en este grupo.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Estructura de una rama</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>Identificador único de la rama.</td>
+            </tr>
+            <tr>
+              <td><code>name</code></td>
+              <td>String</td>
+              <td>Nombre visible de la rama en la UI.</td>
+            </tr>
+            <tr>
+              <td><code>nodes</code></td>
+              <td>Lista de IDs</td>
+              <td>Lista de IDs de nodos que pertenecen a esta rama.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/>
+              <path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="callout-text">
+            Los nodos en ramas no seleccionadas se bloquean automáticamente. El jugador debe seleccionar una rama antes de poder desbloquear nodos en ella.
+          </div>
+        </div>
+
+        <!-- NODOS -->
+        <h2>Definición de nodos</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Obligatorio</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Identificador único del nodo dentro del árbol.</td>
+            </tr>
+            <tr>
+              <td><code>display_name</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Nombre visible del nodo en la UI.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>Descripción del efecto del nodo.</td>
+            </tr>
+            <tr>
+              <td><code>icon</code></td>
+              <td>String</td>
+              <td>✅ Sí</td>
+              <td>ResourceLocation del ítem usado como ícono (ej: "minecraft:apple").</td>
+            </tr>
+            <tr>
+              <td><code>max_level</code></td>
+              <td>Número</td>
+              <td>✅ Sí</td>
+              <td>Nivel máximo del nodo.</td>
+            </tr>
+            <tr>
+              <td><code>cost_per_level</code></td>
+              <td>Número</td>
+              <td>✅ Sí</td>
+              <td>Costo en puntos por nivel.</td>
+            </tr>
+            <tr>
+              <td><code>point_type</code></td>
+              <td>String</td>
+              <td>No</td>
+              <td>Tipo de puntos específico para este nodo (sobrescribe el del árbol). Permite usar diferentes tipos de puntos en diferentes nodos del mismo árbol.</td>
+            </tr>
+            <tr>
+              <td><code>requires</code></td>
+              <td>Lista</td>
+              <td>No</td>
+              <td>Lista de requisitos (nodos previos con niveles mínimos).</td>
+            </tr>
+            <tr>
+              <td><code>position</code></td>
+              <td>Mapa</td>
+              <td>✅ Sí</td>
+              <td>Coordenadas X/Y del nodo en el canvas del árbol.</td>
+            </tr>
+            <tr>
+              <td><code>effects</code></td>
+              <td>Lista</td>
+              <td>✅ Sí</td>
+              <td>Lista de efectos aplicados por el nodo.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- REQUISITOS -->
+        <h3>Sistema de requisitos</h3>
+
+        <p>Los nodos pueden tener requisitos de otros nodos. El jugador debe cumplir todos los requisitos para desbloquear el nodo.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo de requisitos</div>
+          <pre><code>requires:
+  - node: "vitality_1"
+    min_level: 5
+  - node: "attack_1"
+    min_level: 3</code></pre>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>node</code></td>
+              <td>String</td>
+              <td>ID del nodo requerido.</td>
+            </tr>
+            <tr>
+              <td><code>min_level</code></td>
+              <td>Número</td>
+              <td>Nivel mínimo requerido del nodo.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- EFECTOS -->
+        <h2>Efectos de atributos</h2>
+
+        <p>Los nodos aplican efectos a los atributos del jugador. Actualmente solo se soportan efectos de tipo <code>attribute</code>.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo de efecto</div>
+          <pre><code>effects:
+  - type: "attribute"
+    attribute: "GENERIC_MAX_HEALTH"
+    operation: "add"
+    value_per_level: 2</code></pre>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>type</code></td>
+              <td>String</td>
+              <td>Tipo de efecto. Actualmente solo <code>"attribute"</code>.</td>
+            </tr>
+            <tr>
+              <td><code>attribute</code></td>
+              <td>String</td>
+              <td>Atributo de Minecraft a modificar.</td>
+            </tr>
+            <tr>
+              <td><code>operation</code></td>
+              <td>String</td>
+              <td>Operación: <code>"add"</code>, <code>"multiply"</code>, <code>"add_scalar"</code>, <code>"add_percent"</code>.</td>
+            </tr>
+            <tr>
+              <td><code>value_per_level</code></td>
+              <td>Número</td>
+              <td>Valor aplicado por cada nivel del nodo.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Operaciones soportadas</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Operación</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>add</code></td>
+              <td>Suma el valor al atributo base.</td>
+            </tr>
+            <tr>
+              <td><code>multiply</code></td>
+              <td>Multiplica el atributo por el valor.</td>
+            </tr>
+            <tr>
+              <td><code>add_scalar</code></td>
+              <td>Suma un valor escalar al atributo.</td>
+            </tr>
+            <tr>
+              <td><code>add_percent</code></td>
+              <td>Añade un porcentaje al atributo.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Atributos disponibles</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Atributo</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>GENERIC_MAX_HEALTH</code></td>
+              <td>Vida máxima</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_ATTACK_DAMAGE</code></td>
+              <td>Daño de ataque</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_ARMOR</code></td>
+              <td>Armadura</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_ARMOR_TOUGHNESS</code></td>
+              <td>Resistencia de armadura</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_KNOCKBACK_RESISTANCE</code></td>
+              <td>Resistencia al knockback</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_REGENERATION</code></td>
+              <td>Regeneración de vida</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_STEP_HEIGHT</code></td>
+              <td>Altura de salto automático</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_SAFE_FALL_DISTANCE</code></td>
+              <td>Distancia de caída segura</td>
+            </tr>
+            <tr>
+              <td><code>PLAYER_SNEAKING_SPEED</code></td>
+              <td>Velocidad al agacharse</td>
+            </tr>
+            <tr>
+              <td><code>GENERIC_LUCK</code></td>
+              <td>Suerte</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- UI -->
+        <h2>UI del árbol de habilidades</h2>
+
+        <p>Para mostrar un árbol de habilidades en una UI, usa el elemento <code>SKILL_TREE</code>:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>uis/skills-screen.yml</div>
+          <pre><code>- id: "combat_tree"
+  type: SKILL_TREE
+  x: 50
+  y: 120
+  width: 900
+  height: 500
+  properties:
+    tree_id: "combat-tree"
+    node_size: "60"
+    node_spacing_x: "110"
+    node_spacing_y: "80"
+    show_level_text: "true"
+    connection_color_locked: "555555"
+    connection_color_available: "aaaaaa"
+    connection_color_unlocked: "5cb85c"
+    node_texture_locked: "eventui:textures/ui/widgets/mission_icon.png"
+    node_texture_available: "eventui:textures/ui/widgets/mission_icon.png"
+    node_texture_partial: "eventui:textures/ui/widgets/mission_icon_in_progress.png"
+    node_texture_maxed: "eventui:textures/ui/widgets/mission_icon_completed.png"
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.08"
+    hover_sound: "minecraft:entity.experience_orb.pickup"
+    hover_sound_volume: "0.3"
+    click_animation: "punch"
+    click_sound: "minecraft:block.metal.hit"</code></pre>
+        </div>
+
+        <div class="demo-gif">
+          <div class="demo-label">Demo: Skill tree navigation</div>
+          <img src="https://i.imgur.com/___" alt="Skill tree navigation demo" loading="lazy">
+          <div class="demo-caption">Navegación por el árbol de habilidades: click en nodos, desbloqueo y conexiones</div>
+        </div>
+
+        <h3>Data binding para puntos</h3>
+
+        <p>Para mostrar los puntos disponibles del jugador, usa data binding en elementos TEXT:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Mostrar puntos disponibles</div>
+          <pre><code>- id: "points_display"
+  type: TEXT
+  properties:
+    content: "§ePuntos de Combate: §a{{skills.combat_points.available}}"
+    shadow: true</code></pre>
+        </div>
+
+        <p>Sintaxis disponible:</p>
+        <ul>
+          <li><code>{{skills.&lt;point_type&gt;.available}}</code> — Puntos disponibles</li>
+          <li><code>{{skills.&lt;point_type&gt;.total}}</code> — Puntos totales ganados</li>
+        </ul>
+
+        <!-- FUENTES DE PUNTOS -->
+        <h2>Fuentes de puntos</h2>
+
+        <p>Las fuentes de puntos se configuran en <code>config.yml</code>. Determinan cómo los jugadores ganan puntos para desbloquear nodos.</p>
+
+        <h3>Point Type Aliases</h3>
+
+        <p>Los aliases permiten usar nombres amigables en lugar de IDs internos:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>config.yml — aliases</div>
+          <pre><code>skills:
+  point_type_aliases:
+    "Puntos de Combate": "combat_points"
+    "Puntos de Habilidad": "skill_points"
+    "Puntos de Recoleccion": "gathering_points"</code></pre>
+        </div>
+
+        <h3>Multi-Type Point Distribution</h3>
+
+        <p>Algunas fuentes pueden otorgar múltiples tipos de puntos simultáneamente usando <code>point_distribution</code>:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>config.yml — point_distribution</div>
+          <pre><code>mob_kill:
+  enabled: true
+  point_distribution:
+    Puntos de Habilidad: 1
+    Puntos de combate: 1
+    gathering_points: 0.5</code></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/>
+              <path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="callout-text">
+            Si se usa <code>point_distribution</code>, este sobrescribe <code>point_type</code> y <code>base_points</code>.
+          </div>
+        </div>
+
+        <h3>Fuentes disponibles</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Fuente</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>xp_conversion</code></td>
+              <td>Convierte niveles de experiencia en puntos</td>
+            </tr>
+            <tr>
+              <td><code>mob_kill</code></td>
+              <td>Otorga puntos al matar mobs</td>
+            </tr>
+            <tr>
+              <td><code>player_kill</code></td>
+              <td>Otorga puntos al matar jugadores</td>
+            </tr>
+            <tr>
+              <td><code>block_mine</code></td>
+              <td>Otorga puntos al minar bloques</td>
+            </tr>
+            <tr>
+              <td><code>fishing</code></td>
+              <td>Otorga puntos al pescar</td>
+            </tr>
+            <tr>
+              <td><code>crop_harvest</code></td>
+              <td>Otorga puntos al cosechar cultivos</td>
+            </tr>
+            <tr>
+              <td><code>animal_breed</code></td>
+              <td>Otorga puntos al criar animales</td>
+            </tr>
+            <tr>
+              <td><code>event_complete</code></td>
+              <td>Otorga puntos al completar eventos</td>
+            </tr>
+            <tr>
+              <td><code>objective_complete</code></td>
+              <td>Otorga puntos al completar objetivos</td>
+            </tr>
+            <tr>
+              <td><code>playtime</code></td>
+              <td>Otorga puntos por tiempo de juego</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Bukkit Tag Support</h3>
+
+        <p>Las fuentes de puntos soportan tags de Minecraft para agrupar múltiples entidades/bloques:</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Usar tags</div>
+          <pre><code>mob_kill:
+  allowed_mobs:
+    - minecraft:zombie
+    - "#minecraft:bosses"
+
+block_mine:
+  allowed_blocks:
+    - minecraft:diamond_ore
+    - "#minecraft:logs"</code></pre>
+        </div>
+
+        <p>Sintaxis: <code>#minecraft:tag_name</code></p>
+
+        <!-- EJEMPLO COMPLETO -->
+        <h2>Ejemplo completo</h2>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>skills/combat-tree.yml</div>
+          <pre><code>id: "combat-tree"
+display_name: "Árbol de Combate"
+description: "Mejora tus estadísticas de combate"
+point_type: "Puntos de Combate"
+
+exclusive_groups:
+  - id: "class_choice"
+    name: "Clase de Combate"
+    description: "Elige una especialización de combate"
+    max_selections: 1
+    branches:
+      - id: "healer"
+        name: "Aguante"
+        nodes: ["vitality_1", "vitality_2", "regeneration"]
+      - id: "assassin"
+        name: "Asesino"
+        nodes: ["attack_1", "attack_2", "attack_3"]
+      - id: "tank"
+        name: "Tanque"
+        nodes: ["tank_1", "tank_2", "tank_3"]
+      - id: "acrobat"
+        name: "Acrobata"
+        nodes: ["acrobat_1", "acrobat_2", "acrobat_3"]
+
+nodes:
+  - id: "vitality_1"
+    display_name: "Vitalidad I"
+    description: "+1 corazon de vida máxima por nivel"
+    icon: "minecraft:apple"
+    max_level: 5
+    cost_per_level: 1
+    requires: []
+    position:
+      x: 0
+      y: 0
+    effects:
+      - type: "attribute"
+        attribute: "GENERIC_MAX_HEALTH"
+        operation: "add"
+        value_per_level: 2
+
+  - id: "vitality_2"
+    display_name: "Vitalidad II"
+    point_type: "gathering_points"
+    description: "+0.5 corazones de vida máxima por nivel"
+    icon: "minecraft:golden_apple"
+    max_level: 5
+    cost_per_level: 2
+    requires:
+      - node: "vitality_1"
+        min_level: 5
+    position:
+      x: 1
+      y: 0
+    effects:
+      - type: "attribute"
+        attribute: "GENERIC_MAX_HEALTH"
+        operation: "add"
+        value_per_level: 1
+
+  - id: "regeneration"
+    display_name: "Regeneración"
+    description: "+0.5 regeneración de vida por segundo por nivel"
+    icon: "minecraft:golden_carrot"
+    max_level: 5
+    cost_per_level: 3
+    requires:
+      - node: "vitality_2"
+        min_level: 5
+    position:
+      x: 2
+      y: 0
+    effects:
+      - type: "attribute"
+        attribute: "GENERIC_REGENERATION"
+        operation: "add"
+        value_per_level: 0.5</code></pre>
+        </div>
+
+        <!-- FOOTER NAV -->
+        <div class="page-footer">
+          <div class="footer-nav">
+            <a class="footer-nav-btn" href="data-binding.html">
+              <span class="fnb-label">Anterior</span>
+              <span class="fnb-title">← Data Binding</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

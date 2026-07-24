@@ -64,6 +64,49 @@
     }
     .req { color: var(--green); font-size: 10px; font-family: var(--font-m); }
     .opt { color: var(--text-3); font-size: 10px; font-family: var(--font-m); }
+
+    .version-selector { position: relative; }
+    .version-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .version-btn:hover { border-color: var(--border-2); color: var(--text-1); }
+    .version-chevron {
+      width: 12px; height: 12px;
+      transition: transform 0.2s; color: var(--text-3);
+    }
+    .version-selector.open .version-chevron { transform: rotate(180deg); }
+    .version-dropdown {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 6px;
+      min-width: 140px; z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .version-selector.open .version-dropdown { display: block; }
+    .version-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 8px 10px; border: none; background: none;
+      border-radius: 6px; font-size: 12px; color: var(--text-2);
+      cursor: pointer; font-family: 'JetBrains Mono', monospace;
+      transition: background 0.1s;
+    }
+    .version-option:hover { background: var(--bg-3); color: var(--text-1); }
+    .version-option.active { color: var(--green); }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: transparent;
+    }
+    .version-option.active .version-dot { background: var(--green); }
+    .version-tag {
+      margin-left: auto; font-size: 10px;
+      background: var(--green-bg); color: var(--green);
+      border-radius: 4px; padding: 1px 6px;
+    }
   </style>
 </head>
 <body>
@@ -82,7 +125,25 @@
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Buscar...<span class="kbd">⌘K</span>
       </div>
-      <span class="gh-badge">v1.0.0</span>
+      
+      <div class="version-selector" id="version-selector">
+        <button class="version-btn" onclick="toggleVersionDropdown()">
+          <span id="current-version-label">v1.0.1</span>
+          <svg class="version-chevron" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="version-dropdown" id="version-dropdown">
+          <button class="version-option active" data-v="1.0.1" onclick="switchVersion('1.0.1')">
+            <span class="version-dot"></span>
+            v1.0.1 <span class="version-tag">latest</span>
+          </button>
+          <button class="version-option" data-v="1.0.0" onclick="switchVersion('1.0.0')">
+            <span class="version-dot"></span>
+            v1.0.0
+          </button>
+        </div>
+      </div>
       <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
     </div>
   </header>
@@ -93,11 +154,13 @@
     <main class="main-content">
       <div class="content-inner">
 
-        <div class="pill-row">
-          <span class="pill pill-g">Referencia</span>
-          <span class="pill pill-n">11 tipos</span>
-          <span class="pill pill-n">UIElementType</span>
-        </div>
+        <div class="version-content" data-version="1.0.1">
+          <div class="pill-row">
+            <span class="pill pill-g">Referencia</span>
+            <span class="pill pill-n">12 tipos</span>
+            <span class="pill pill-n">UIElementType</span>
+            <span class="pill pill-b">v1.0.1</span>
+          </div>
 
         <h1 style="font-size:36px;">Tipos de UI</h1>
 
@@ -153,6 +216,10 @@
             <div class="type-card-name">BLOCK_RENDER</div>
             <div class="type-card-desc">Modelo 3D de bloque con rotación.</div>
           </div>
+          <div class="type-card">
+            <div class="type-card-name">SKILL_TREE</div>
+            <div class="type-card-desc">Árbol de habilidades interactivo con nodos y conexiones.</div>
+          </div>
         </div>
 
         <!-- CAMPOS COMUNES -->
@@ -189,7 +256,7 @@
         </table>
 
         <!-- IMAGE -->
-        <h2>IMAGE</h2>
+        <h2 id="image">IMAGE</h2>
 
         <p>Renderiza una textura de Minecraft o de un resource pack como imagen estática. Es el elemento más básico — ideal para fondos, títulos decorativos y separadores.</p>
 
@@ -205,12 +272,12 @@
     texture: "eventui:textures/ui/fondo.png"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row">
-            <div class="prop-key">texture <span class="req">✅ req</span></div>
-            <div class="prop-val">ResourceLocation de la textura. Formato: <code>namespace:textures/ruta/archivo.png</code></div>
-          </div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>texture</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation de la textura. Formato: <code>namespace:textures/ruta/archivo.png</code></td></tr>
+          </tbody>
+        </table>
 
         <div class="callout callout-warn" style="margin-top:16px;">
           <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L1.5 13.5h13L8 2z" stroke="#f59e0b" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg></span>
@@ -218,7 +285,7 @@
         </div>
 
         <!-- IMAGE_BUTTON -->
-        <h2>IMAGE_BUTTON</h2>
+        <h2 id="image_button">IMAGE_BUTTON</h2>
 
         <p>El elemento más completo del sistema. Botón con textura personalizada que soporta íconos, animaciones de hover, sonidos, hitbox preciso y texturas dinámicas según el estado del evento vinculado.</p>
 
@@ -265,30 +332,33 @@
     action: "open:misiones-menu"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">texture <span class="req">✅ req</span></div><div class="prop-val">Textura base del botón.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_texture <span class="opt">opt</span></div><div class="prop-val">Textura al pasar el cursor.</div></div>
-          <div class="prop-row"><div class="prop-key">in_progress_texture <span class="opt">opt</span></div><div class="prop-val">Textura cuando el evento vinculado está <code>IN_PROGRESS</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">completed_texture <span class="opt">opt</span></div><div class="prop-val">Textura cuando el evento vinculado está <code>COMPLETED</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">icon <span class="opt">opt</span></div><div class="prop-val">ResourceLocation del ítem renderizado encima de la textura como sprite 2D.</div></div>
-          <div class="prop-row"><div class="prop-key">icon_scale <span class="opt">opt</span></div><div class="prop-val">Escala del ícono. <code>"1"</code> = tamaño normal, <code>"0.7"</code> = 70%. Default: <code>"1"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_animation <span class="opt">opt</span></div><div class="prop-val">Tipo de animación hover. Ver <a href="animaciones.html" style="color:var(--green)">referencia de animaciones</a>.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_animation_intensity <span class="opt">opt</span></div><div class="prop-val">Intensidad de la animación. Significado varía por tipo.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_animation_duration <span class="opt">opt</span></div><div class="prop-val">Duración en ms. Default: <code>"200"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_animation_easing <span class="opt">opt</span></div><div class="prop-val"><code>linear</code>, <code>ease_in</code>, <code>ease_out</code>, <code>ease_in_out</code>. Default: <code>"ease_out"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_hitbox <span class="opt">opt</span></div><div class="prop-val"><code>"box"</code>: rectángulo completo (default). <code>"texture_alpha"</code>: solo píxeles opacos de la textura.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_sound <span class="opt">opt</span></div><div class="prop-val">ResourceLocation del sonido al hacer hover.</div></div>
-          <div class="prop-row"><div class="prop-key">hover_sound_volume <span class="opt">opt</span></div><div class="prop-val">Volumen hover (0.0 – 2.0).</div></div>
-          <div class="prop-row"><div class="prop-key">hover_sound_pitch <span class="opt">opt</span></div><div class="prop-val">Tono hover.</div></div>
-          <div class="prop-row"><div class="prop-key">click_sound <span class="opt">opt</span></div><div class="prop-val">Sonido al hacer clic. Vacío = sonido por defecto del sistema.</div></div>
-          <div class="prop-row"><div class="prop-key">click_sound_volume <span class="opt">opt</span></div><div class="prop-val">Volumen clic.</div></div>
-          <div class="prop-row"><div class="prop-key">click_sound_pitch <span class="opt">opt</span></div><div class="prop-val">Tono clic.</div></div>
-          <div class="prop-row"><div class="prop-key">visible_if <span class="opt">opt</span></div><div class="prop-val">Condición de visibilidad. Ver <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a>.</div></div>
-          <div class="prop-row"><div class="prop-key">action <span class="opt">opt</span></div><div class="prop-val">Acción al hacer clic. Ver tabla de acciones abajo.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>texture</code></td><td>✅ Sí</td><td>—</td><td>Textura base del botón.</td></tr>
+            <tr><td><code>hover_texture</code></td><td>No</td><td>—</td><td>Textura al pasar el cursor.</td></tr>
+            <tr><td><code>in_progress_texture</code></td><td>No</td><td>—</td><td>Textura cuando el evento vinculado está <code>IN_PROGRESS</code>.</td></tr>
+            <tr><td><code>completed_texture</code></td><td>No</td><td>—</td><td>Textura cuando el evento vinculado está <code>COMPLETED</code>.</td></tr>
+            <tr><td><code>icon</code></td><td>No</td><td>—</td><td>ResourceLocation del ítem renderizado encima de la textura como sprite 2D.</td></tr>
+            <tr><td><code>icon_scale</code></td><td>No</td><td><code>"1"</code></td><td>Escala del ícono. <code>"1"</code> = tamaño normal, <code>"0.7"</code> = 70%.</td></tr>
+            <tr><td><code>hover_animation</code></td><td>No</td><td>—</td><td>Tipo de animación hover. Ver <a href="animaciones.html" style="color:var(--green)">referencia de animaciones</a>.</td></tr>
+            <tr><td><code>hover_animation_intensity</code></td><td>No</td><td>—</td><td>Intensidad de la animación. Significado varía por tipo.</td></tr>
+            <tr><td><code>hover_animation_duration</code></td><td>No</td><td><code>"200"</code></td><td>Duración en ms.</td></tr>
+            <tr><td><code>hover_animation_easing</code></td><td>No</td><td><code>"ease_out"</code></td><td><code>linear</code>, <code>ease_in</code>, <code>ease_out</code>, <code>ease_in_out</code>.</td></tr>
+            <tr><td><code>hover_hitbox</code></td><td>No</td><td><code>"box"</code></td><td><code>"box"</code>: rectángulo completo. <code>"texture_alpha"</code>: solo píxeles opacos de la textura.</td></tr>
+            <tr><td><code>hover_sound</code></td><td>No</td><td>—</td><td>ResourceLocation del sonido al hacer hover.</td></tr>
+            <tr><td><code>hover_sound_volume</code></td><td>No</td><td><code>"1.0"</code></td><td>Volumen hover (0.0 – 2.0).</td></tr>
+            <tr><td><code>hover_sound_pitch</code></td><td>No</td><td><code>"1.0"</code></td><td>Tono hover.</td></tr>
+            <tr><td><code>click_sound</code></td><td>No</td><td>—</td><td>Sonido al hacer clic. Vacío = sonido por defecto del sistema.</td></tr>
+            <tr><td><code>click_sound_volume</code></td><td>No</td><td><code>"1.0"</code></td><td>Volumen clic.</td></tr>
+            <tr><td><code>click_sound_pitch</code></td><td>No</td><td><code>"1.0"</code></td><td>Tono clic.</td></tr>
+            <tr><td><code>visible_if</code></td><td>No</td><td>—</td><td>Condición de visibilidad. Ver <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a>.</td></tr>
+            <tr><td><code>action</code></td><td>No</td><td>—</td><td>Acción al hacer clic. Ver tabla de acciones abajo.</td></tr>
+          </tbody>
+        </table>
 
         <!-- BUTTON -->
-        <h2>BUTTON</h2>
+        <h2 id="button">BUTTON</h2>
 
         <p>Botón de texto estilo vanilla de Minecraft. Renderiza el fondo estándar del juego con texto centrado. Ideal para acciones simples como cerrar una pantalla.</p>
 
@@ -305,13 +375,16 @@
     action: "close"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">text <span class="req">✅ req</span></div><div class="prop-val">Texto del botón. Acepta códigos <code>§</code> para colores.</div></div>
-          <div class="prop-row"><div class="prop-key">action <span class="opt">opt</span></div><div class="prop-val">Acción al hacer clic.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>text</code></td><td>✅ Sí</td><td>—</td><td>Texto del botón. Acepta códigos <code>§</code> para colores.</td></tr>
+            <tr><td><code>action</code></td><td>No</td><td>—</td><td>Acción al hacer clic.</td></tr>
+          </tbody>
+        </table>
 
         <!-- TEXT -->
-        <h2>TEXT</h2>
+        <h2 id="text">TEXT</h2>
 
         <p>Renderiza texto con soporte para colores, alineación, sombra y data binding dinámico con <code>&#123;&#123;variables&#125;&#125;</code>.</p>
 
@@ -329,14 +402,22 @@
     shadow: "true"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">content <span class="req">✅ req</span></div><div class="prop-val">Texto a mostrar. Acepta códigos <code>§</code>, MiniMessage y variables <code>&#123;&#123;...&#125;&#125;</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">align <span class="opt">opt</span></div><div class="prop-val"><code>"left"</code> (default), <code>"center"</code>, <code>"right"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">shadow <span class="opt">opt</span></div><div class="prop-val"><code>"true"</code> activa la sombra bajo el texto. Default: <code>"false"</code>.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>content</code></td><td>✅ Sí</td><td>—</td><td>Texto a mostrar. Acepta códigos <code>§</code>, MiniMessage, saltos de línea (<code>\n</code>, <code>\n\n</code>) y variables <code>&#123;&#123;...&#125;&#125;</code>.</td></tr>
+            <tr><td><code>align</code></td><td>No</td><td><code>"left"</code></td><td><code>"left"</code>, <code>"center"</code>, <code>"right"</code>.</td></tr>
+            <tr><td><code>shadow</code></td><td>No</td><td><code>"false"</code></td><td><code>"true"</code> activa la sombra bajo el texto.</td></tr>
+            <tr><td><code>font_size</code></td><td>No</td><td><code>"1.0"</code></td><td>Escala del tamaño de fuente.</td></tr>
+            <tr><td><code>line_spacing</code></td><td>No</td><td><code>"0"</code></td><td>Espacio entre líneas dentro de un párrafo.</td></tr>
+            <tr><td><code>paragraph_spacing</code></td><td>No</td><td><code>"10"</code></td><td>Espacio entre párrafos.</td></tr>
+            <tr><td><code>anchor_offset_x</code></td><td>No</td><td>—</td><td>Desplazamiento X adicional para anclas.</td></tr>
+            <tr><td><code>anchor_offset_y</code></td><td>No</td><td>—</td><td>Desplazamiento Y adicional para anclas.</td></tr>
+          </tbody>
+        </table>
 
         <!-- PROGRESS_BAR -->
-        <h2>PROGRESS_BAR</h2>
+        <h2 id="progress_bar">PROGRESS_BAR</h2>
 
         <p>Barra de progreso que lee automáticamente el avance de un objetivo específico de un evento.</p>
 
@@ -355,15 +436,18 @@
     background_color: "2a2a2a"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">event_id <span class="req">✅ req</span></div><div class="prop-val">ID del evento del que tomar el progreso.</div></div>
-          <div class="prop-row"><div class="prop-key">objective_id <span class="req">✅ req</span></div><div class="prop-val">ID del objetivo específico dentro del evento.</div></div>
-          <div class="prop-row"><div class="prop-key">color <span class="opt">opt</span></div><div class="prop-val">Color del relleno en hexadecimal sin <code>#</code>. Default: verde.</div></div>
-          <div class="prop-row"><div class="prop-key">background_color <span class="opt">opt</span></div><div class="prop-val">Color del fondo en hexadecimal sin <code>#</code>. Default: gris oscuro.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>event_id</code></td><td>✅ Sí</td><td>—</td><td>ID del evento del que tomar el progreso.</td></tr>
+            <tr><td><code>objective_id</code></td><td>✅ Sí</td><td>—</td><td>ID del objetivo específico dentro del evento.</td></tr>
+            <tr><td><code>color</code></td><td>No</td><td>verde</td><td>Color del relleno en hexadecimal sin <code>#</code>.</td></tr>
+            <tr><td><code>background_color</code></td><td>No</td><td>gris oscuro</td><td>Color del fondo en hexadecimal sin <code>#</code>.</td></tr>
+          </tbody>
+        </table>
 
         <!-- PANEL -->
-        <h2>PANEL</h2>
+        <h2 id="panel">PANEL</h2>
 
         <p>Contenedor con fondo de color sólido. Funciona como un grupo visual — sus hijos se renderizan con posición relativa al panel. Útil para agrupar elementos con un fondo común.</p>
 
@@ -390,13 +474,16 @@
         shadow: "true"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">color <span class="opt">opt</span></div><div class="prop-val">Color de fondo en hexadecimal sin <code>#</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">alpha <span class="opt">opt</span></div><div class="prop-val">Opacidad del fondo (0–255). Default: <code>"255"</code> (opaco).</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>color</code></td><td>No</td><td>—</td><td>Color de fondo en hexadecimal sin <code>#</code>.</td></tr>
+            <tr><td><code>alpha</code></td><td>No</td><td><code>"255"</code></td><td>Opacidad del fondo (0–255).</td></tr>
+          </tbody>
+        </table>
 
         <!-- ICON -->
-        <h2>ICON</h2>
+        <h2 id="icon">ICON</h2>
 
         <p>Renderiza el sprite 2D de un ítem de Minecraft — el mismo icono que ves en el inventario. A diferencia de <code>IMAGE_BUTTON</code>, no tiene hover, clic ni animaciones. Es puramente decorativo.</p>
 
@@ -412,12 +499,15 @@
     item: "minecraft:diamond"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">item <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del ítem a mostrar. Solo ítems de Minecraft vanilla.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del ítem a mostrar. Solo ítems de Minecraft vanilla.</td></tr>
+          </tbody>
+        </table>
 
         <!-- TOOLTIP -->
-        <h2>TOOLTIP</h2>
+        <h2 id="tooltip">TOOLTIP</h2>
 
         <p>Muestra información al pasar el cursor sobre el elemento padre. <strong>Solo funciona como hijo</strong> (<code>children</code>) de otro elemento — no puede usarse como elemento raíz de la pantalla.</p>
 
@@ -476,9 +566,9 @@
         </table>
 
         <!-- ENTITY_RENDER -->
-        <h2>ENTITY_RENDER</h2>
+        <h2 id="entity_render">ENTITY_RENDER</h2>
 
-        <p>Renderiza una entidad viva en 3D dentro de la UI con animaciones y rotación. Compatible con entidades de Minecraft y de mods. Las entidades se cachean en memoria para mejor rendimiento.</p>
+        <p>Renderiza una entidad viva en 3D. Compatible con entidades de mods. Las entidades muestran automáticamente sus animaciones de reposo (idle).</p>
 
         <div class="code-block">
           <div class="code-label"><span class="dot"></span>Ejemplo</div>
@@ -496,16 +586,19 @@
     y_offset: "0"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">entity <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation de la entidad. Ejemplo: <code>minecraft:zombie</code>, <code>modid:entidad</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Tamaño del render. Mayor = más grande. Default: <code>"30"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">rotation_mode <span class="opt">opt</span></div><div class="prop-val"><code>"spin"</code>: rotación continua. <code>"fixed"</code>: sin rotación. <code>"follow_mouse"</code>: mira al cursor.</div></div>
-          <div class="prop-row"><div class="prop-key">spin_speed <span class="opt">opt</span></div><div class="prop-val">Velocidad de rotación en modo <code>spin</code>. Default: <code>"0.5"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">y_offset <span class="opt">opt</span></div><div class="prop-val">Desplazamiento vertical del modelo. Default: <code>"0"</code>.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>entity</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation de la entidad. Ejemplo: <code>minecraft:zombie</code>, <code>modid:entidad</code>.</td></tr>
+            <tr><td><code>scale</code></td><td>No</td><td><code>"30"</code></td><td>Tamaño del render. Mayor = más grande.</td></tr>
+            <tr><td><code>rotation_mode</code></td><td>No</td><td>—</td><td><code>"spin"</code>: rotación continua. <code>"static"</code> / <code>"fixed"</code>: rotación estática fija. <code>"follow_mouse"</code>: la entidad sigue al cursor de forma suave.</td></tr>
+            <tr><td><code>spin_speed</code></td><td>No</td><td><code>"0.5"</code></td><td>Velocidad de rotación en modo <code>spin</code>.</td></tr>
+            <tr><td><code>y_offset</code></td><td>No</td><td><code>"0"</code></td><td>Desplazamiento vertical del modelo.</td></tr>
+          </tbody>
+        </table>
 
         <!-- ITEM_RENDER -->
-        <h2>ITEM_RENDER</h2>
+        <h2 id="item_render">ITEM_RENDER</h2>
 
         <p>Renderiza un ítem de Minecraft como modelo 3D completo — muestra el modelo con iluminación, a diferencia de <code>ICON</code> que muestra el sprite 2D plano.</p>
 
@@ -524,15 +617,18 @@
     rotation_y: "45"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">item <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del ítem. Solo ítems de Minecraft vanilla.</div></div>
-          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Escala del modelo. Default: <code>"1.0"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">rotation_x <span class="opt">opt</span></div><div class="prop-val">Rotación en eje X en grados.</div></div>
-          <div class="prop-row"><div class="prop-key">rotation_y <span class="opt">opt</span></div><div class="prop-val">Rotación en eje Y en grados.</div></div>
-        </div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>item</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del ítem. Solo ítems de Minecraft vanilla.</td></tr>
+            <tr><td><code>scale</code></td><td>No</td><td><code>"1.0"</code></td><td>Escala del modelo.</td></tr>
+            <tr><td><code>rotation_x</code></td><td>No</td><td>—</td><td>Rotación en eje X en grados.</td></tr>
+            <tr><td><code>rotation_y</code></td><td>No</td><td>—</td><td>Rotación en eje Y en grados.</td></tr>
+          </tbody>
+        </table>
 
         <!-- BLOCK_RENDER -->
-        <h2>BLOCK_RENDER</h2>
+        <h2 id="block_render">BLOCK_RENDER</h2>
 
         <p>Renderiza un bloque de Minecraft como modelo 3D isométrico.</p>
 
@@ -550,11 +646,40 @@
     rotation_y: "30"</code></pre>
         </div>
 
-        <div class="prop-table">
-          <div class="prop-row"><div class="prop-key">block <span class="req">✅ req</span></div><div class="prop-val">ResourceLocation del bloque. Solo bloques de Minecraft vanilla.</div></div>
-          <div class="prop-row"><div class="prop-key">scale <span class="opt">opt</span></div><div class="prop-val">Escala del modelo. Default: <code>"1.0"</code>.</div></div>
-          <div class="prop-row"><div class="prop-key">rotation_y <span class="opt">opt</span></div><div class="prop-val">Rotación en eje Y en grados.</div></div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>block</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del bloque. Solo bloques de Minecraft vanilla.</td></tr>
+            <tr><td><code>scale</code></td><td>No</td><td><code>"1.0"</code></td><td>Escala del modelo.</td></tr>
+            <tr><td><code>rotation_y</code></td><td>No</td><td>—</td><td>Rotación en eje Y en grados.</td></tr>
+          </tbody>
+        </table>
+
+        <!-- SKILL_TREE -->
+        <h2 id="skill_tree">SKILL_TREE</h2>
+
+        <p>Renderiza un árbol de habilidades interactivo con nodos desbloqueables, conexiones visuales y efectos de animación. Los jugadores pueden gastar puntos para desbloquear habilidades.</p>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo</div>
+          <pre><code>- id: "skill-tree-ui"
+  type: SKILL_TREE
+  x: 0
+  y: 0
+  width: 500
+  height: 350
+  properties:
+    skill_tree_id: "combate"
+    point_type: "combat_points"</code></pre>
         </div>
+
+        <table>
+          <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>skill_tree_id</code></td><td>✅ Sí</td><td>—</td><td>ID del árbol de habilidades definido en <code>skill_trees.yml</code>.</td></tr>
+            <tr><td><code>point_type</code></td><td>✅ Sí</td><td>—</td><td>Tipo de puntos que este árbol consume (ej: <code>"combat_points"</code>).</td></tr>
+          </tbody>
+        </table>
 
         <!-- ACCIONES -->
         <h2>Acciones de botones</h2>
@@ -594,11 +719,535 @@
             </a>
           </div>
         </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0" style="display:none;">
+          <div class="pill-row">
+            <span class="pill pill-g">Referencia</span>
+            <span class="pill pill-n">11 tipos</span>
+            <span class="pill pill-n">UIElementType</span>
+            <span class="pill pill-b">v1.0.0</span>
+          </div>
+
+          <h1 style="font-size:36px;">Tipos de UI</h1>
+
+          <p style="font-size:15px; max-width:580px;">
+            Referencia completa de todos los tipos de elementos disponibles en EventUI. Cada tipo tiene sus propias propiedades y comportamiento dentro del árbol de la pantalla.
+          </p>
+
+          <!-- RESUMEN -->
+          <h2>Resumen</h2>
+
+          <div class="type-grid">
+            <div class="type-card">
+              <div class="type-card-name">IMAGE</div>
+              <div class="type-card-desc">Textura estática. Fondos, títulos, decoración.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">IMAGE_BUTTON</div>
+              <div class="type-card-desc">Botón con textura personalizada, ícono, hover y sonidos.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">BUTTON</div>
+              <div class="type-card-desc">Botón de texto estilo vanilla de Minecraft.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">TEXT</div>
+              <div class="type-card-desc">Texto con colores MiniMessage y data binding.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">PROGRESS_BAR</div>
+              <div class="type-card-desc">Barra de progreso vinculada a un objetivo de evento.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">PANEL</div>
+              <div class="type-card-desc">Contenedor con fondo de color. Agrupa hijos.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">ICON</div>
+              <div class="type-card-desc">Sprite 2D de un ítem de Minecraft. Solo visual.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">TOOLTIP</div>
+              <div class="type-card-desc">Texto flotante al pasar el cursor. Solo como hijo.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">ENTITY_RENDER</div>
+              <div class="type-card-desc">Entidad viva en 3D con rotación y escala.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">ITEM_RENDER</div>
+              <div class="type-card-desc">Modelo 3D de ítem con rotación.</div>
+            </div>
+            <div class="type-card">
+              <div class="type-card-name">BLOCK_RENDER</div>
+              <div class="type-card-desc">Modelo 3D de bloque con rotación.</div>
+            </div>
+          </div>
+
+          <!-- CAMPOS COMUNES -->
+          <h2>Campos comunes</h2>
+
+          <p>Todos los elementos comparten estos campos base independientemente del tipo:</p>
+
+          <table>
+            <thead><tr><th>Campo</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>✅ Sí</td><td>—</td><td>Identificador único dentro del archivo de UI.</td></tr>
+              <tr><td><code>type</code></td><td>✅ Sí</td><td>—</td><td>Tipo del elemento en mayúsculas.</td></tr>
+              <tr><td><code>x</code></td><td>✅ Sí</td><td>—</td><td>Posición X. Con <code>anchor</code> actúa como offset.</td></tr>
+              <tr><td><code>y</code></td><td>✅ Sí</td><td>—</td><td>Posición Y. Con <code>anchor</code> actúa como offset.</td></tr>
+              <tr><td><code>width</code></td><td>No</td><td><code>100</code></td><td>Ancho en píxeles de UI.</td></tr>
+              <tr><td><code>height</code></td><td>No</td><td><code>20</code></td><td>Alto en píxeles de UI.</td></tr>
+              <tr><td><code>z_index</code></td><td>No</td><td><code>0</code></td><td>Orden de capas. Mayor valor = encima.</td></tr>
+              <tr><td><code>visible</code></td><td>No</td><td><code>true</code></td><td>Visibilidad estática del elemento.</td></tr>
+              <tr><td><code>properties</code></td><td>Varía</td><td>—</td><td>Propiedades específicas del tipo.</td></tr>
+              <tr><td><code>children</code></td><td>No</td><td>—</td><td>Elementos hijos anidados.</td></tr>
+            </tbody>
+          </table>
+
+          <p>Además, dentro de <code>properties</code> cualquier tipo puede usar:</p>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>anchor</code></td><td>Punto de anclaje relativo a la pantalla. Ver <a href="../guias/disenar-uis.html#anclas" style="color:var(--green)">sistema de anclas</a>.</td></tr>
+              <tr><td><code>anchor_offset_x</code></td><td>Desplazamiento X adicional desde el punto de ancla.</td></tr>
+              <tr><td><code>anchor_offset_y</code></td><td>Desplazamiento Y adicional desde el punto de ancla.</td></tr>
+              <tr><td><code>visible_if</code></td><td>Condición de visibilidad basada en variables de estado. Ver <a href="../guias/data-binding.html" style="color:var(--green)">data binding</a>.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- IMAGE -->
+          <h2 id="image">IMAGE</h2>
+
+          <p>Renderiza una textura de Minecraft o de un resource pack como imagen estática. Es el elemento más básico — ideal para fondos, títulos decorativos y separadores.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "fondo"
+  type: IMAGE
+  x: 0
+  y: 0
+  width: 500
+  height: 300
+  properties:
+    texture: "eventui:textures/ui/fondo_evento.png"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>texture</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation de la textura. Ejemplo: <code>minecraft:textures/gui/options_background.png</code> o <code>eventui:textures/ui/mi_imagen.png</code>.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- IMAGE_BUTTON -->
+          <h2 id="image_button">IMAGE_BUTTON</h2>
+
+          <p>Botón interactivo con textura personalizada. Es el elemento más versátil de EventUI — soporta dos estados de textura (normal y hover), ícono opcional renderizado encima, animación visual al pasar el cursor, sonidos configurables de hover y clic, y filtrado por transparencia.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "btn-iniciar"
+  type: IMAGE_BUTTON
+  x: 100
+  y: 200
+  width: 120
+  height: 40
+  properties:
+    texture: "eventui:textures/ui/btn_base.png"
+    hover_texture: "eventui:textures/ui/btn_hover.png"
+    icon: "minecraft:diamond"
+    icon_scale: "0.8"
+    hover_animation: "zoom_in"
+    hover_animation_intensity: "1.1"
+    hover_sound: "minecraft:ui.button.click"
+    hover_sound_volume: "0.5"
+    hover_sound_pitch: "1.2"
+    click_sound: "minecraft:ui.button.click"
+    click_sound_volume: "1.0"
+    click_sound_pitch: "1.0"
+    hover_hitbox: "texture_alpha"
+    action: "start_event:matar-zombies"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>texture</code></td><td>✅ Sí</td><td>—</td><td>Textura base en estado normal.</td></tr>
+              <tr><td><code>hover_texture</code></td><td>No</td><td>—</td><td>Textura alternativa cuando el cursor está encima. Si no se especifica, usa <code>texture</code>.</td></tr>
+              <tr><td><code>in_progress_texture</code></td><td>No</td><td>—</td><td>Textura a mostrar cuando el evento vinculado está en progreso.</td></tr>
+              <tr><td><code>completed_texture</code></td><td>No</td><td>—</td><td>Textura a mostrar cuando el evento vinculado está completado.</td></tr>
+              <tr><td><code>icon</code></td><td>No</td><td>—</td><td>ResourceLocation de un ítem de Minecraft renderizado sobre la textura base. Ejemplo: <code>minecraft:diamond_sword</code>.</td></tr>
+              <tr><td><code>icon_scale</code></td><td>No</td><td><code>"1.0"</code></td><td>Escala del ícono respecto a la celda (0.1 a 2.0).</td></tr>
+              <tr><td><code>hover_animation</code></td><td>No</td><td>—</td><td>Animación visual al hacer hover. Ver <a href="animaciones.html" style="color:var(--green)">referencia de animaciones</a>.</td></tr>
+              <tr><td><code>hover_animation_intensity</code></td><td>No</td><td><code>"1.1"</code></td><td>Intensidad de la animación (ej: <code>"1.15"</code> para 15% de zoom).</td></tr>
+              <tr><td><code>hover_sound</code></td><td>No</td><td>—</td><td>Sonido al pasar el cursor por encima.</td></tr>
+              <tr><td><code>hover_sound_volume</code></td><td>No</td><td><code>"1.0"</code></td><td>Volumen del sonido hover (0.0 a 2.0).</td></tr>
+              <tr><td><code>hover_sound_pitch</code></td><td>No</td><td><code>"1.0"</code></td><td>Tono/pitch del sonido hover (0.5 a 2.0).</td></tr>
+              <tr><td><code>click_sound</code></td><td>No</td><td>—</td><td>Sonido al hacer clic.</td></tr>
+              <tr><td><code>click_sound_volume</code></td><td>No</td><td><code>"1.0"</code></td><td>Volumen del sonido clic.</td></tr>
+              <tr><td><code>click_sound_pitch</code></td><td>No</td><td><code>"1.0"</code></td><td>Tono/pitch del sonido clic.</td></tr>
+              <tr><td><code>hover_hitbox</code></td><td>No</td><td><code>"box"</code></td><td><code>"box"</code> (rectángulo completo) o <code>"texture_alpha"</code> (ignora píxeles transparentes).</td></tr>
+              <tr><td><code>action</code></td><td>No</td><td>—</td><td>Acción a ejecutar al hacer clic. Ver tabla de acciones abajo.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- BUTTON -->
+          <h2 id="button">BUTTON</h2>
+
+          <p>Botón estándar estilo Minecraft vanilla con texto centrado. Usa las texturas nativas del juego (widgets.png) y responde a la escala de la UI.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "btn-confirmar"
+  type: BUTTON
+  x: 200
+  y: 300
+  width: 150
+  height: 20
+  properties:
+    text: "§aAceptar"
+    action: "close"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>text</code></td><td>✅ Sí</td><td>—</td><td>Texto del botón. Acepta códigos de color de Minecraft (<code>§a</code>, <code>§l</code>, etc.).</td></tr>
+              <tr><td><code>action</code></td><td>No</td><td>—</td><td>Acción al hacer clic. Ver tabla de acciones abajo.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- TEXT -->
+          <h2 id="text">TEXT</h2>
+
+          <p>Renderiza texto con soporte completo para sintaxis MiniMessage, códigos de color <code>§</code>, sombras y reemplazo de variables en tiempo real (data binding).</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "texto-progreso"
+  type: TEXT
+  x: 250
+  y: 80
+  width: 480
+  height: 20
+  properties:
+    content: "§7Progreso: §e{{event.currentProgress}}§7/§e{{event.targetProgress}}"
+    align: "center"
+    shadow: "true"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>content</code></td><td>✅ Sí</td><td>—</td><td>Texto a mostrar. Acepta códigos <code>§</code>, MiniMessage y variables <code>&#123;&#123;...&#125;&#125;</code>.</td></tr>
+              <tr><td><code>align</code></td><td>No</td><td><code>"left"</code></td><td><code>"left"</code>, <code>"center"</code>, <code>"right"</code>.</td></tr>
+              <tr><td><code>shadow</code></td><td>No</td><td><code>"false"</code></td><td><code>"true"</code> activa la sombra bajo el texto.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- PROGRESS_BAR -->
+          <h2 id="progress_bar">PROGRESS_BAR</h2>
+
+          <p>Barra de progreso que lee automáticamente el avance de un objetivo específico de un evento.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "barra-zombies"
+  type: PROGRESS_BAR
+  x: 68
+  y: 190
+  width: 128
+  height: 8
+  properties:
+    event_id: "matar-zombies"
+    objective_id: "kill-zombies"
+    color: "5cb85c"
+    background_color: "2a2a2a"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>event_id</code></td><td>✅ Sí</td><td>—</td><td>ID del evento del que tomar el progreso.</td></tr>
+              <tr><td><code>objective_id</code></td><td>✅ Sí</td><td>—</td><td>ID del objetivo específico dentro del evento.</td></tr>
+              <tr><td><code>color</code></td><td>No</td><td>verde</td><td>Color del relleno en hexadecimal sin <code>#</code>.</td></tr>
+              <tr><td><code>background_color</code></td><td>No</td><td>gris oscuro</td><td>Color del fondo en hexadecimal sin <code>#</code>.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- PANEL -->
+          <h2 id="panel">PANEL</h2>
+
+          <p>Contenedor con fondo de color sólido. Funciona como un grupo visual — sus hijos se renderizan con posición relativa al panel. Útil para agrupar elementos con un fondo común.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "panel-info"
+  type: PANEL
+  x: 50
+  y: 100
+  width: 200
+  height: 80
+  properties:
+    color: "1a1a1a"
+    alpha: "180"
+  children:
+    - id: "texto-panel"
+      type: TEXT
+      x: 10
+      y: 10
+      width: 180
+      height: 20
+      properties:
+        content: "§eInformación"
+        shadow: "true"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>color</code></td><td>No</td><td>—</td><td>Color de fondo en hexadecimal sin <code>#</code>.</td></tr>
+              <tr><td><code>alpha</code></td><td>No</td><td><code>"255"</code></td><td>Opacidad del fondo (0–255).</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ICON -->
+          <h2 id="icon">ICON</h2>
+
+          <p>Renderiza el sprite 2D de un ítem de Minecraft — el mismo icono que ves en el inventario. A diferencia de <code>IMAGE_BUTTON</code>, no tiene hover, clic ni animaciones. Es puramente decorativo.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "icono-diamante"
+  type: ICON
+  x: 100
+  y: 50
+  width: 16
+  height: 16
+  properties:
+    item: "minecraft:diamond"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>item</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del ítem a mostrar. Solo ítems de Minecraft vanilla.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- TOOLTIP -->
+          <h2 id="tooltip">TOOLTIP</h2>
+
+          <p>Muestra información al pasar el cursor sobre el elemento padre. <strong>Solo funciona como hijo</strong> (<code>children</code>) de otro elemento — no puede usarse como elemento raíz de la pantalla.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "standard" — fondo vanilla</div>
+            <pre><code>children:
+  - id: "tooltip-info"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "standard"
+      content: "§eNombre del objeto\n§7Descripción aquí"
+      shadow: "true"</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "text" — texto flotante sin fondo</div>
+            <pre><code>children:
+  - id: "tooltip-texto"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "text"
+      content: "Texto flotante sin fondo"
+      shadow: "true"</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>render_type: "advanced" — receta de crafting</div>
+            <pre><code>children:
+  - id: "tooltip-receta"
+    type: TOOLTIP
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+    properties:
+      render_type: "advanced"
+      content: |
+        recipe: minecraft:diamond_chestplate [frame:eventui:textures/ui/crafting_frame.png]</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>render_type</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>standard</code></td><td>Fondo estilo vanilla de Minecraft. Soporta <code>\n</code> y códigos <code>§</code>. Soporta también alineación con <code>offset_x</code> y <code>offset_y</code>.</td></tr>
+              <tr><td><code>text</code></td><td>Texto flotante sin fondo. Soporta <code>shadow</code>, alineación (<code>left</code>, <code>center</code>, <code>right</code>) y saltos de línea con <code>\n</code>, <code>&lt;br&gt;</code> o <code>&lt;newline&gt;</code>.</td></tr>
+              <tr><td><code>advanced</code></td><td>Tooltip enriquecido con secciones: <code>TEXT</code>, <code>ITEM</code>, <code>RECIPE</code>, <code>ENTITY</code>, <code>IMAGE</code>, <code>SEPARATOR</code>.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ENTITY_RENDER -->
+          <h2 id="entity_render">ENTITY_RENDER</h2>
+
+          <p>Renderiza una entidad viva en 3D dentro de la UI con animaciones y rotación. Compatible con entidades de Minecraft y de mods. Las entidades se cachean en memoria para mejor rendimiento.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "render-zombie"
+  type: ENTITY_RENDER
+  x: 100
+  y: 100
+  width: 50
+  height: 50
+  properties:
+    entity: "minecraft:zombie"
+    scale: "35"
+    rotation_mode: "spin"
+    spin_speed: "0.5"
+    y_offset: "0"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>entity</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation de la entidad. Ejemplo: <code>minecraft:zombie</code>, <code>modid:entidad</code>.</td></tr>
+              <tr><td><code>scale</code></td><td>No</td><td><code>"30"</code></td><td>Tamaño del render. Mayor = más grande.</td></tr>
+              <tr><td><code>rotation_mode</code></td><td>No</td><td>—</td><td><code>"spin"</code>: rotación continua. <code>"fixed"</code>: sin rotación. <code>"follow_mouse"</code>: mira al cursor.</td></tr>
+              <tr><td><code>spin_speed</code></td><td>No</td><td><code>"0.5"</code></td><td>Velocidad de rotación en modo <code>spin</code>.</td></tr>
+              <tr><td><code>y_offset</code></td><td>No</td><td><code>"0"</code></td><td>Desplazamiento vertical del modelo.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ITEM_RENDER -->
+          <h2 id="item_render">ITEM_RENDER</h2>
+
+          <p>Renderiza un ítem de Minecraft como modelo 3D completo — muestra el modelo con iluminación, a diferencia de <code>ICON</code> que muestra el sprite 2D plano.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "render-espada"
+  type: ITEM_RENDER
+  x: 120
+  y: 80
+  width: 32
+  height: 32
+  properties:
+    item: "minecraft:diamond_sword"
+    rotation_mode: "spin"
+    spin_speed: "0.8"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>item</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del ítem a renderizar en 3D.</td></tr>
+              <tr><td><code>rotation_mode</code></td><td>No</td><td><code>"spin"</code></td><td><code>"spin"</code> (rotación continua) o <code>"fixed"</code> (estático).</td></tr>
+              <tr><td><code>spin_speed</code></td><td>No</td><td><code>"1.0"</code></td><td>Velocidad de rotación.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- BLOCK_RENDER -->
+          <h2 id="block_render">BLOCK_RENDER</h2>
+
+          <p>Renderiza un bloque de Minecraft como modelo 3D con perspectiva isométrica y rotación opcional.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo</div>
+            <pre><code>- id: "render-cofre"
+  type: BLOCK_RENDER
+  x: 200
+  y: 80
+  width: 48
+  height: 48
+  properties:
+    block: "minecraft:chest"
+    rotation_mode: "spin"
+    spin_speed: "0.5"</code></pre>
+          </div>
+
+          <table>
+            <thead><tr><th>Propiedad</th><th>Obligatorio</th><th>Default</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td><code>block</code></td><td>✅ Sí</td><td>—</td><td>ResourceLocation del bloque a renderizar en 3D.</td></tr>
+              <tr><td><code>rotation_mode</code></td><td>No</td><td><code>"spin"</code></td><td><code>"spin"</code> o <code>"fixed"</code>.</td></tr>
+              <tr><td><code>spin_speed</code></td><td>No</td><td><code>"0.5"</code></td><td>Velocidad de rotación.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ACCIONES DISPONIBLES -->
+          <h2>Acciones disponibles en botones</h2>
+
+          <p>Propiedad <code>action</code> en <code>IMAGE_BUTTON</code> y <code>BUTTON</code>:</p>
+
+          <table>
+            <thead><tr><th>Sintaxis de acción</th><th>Efecto</th></tr></thead>
+            <tbody>
+              <tr><td><code>"open:&lt;screen_id&gt;"</code></td><td>Abre otra pantalla de UI definida en YAML. Ejemplo: <code>"open:sub-menu"</code>.</td></tr>
+              <tr><td><code>"close"</code></td><td>Cierra la pantalla actual y vuelve al juego.</td></tr>
+              <tr><td><code>"start_event:&lt;event_id&gt;"</code></td><td>Inicia un evento para el jugador desde la UI.</td></tr>
+              <tr><td><code>"abandon_event:&lt;event_id&gt;"</code></td><td>Abandona un evento activo del jugador.</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-info">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <div class="callout-text">
+              Las acciones <code>start_event</code> y <code>abandon_event</code> se envían al servidor vía el bridge. El cliente no modifica el progreso directamente — espera la respuesta del servidor.
+            </div>
+          </div>
+
+          <div class="page-footer">
+            <div class="footer-nav">
+              <a class="footer-nav-btn" href="config.html">
+                <span class="fnb-label">Anterior</span>
+                <span class="fnb-title">← config.yml</span>
+              </a>
+            </div>
+            <div class="footer-nav">
+              <a class="footer-nav-btn next" href="animaciones.html">
+                <span class="fnb-label">Siguiente</span>
+                <span class="fnb-title">Animaciones hover →</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </main>
   </div>
 
+  <script>
+    function toggleVersionDropdown() {
+      document.getElementById('version-selector').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#version-selector')) {
+        document.getElementById('version-selector')?.classList.remove('open');
+      }
+    });
+    function switchVersion(v) {
+      document.getElementById('current-version-label').textContent = 'v' + v;
+      document.querySelectorAll('.version-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.v === v);
+      });
+      document.getElementById('version-selector').classList.remove('open');
+      document.querySelectorAll('.version-content').forEach(el => {
+        el.style.display = el.dataset.version === v ? 'block' : 'none';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => switchVersion('1.0.1'));
+  </script>
   <script src="../js/main.js"></script>
 </body>
 </html>

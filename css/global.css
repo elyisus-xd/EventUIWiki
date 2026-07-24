@@ -194,6 +194,57 @@ body {
   margin-bottom: 4px;
 }
 
+/* Disclosure triangle para links colapsables */
+.nav-a-collapsible {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 6px;
+}
+
+.disclosure-triangle {
+  width: 10px;
+  height: 10px;
+  color: var(--text-3);
+  transition: transform 0.2s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.nav-a-collapsible:hover .disclosure-triangle {
+  color: var(--text-2);
+}
+
+.nav-a-collapsible.expanded .disclosure-triangle {
+  transform: rotate(90deg);
+}
+
+.nav-group-content {
+  max-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 1px;
+  transition: max-height 0.3s ease-out;
+}
+
+.nav-group-content.expanded {
+  max-height: 1000px;
+}
+
+/* Subgrupos anidados */
+.nav-subgroup {
+  margin-left: 0;
+  margin-top: 4px;
+}
+
+.nav-group-content {
+  padding-left: 16px;
+}
+
+.nav-a-sub {
+  padding-left: 8px;
+  font-size: 12px;
+}
+
 .nav-a {
   display: flex;
   align-items: center;
@@ -394,6 +445,53 @@ pre code {
 }
 
 .card:hover { border-color: var(--border-2); background: var(--bg-3); }
+
+/* ── DEMO GIF ── */
+.demo-gif {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 24px 0;
+  background: var(--bg-card);
+  max-width: 400px;
+}
+
+.demo-label {
+  padding: 8px 12px;
+  background: var(--bg-header);
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-gif img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.demo-caption {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+/* ── CONTENT WITH DEMO (Right sidebar layout) ── */
+.content-with-demo {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 32px;
+  align-items: start;
+}
+
+.content-with-demo .demo-gif {
+  position: sticky;
+  top: 24px;
+  margin: 0;
+}
 
 .card-icon {
   width: 30px; height: 30px;

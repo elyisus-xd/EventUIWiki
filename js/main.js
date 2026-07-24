@@ -40,6 +40,7 @@ async function loadSidebar() {
 
     placeholder.replaceWith(aside);
     setActiveNav();
+    restoreNavGroupStates();
   } catch (err) {
     console.warn('EventUI sidebar:', err.message);
   }
@@ -64,6 +65,83 @@ function setActiveNav() {
       (path.endsWith('/') && abs === '/index.html')
     ) {
       a.classList.add('active');
+
+      // Expandir grupos padres si el link está activo
+      let parent = a.closest('.nav-group-content');
+      while (parent) {
+        const label = parent.previousElementSibling;
+        if (label && label.classList.contains('nav-a-collapsible')) {
+          label.classList.add('expanded');
+          parent.classList.add('expanded');
+        }
+        parent = parent.parentElement?.closest('.nav-group-content');
+      }
+    }
+  });
+
+  // Si estamos en tipos-ui.html, expandir el grupo Tipos de UI
+  if (path.includes('tipos-ui.html')) {
+    const tiposUiLink = document.querySelector('.nav-a-collapsible[href*="tipos-ui"]');
+    if (tiposUiLink) {
+      tiposUiLink.classList.add('expanded');
+      const content = tiposUiLink.nextElementSibling;
+      if (content && content.classList.contains('nav-group-content')) {
+        content.classList.add('expanded');
+      }
+    }
+  }
+
+  // Si estamos en disenar-uis.html, expandir el grupo Diseñar UIs
+  if (path.includes('disenar-uis.html')) {
+    const disenarUisLink = document.querySelector('.nav-a-collapsible[href*="disenar-uis"]');
+    if (disenarUisLink) {
+      disenarUisLink.classList.add('expanded');
+      const content = disenarUisLink.nextElementSibling;
+      if (content && content.classList.contains('nav-group-content')) {
+        content.classList.add('expanded');
+      }
+    }
+  }
+}
+
+// ── DISCLOSURE TRIANGLES ──
+// Toggle para colapsar/expandir grupos de navegación
+function toggleNavGroup(link) {
+  const wasExpanded = link.classList.contains('expanded');
+  link.classList.toggle('expanded');
+  const content = link.nextElementSibling;
+  if (content && content.classList.contains('nav-group-content')) {
+    content.classList.toggle('expanded');
+  }
+  // Guardar estado en localStorage
+  const groupId = link.getAttribute('href');
+  if (groupId) {
+    const isExpanded = link.classList.contains('expanded');
+    localStorage.setItem('nav-group-' + groupId, isExpanded ? 'expanded' : 'collapsed');
+  }
+  // Navegar a la página si estaba colapsado (ahora está expandido)
+  const href = link.getAttribute('href');
+  if (href && !wasExpanded) {
+    // Esperar a que la animación termine antes de navegar
+    setTimeout(() => {
+      window.location.href = href;
+    }, 300);
+  }
+}
+
+// Restaurar estado de grupos desde localStorage
+function restoreNavGroupStates() {
+  document.querySelectorAll('.nav-a-collapsible').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href) {
+      const state = localStorage.getItem('nav-group-' + href);
+      if (state === 'expanded') {
+        link.classList.add('expanded');
+        const content = link.nextElementSibling;
+        if (content && content.classList.contains('nav-group-content')) {
+          content.classList.add('expanded');
+        }
+      }
     }
   });
 }

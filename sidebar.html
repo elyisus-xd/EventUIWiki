@@ -23,10 +23,33 @@
         <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3" /><path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
         Crear eventos
       </a>
-      <a class="nav-a" href="/guias/disenar-uis.html">
-        <svg viewBox="0 0 14 14" fill="none"><path d="M2 10V4a2 2 0 012-2h6a2 2 0 012 2v6" stroke="currentColor" stroke-width="1.3"></path><path d="M1 10h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
-        Diseñar UIs
-      </a>
+      <div class="nav-subgroup">
+        <a class="nav-a nav-a-collapsible" href="/guias/disenar-uis.html" data-group-id="disenar-uis" onclick="event.preventDefault(); toggleNavGroup(this);">
+          <svg class="disclosure-triangle" viewBox="0 0 12 12" fill="none">
+            <path d="M3 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 10V4a2 2 0 012-2h6a2 2 0 012 2v6" stroke="currentColor" stroke-width="1.3"></path><path d="M1 10h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+          Diseñar UIs
+        </a>
+        <div class="nav-group-content">
+          <a class="nav-a nav-a-sub" href="/guias/disenar-uis.html#estructura">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" /></svg>
+            Estructura
+          </a>
+          <a class="nav-a nav-a-sub" href="/guias/disenar-uis.html#anclas">
+            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4" stroke="currentColor" stroke-width="1.3"></circle><circle cx="7" cy="7" r="1.5" fill="currentColor"></circle></svg>
+            Anclas
+          </a>
+          <a class="nav-a nav-a-sub" href="/guias/disenar-uis.html#visible_if">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            visible_if
+          </a>
+          <a class="nav-a nav-a-sub" href="/guias/disenar-uis.html#tipos-elementos">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" /><path d="M4 6h6M4 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            Tipos de elementos
+          </a>
+        </div>
+      </div>
       <a class="nav-a" href="/guias/objetivos.html">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"></circle><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.3"></circle></svg>
         Objetivos
@@ -43,6 +66,10 @@
         <svg viewBox="0 0 14 14" fill="none"><path d="M2 4h4v6H2zM8 4h4v6H8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M6 7h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
         Data Binding
       </a>
+      <a class="nav-a" href="/guias/skill-trees.html">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M7 2L3 5h3v4H3l4 3 4-3H8V5h3L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+        Skill Trees
+      </a>
     </div>
 
     <div class="nav-block">
@@ -55,10 +82,45 @@
         <svg viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h7M2 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
         config.yml
       </a>
-      <a class="nav-a" href="/referencia/tipos-ui.html">
-        <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" /><path d="M4 6h6M4 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
-        Tipos de UI
-      </a>
+      <div class="nav-subgroup">
+        <a class="nav-a nav-a-collapsible" href="/referencia/tipos-ui.html" data-group-id="tipos-ui" onclick="event.preventDefault(); toggleNavGroup(this);">
+          <svg class="disclosure-triangle" viewBox="0 0 12 12" fill="none">
+            <path d="M3 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" /><path d="M4 6h6M4 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+          Tipos de UI
+        </a>
+        <div class="nav-group-content">
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#image">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" /></svg>
+            IMAGE
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#image_button">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" /><path d="M5 5h4M5 7h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            IMAGE_BUTTON
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#text">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M3 4h8M3 7h6M3 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            TEXT
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#panel">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" /></svg>
+            PANEL
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#progress_bar">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="5" width="10" height="4" rx="1" stroke="currentColor" stroke-width="1.3" /><path d="M4 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            PROGRESS_BAR
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#entity_render">
+            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4" stroke="currentColor" stroke-width="1.3" /><circle cx="7" cy="7" r="1.5" fill="currentColor"></circle></svg>
+            ENTITY_RENDER
+          </a>
+          <a class="nav-a nav-a-sub" href="/referencia/tipos-ui.html#skill_tree">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 2L3 5h3v4H3l4 3 4-3H8V5h3L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            SKILL_TREE
+          </a>
+        </div>
+      </div>
       <a class="nav-a" href="/referencia/animaciones.html">
         <svg viewBox="0 0 14 14" fill="none"><path d="M2 7c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path><path d="M7 7l2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
         Animaciones hover

@@ -8,6 +8,50 @@
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/search.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%235db85c'/><path d='M8 16l5 5 11-10' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <style>
+    .version-selector { position: relative; }
+    .version-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-2); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .version-btn:hover { border-color: var(--border-2); color: var(--text-1); }
+    .version-chevron {
+      width: 12px; height: 12px;
+      transition: transform 0.2s; color: var(--text-3);
+    }
+    .version-selector.open .version-chevron { transform: rotate(180deg); }
+    .version-dropdown {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 6px;
+      min-width: 140px; z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .version-selector.open .version-dropdown { display: block; }
+    .version-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 8px 10px; border: none; background: none;
+      border-radius: 6px; font-size: 12px; color: var(--text-2);
+      cursor: pointer; font-family: 'JetBrains Mono', monospace;
+      transition: background 0.1s;
+    }
+    .version-option:hover { background: var(--bg-3); color: var(--text-1); }
+    .version-option.active { color: var(--green); }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: transparent;
+    }
+    .version-option.active .version-dot { background: var(--green); }
+    .version-tag {
+      margin-left: auto; font-size: 10px;
+      background: var(--green-bg); color: var(--green);
+      border-radius: 4px; padding: 1px 6px;
+    }
+  </style>
 </head>
 <body>
 
@@ -25,7 +69,25 @@
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Buscar...<span class="kbd">⌘K</span>
       </div>
-      <span class="gh-badge">v1.0.0</span>
+      
+      <div class="version-selector" id="version-selector">
+        <button class="version-btn" onclick="toggleVersionDropdown()">
+          <span id="current-version-label">v1.0.1</span>
+          <svg class="version-chevron" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="version-dropdown" id="version-dropdown">
+          <button class="version-option active" data-v="1.0.1" onclick="switchVersion('1.0.1')">
+            <span class="version-dot"></span>
+            v1.0.1 <span class="version-tag">latest</span>
+          </button>
+          <button class="version-option" data-v="1.0.0" onclick="switchVersion('1.0.0')">
+            <span class="version-dot"></span>
+            v1.0.0
+          </button>
+        </div>
+      </div>
       <a class="gh-github" href="https://github.com" target="_blank"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34v-1.19c-1.95.42-2.36-.94-2.36-.94-.32-.81-.78-1.03-.78-1.03-.63-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.62 1.07 1.63.76 2.03.58.06-.45.24-.76.44-.93-1.55-.18-3.18-.78-3.18-3.46 0-.76.27-1.38.72-1.87-.07-.18-.31-.88.07-1.84 0 0 .59-.19 1.93.72A6.7 6.7 0 018 4.42c.6.003 1.2.08 1.76.24 1.34-.91 1.93-.72 1.93-.72.38.96.14 1.66.07 1.84.45.49.72 1.11.72 1.87 0 2.69-1.63 3.28-3.19 3.46.25.22.48.64.48 1.29v1.92c0 .19.12.41.48.34A7.003 7.003 0 0015 8c0-3.87-3.13-7-7-7z"/></svg></a>
     </div>
   </header>
@@ -36,11 +98,13 @@
     <main class="main-content">
       <div class="content-inner">
 
-        <div class="pill-row">
-          <span class="pill pill-g">Guía</span>
-          <span class="pill pill-n">UI dinámica</span>
-          <span class="pill pill-n">variables</span>
-        </div>
+        <div class="version-content" data-version="1.0.1">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">UI dinámica</span>
+            <span class="pill pill-n">variables</span>
+            <span class="pill pill-b">v1.0.1</span>
+          </div>
 
         <h1 style="font-size:36px;">Data Binding</h1>
 
@@ -170,6 +234,65 @@ content: "Progreso: {{progress.current}} / {{progress.target}}"</code></pre>
     shadow: "true"</code></pre>
         </div>
 
+        <!-- VARIABLES DE SKILLS -->
+        <h2>Variables de skills — <code>skills.*</code></h2>
+
+        <p>Acceden a los puntos del sistema de skill trees. Permiten mostrar los puntos disponibles y totales del jugador para cada tipo de punto.</p>
+
+        <table>
+          <thead><tr><th>Variable</th><th>Valor devuelto</th></tr></thead>
+          <tbody>
+            <tr><td><code>{{skills.&lt;point_type&gt;.available}}</code></td><td>Puntos disponibles para gastar en el árbol de habilidades.</td></tr>
+            <tr><td><code>{{skills.&lt;point_type&gt;.total}}</code></td><td>Puntos totales ganados (incluyendo los ya gastados).</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 00-2 7.46V11h4V9.46A4 4 0 008 2z" stroke="var(--green)" stroke-width="1.4"/><path d="M6 13h4M6.5 15h3" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <div class="callout-text">
+            <code>&lt;point_type&gt;</code> debe ser el ID interno del tipo de punto (ej: <code>combat_points</code>) o el alias configurado en <code>config.yml</code> (ej: <code>Puntos de Combate</code>).
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — mostrar puntos de combate</div>
+          <pre><code>- id: "puntos-combate"
+  type: TEXT
+  x: 50
+  y: 50
+  width: 300
+  height: 20
+  properties:
+    content: "§ePuntos de Combate: §a{{skills.Puntos de Combate.available}}"
+    shadow: "true"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — mostrar puntos disponibles y totales</div>
+          <pre><code>- id: "puntos-resumen"
+  type: TEXT
+  x: 50
+  y: 75
+  width: 300
+  height: 20
+  properties:
+    content: "§7Disponibles: §e{{skills.skill_points.available}} §7| Totales: §e{{skills.skill_points.total}}"
+    shadow: "true"</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label"><span class="dot"></span>Ejemplo — múltiples tipos de puntos</div>
+          <pre><code>- id: "puntos-multiples"
+  type: TEXT
+  x: 50
+  y: 100
+  width: 400
+  height: 40
+  properties:
+    content: "§6Combate: §a{{skills.combat_points.available}} §7| §eRecolección: §a{{skills.gathering_points.available}} §7| §cHabilidad: §a{{skills.skill_points.available}}"
+    shadow: "true"</code></pre>
+        </div>
+
         <!-- VARIABLES DE ESTADO -->
         <h2>Variables de estado del servidor</h2>
 
@@ -200,8 +323,8 @@ content: "Carta de zombie: {{zombie_card_unlocked}}"</code></pre>
           <thead><tr><th>Sintaxis</th><th>Condición</th></tr></thead>
           <tbody>
             <tr>
-              <td><code>variable == valor</code></td>
-              <td>Visible si la variable es exactamente igual al valor.</td>
+              <td><code>variable == valor</code> o <code>variable = valor</code></td>
+              <td>Visible si la variable es igual al valor (soporte para <code>==</code> e igualdad simple <code>=</code>).</td>
             </tr>
             <tr>
               <td><code>variable != valor</code></td>
@@ -357,11 +480,274 @@ elements:
             </a>
           </div>
         </div>
+        </div>
+
+        <div class="version-content" data-version="1.0.0" style="display:none;">
+          <div class="pill-row">
+            <span class="pill pill-g">Guía</span>
+            <span class="pill pill-n">UI dinámica</span>
+            <span class="pill pill-n">variables</span>
+            <span class="pill pill-b">v1.0.0</span>
+          </div>
+
+          <h1 style="font-size:36px;">Data Binding</h1>
+
+          <p style="font-size:15px; max-width:580px;">
+            El sistema de data binding permite que los textos de tu UI muestren valores en tiempo real — progreso de eventos, contadores y variables del servidor — sin necesidad de recargar la pantalla.
+          </p>
+
+          <!-- CONCEPTO -->
+          <h2>¿Cómo funciona?</h2>
+
+          <p>Cuando defines un texto en YAML con <code>type: TEXT</code>, cualquier expresión entre llaves <code>&#123;&#123;...&#125;&#125;</code> es evaluada dinámicamente por el cliente en cada frame de renderizado. No hay latencia de red para las actualizaciones visuales.</p>
+
+          <!-- VARIABLES DE EVENTO -->
+          <h2>Variables de evento</h2>
+
+          <p>Permiten mostrar datos sobre el estado de un evento del jugador:</p>
+
+          <table>
+            <thead><tr><th>Variable</th><th>Tipo</th><th>Descripción</th><th>Ejemplo de salida</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>&#123;&#123;event.currentProgress&#125;&#125;</code></td>
+                <td>Número</td><td>Progreso actual en el objetivo activo del evento.</td>
+                <td><code>5</code></td>
+              </tr>
+              <tr>
+                <td><code>&#123;&#123;event.targetProgress&#125;&#125;</code></td>
+                <td>Número</td><td>Progreso objetivo necesario para completar.</td>
+                <td><code>10</code></td>
+              </tr>
+              <tr>
+                <td><code>&#123;&#123;event.progressPercent&#125;&#125;</code></td>
+                <td>Porcentaje</td><td>Porcentaje de avance (0 a 100).</td>
+                <td><code>50%</code></td>
+              </tr>
+              <tr>
+                <td><code>&#123;&#123;event.timeRemaining&#125;&#125;</code></td>
+                <td>Tiempo</td><td>Tiempo restante formateado (<code>MM:SS</code> o <code>HH:MM:SS</code>).</td>
+                <td><code>04:32</code></td>
+              </tr>
+              <tr>
+                <td><code>&#123;&#123;event.status&#125;&#125;</code></td>
+                <td>String</td><td>Estado actual: <code>AVAILABLE</code>, <code>IN_PROGRESS</code>, <code>COMPLETED</code>, <code>LOCKED</code>.</td>
+                <td><code>IN_PROGRESS</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplo en YAML</div>
+            <pre><code>- id: "texto-progreso"
+  type: TEXT
+  x: 50
+  y: 100
+  width: 200
+  height: 20
+  properties:
+    content: "§7Progreso: §e{{event.currentProgress}}§7/§e{{event.targetProgress}}"
+    align: "center"
+    shadow: "true"</code></pre>
+          </div>
+
+          <!-- VARIABLES DE ESTADO -->
+          <h2>Variables de estado del servidor</h2>
+
+          <p>Son variables arbitrarias que el servidor establece por jugador con el comando <code>/eventui setuivar</code>. Se usan principalmente en condiciones <code>visible_if</code>, pero también pueden mostrarse en textos.</p>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Establecer una variable desde el servidor</div>
+            <pre><code># Establecer variable para un jugador específico
+/eventui setuivar Steve zombie_card_unlocked true
+
+# Leer la variable en un texto
+content: "Carta de zombie: {{zombie_card_unlocked}}"</code></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="callout-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#60a5fa" stroke-width="1.4"/><path d="M8 7v5M8 5v.5" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <div class="callout-text">
+              Las variables de estado son por jugador — cada jugador tiene su propio mapa de variables. Se persisten en <code>playerstate/&lt;uuid&gt;.yml</code> y se restauran al reconectar.
+            </div>
+          </div>
+
+          <!-- VISIBLE_IF -->
+          <h2>Condiciones — <code>visible_if</code></h2>
+
+          <p>La propiedad <code>visible_if</code> usa las variables de estado del servidor para mostrar u ocultar elementos. A diferencia del binding de texto, <strong>no usa llaves</strong> — es solo el nombre de la variable y el operador.</p>
+
+          <table>
+            <thead><tr><th>Sintaxis</th><th>Condición</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>variable == valor</code></td>
+                <td>Visible si la variable es exactamente igual al valor.</td>
+              </tr>
+              <tr>
+                <td><code>variable != valor</code></td>
+                <td>Visible si la variable es distinta del valor.</td>
+              </tr>
+              <tr>
+                <td><code>!variable</code></td>
+                <td>Visible si la variable no existe, es <code>"false"</code> o es <code>"0"</code>.</td>
+              </tr>
+              <tr>
+                <td><code>variable</code></td>
+                <td>Visible si la variable existe y no es <code>"false"</code> ni <code>"0"</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>Ejemplos de visible_if</div>
+            <pre><code># Visible solo si la variable es exactamente "true"
+visible_if: "zombie_card_unlocked == true"
+
+# Visible si la variable NO es "true"
+visible_if: "zombie_card_unlocked != true"
+
+# Visible si la variable no existe o es false/0
+visible_if: "!zombie_card_unlocked"
+
+# Visible si la variable existe y tiene valor positivo
+visible_if: "zombie_card_unlocked"
+
+# Visible si el jugador está en una fase específica
+visible_if: "fase_actual == fase_3"</code></pre>
+          </div>
+
+          <!-- COMPORTAMIENTO CON VARIABLE NO ENCONTRADA -->
+          <h2>Comportamiento cuando una variable no existe</h2>
+
+          <table>
+            <thead><tr><th>Escenario</th><th>Comportamiento</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Variable en texto <code>&#123;&#123;mi_var&#125;&#125;</code></td>
+                <td>Se reemplaza por String vacío (no rompe el renderizado).</td>
+              </tr>
+              <tr>
+                <td><code>visible_if: "mi_var == true"</code></td>
+                <td>Evalúa a <code>false</code> — el elemento se oculta.</td>
+              </tr>
+              <tr>
+                <td><code>visible_if: "!mi_var"</code></td>
+                <td>Evalúa a <code>true</code> — el elemento se muestra.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- EJEMPLO COMPLETO -->
+          <h2>Ejemplo completo — HUD con Data Binding</h2>
+
+          <div class="code-block">
+            <div class="code-label"><span class="dot"></span>uis/hud_evento.yml</div>
+            <pre><code>id: "hud_evento"
+screen_width: 1366
+screen_height: 720
+
+elements:
+  - id: "panel-progreso"
+    type: PANEL
+    x: 0
+    y: 0
+    width: 300
+    height: 60
+    properties:
+      anchor: "top_center"
+      anchor_offset_y: 20
+      color: "000000"
+      alpha: "150"
+    children:
+      - id: "titulo-evento"
+        type: TEXT
+        x: 10
+        y: 8
+        width: 280
+        height: 16
+        properties:
+          content: "§6§lCacería de Zombies"
+          align: "center"
+          shadow: "true"
+
+      - id: "barra"
+        type: PROGRESS_BAR
+        x: 10
+        y: 28
+        width: 280
+        height: 8
+        properties:
+          event_id: "matar-zombies"
+          objective_id: "kill-zombies"
+          color: "5cb85c"
+
+      - id: "texto-contador"
+        type: TEXT
+        x: 10
+        y: 40
+        width: 280
+        height: 14
+        properties:
+          content: "§7Restante: §e{{event.timeRemaining}} §7| §e{{event.currentProgress}}/{{event.targetProgress}}"
+          align: "center"
+          shadow: "true"
+
+  - id: "banner-bonus"
+    type: IMAGE
+    x: 0
+    y: 0
+    width: 200
+    height: 40
+    properties:
+      anchor: "top_right"
+      anchor_offset_x: -20
+      anchor_offset_y: 20
+      texture: "eventui:textures/ui/bonus_active.png"
+      visible_if: "bonus_unlocked == true"</code></pre>
+          </div>
+
+          <div class="page-footer">
+            <div class="footer-nav">
+              <a class="footer-nav-btn" href="dependencias.html">
+                <span class="fnb-label">Anterior</span>
+                <span class="fnb-title">← Dependencias</span>
+              </a>
+            </div>
+            <div class="footer-nav">
+              <a class="footer-nav-btn next" href="../referencia/comandos.html">
+                <span class="fnb-label">Siguiente</span>
+                <span class="fnb-title">Comandos →</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </main>
   </div>
 
+  <script>
+    function toggleVersionDropdown() {
+      document.getElementById('version-selector').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#version-selector')) {
+        document.getElementById('version-selector')?.classList.remove('open');
+      }
+    });
+    function switchVersion(v) {
+      document.getElementById('current-version-label').textContent = 'v' + v;
+      document.querySelectorAll('.version-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.v === v);
+      });
+      document.getElementById('version-selector').classList.remove('open');
+      document.querySelectorAll('.version-content').forEach(el => {
+        el.style.display = el.dataset.version === v ? 'block' : 'none';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => switchVersion('1.0.1'));
+  </script>
   <script src="../js/main.js"></script>
 </body>
 </html>

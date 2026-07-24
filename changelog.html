@@ -180,7 +180,7 @@
         <div class="version-content" data-version="1.0.1">
           <div class="cl-version-header">
             <h2 class="cl-version-title">v1.0.1</h2>
-            <span class="cl-version-date">2025 — En progreso</span>
+            <span class="cl-version-date">2026 — En progreso</span>
             <span class="pill pill-g">latest</span>
           </div>
 
@@ -381,13 +381,163 @@
               </li>
             </ul>
           </div>
+
+          <!-- CATEGORÍA: Renderizado, UI State y Textos -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 4h12M2 8h12M2 12h12" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Renderizado, UI State y Textos</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>ENTITY_RENDER</code> <code>follow_mouse</code> mode — nuevo modo de rotación que hace que las entidades sigan al cursor del mouse de forma suave, similar al inventario del jugador</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>ENTITY_RENDER</code> idle animations — las entidades renderizadas ahora muestran sus animaciones de reposo (idle) automáticamente</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span><code>ENTITY_RENDER</code> rotation modes — el modo "fixed" ahora es un alias válido de "static"</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span><code>ENTITY_RENDER</code> orientation — las entidades ya no se renderizan boca abajo o mirando hacia atrás</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>TEXT</code> <code>line_spacing</code> y <code>paragraph_spacing</code> — control de espaciado entre líneas y párrafos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>TEXT</code> <code>font_size</code> — control de tamaño de fuente</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>TEXT</code> <code>anchor_offset_x/y</code> — desplazamiento adicional para anclas</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span>Text rendering — mejoras en el procesamiento de párrafos y word wrapping con soporte para saltos de línea suaves (<code>\n</code>) y dobles (<code>\n\n</code>)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Text breaking — corregido problema donde el texto se rompía después del procesamiento de párrafos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span><code>visible_if</code> <code>=</code> operator — soporte para operador de igualdad simple (<code>=</code>) además de <code>==</code> en condiciones <code>visible_if</code></span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>UI State persistence — variables de UI establecidas con <code>/ev setuivar</code> ahora persisten al reiniciar el servidor (guardadas en <code>playerstate/{uuid}.yml</code>)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Click animations — animaciones de clic para UI elements (punch, shake, bounce, flash)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Hover sounds — sonidos de hover para UI elements y skill tree nodes</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Sistema de Skill Trees -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 2L3 5h3v4H3l4 3 4-3H8V5h3L7 2z" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Sistema de Skill Trees</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Exclusive branches — sistema de grupos exclusivos y ramas, los jugadores seleccionan una rama por grupo exclusivo</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Branch selection tooltips — tooltips que muestran información de selección de rama</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Multi-type point distribution — soporte para <code>point_distribution</code> map con múltiples tipos de puntos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Bukkit tag checking — multiplicadores basados en tags de entity, block e item</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Playtime timer system — sistema de timer de playtime con daily cap</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Attribute operations add/multiply/add_scalar/add_percent — nuevas operaciones para efectos de atributos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>New attribute effects — GENERIC_REGENERATION, MOVEMENT_SPEED, ARMOR, ARMOR_TOUGHNESS, KNOCKBACK_RESISTANCE, LUCK</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>PointTypeResolver — mapeo de nombres amigables a IDs internos de tipos de puntos</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span>Connection visuals — visuales de conexión configurables con optimizaciones de rendimiento</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CATEGORÍA: Hot Reload -->
+          <div class="cl-group">
+            <div class="cl-group-header">
+              <div class="cl-group-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <span class="cl-group-label">Hot Reload</span>
+            </div>
+            <ul class="cl-list">
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>EventFileWatcher — hot reload automático de eventos usando WatchService</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-improved">IMPROVED</span>
+                <span>UIFileWatcher y SkillTreeFileWatcher — optimizados con WatchService (fallback a polling)</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-new">NEW</span>
+                <span>Selective reload — solo recarga archivos modificados en lugar de todo el sistema</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Duplicate reload message — corregido mensaje duplicado en /ev reload</span>
+              </li>
+              <li class="cl-item">
+                <span class="cl-tag cl-tag-fix">FIX</span>
+                <span>Event objectives not reloading — corregido problema donde objetivos no recargaban target_amount en /ev reload</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- CONTENIDO v1.0.0 -->
         <div class="version-content" data-version="1.0.0" style="display:none;">
           <div class="cl-version-header">
             <h2 class="cl-version-title">v1.0.0</h2>
-            <span class="cl-version-date">2025 — Versión inicial</span>
+            <span class="cl-version-date">2026 — Versión inicial</span>
           </div>
           
           <div class="cl-group">
