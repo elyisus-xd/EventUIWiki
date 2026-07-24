@@ -127,10 +127,7 @@ function toggleNavGroup(link, event) {
   // Navegar a la página si estaba colapsado (ahora está expandido)
   const href = link.getAttribute('href');
   if (href && !wasExpanded) {
-    // Esperar a que la animación termine antes de navegar
-    setTimeout(() => {
-      window.location.href = href;
-    }, 300);
+    window.location.href = href;
   }
 }
 
